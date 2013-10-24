@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Demo - jquery.textarea-highlighter.js</title>
+
+    <style>
+        html,
+        body {
+            font-size: 16px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        textarea {
+            font-family: inherit;
+            font-size: inherit;
+            margin: 0;
+        }
+        #container {
+            width: 400px;
+            margin: 0 auto;
+        }
+        hr {
+            margin: 20px 0 30px;
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
+        .source,
+        .target {
+            width: 388px;
+            min-height: 24px;
+            line-height: 24px;
+            padding: 3px 6px;
+        }
+        .source {
+            margin-bottom: 6px;
+        }
+        .target {
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            outline: none;
+            resize: none;
+            height: 100px;
+
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        .target:focus {
+            border-color: #888;
+        }
+
+        .background-div {
+            background-color: #fee;
+            top: 1px;
+            left: 1px;
+            padding: 3px 6px;
+            width: 388px;
+            line-height: 24px;
+            height: 100px;
+            white-space: pre;
+
+            color: transparent;
+        }
+        .textarea-wrap {
+            word-wrap: break-word;
+        }
+
+        .match {
+            color: #09f;
+        }
+        .hoge {
+            color: #4c9;
+        }
+
+        .match.added,
+        .hoge.added {
+            color: #999;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <h1>Demo</h1>
+        <hr/>
+        <div class="translation">
+            <div class="source">some cool text is <span class="hoge">here for</span> you to translate. And <span class="match">[[[text here too]]]</span> some more to translate here for you</div>
+            <textarea class="target" placeholder="Type your text here"></textarea>
+        </div>
+
+    </div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="./js/jquery.autosize.min.js"></script>
+<script src="../jquery.textarea-highlighter.js"></script>
+<script>
+    $(function(){
+
+        $('.target')
+            .on('autosize.resize', function(){
+                $(this).trigger('resize');
+            })
+            .autosize()
+            .textareaHighlighter();
+
+    });
+</script>
+
+</body>
+</html>
