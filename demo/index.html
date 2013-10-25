@@ -28,9 +28,13 @@
             border: 0;
             border-top: 1px solid #ddd;
         }
+        .translation {
+            width: 400px;
+        }
         .source,
         .target {
-            width: 388px;
+            /*width: 388px;*/
+            width: 100%;
             min-height: 24px;
             line-height: 24px;
             padding: 3px 6px;
@@ -48,21 +52,25 @@
             word-wrap: break-word;
             word-break: break-all;
             background-color: transparent;
-            white-space: pre;
+            white-space: pre-wrap;
             color: rgba(0,0,0,0.5);
         }
         .target:focus {
             border-color: #888;
         }
 
+        .textarea-wrap {
+            margin: 0;
+            padding-right: 14px;
+        }
         .background-div {
             top: 1px;
             left: 1px;
             padding: 3px 6px;
-            width: 388px;
+            width: 386px;
             line-height: 24px;
             height: 100px;
-            white-space: pre;
+            white-space: pre-wrap;
 
             /*background-color: #fafafa;*/
             background-color: #fee;
