@@ -12,9 +12,25 @@
     // constructor
     function Plugin ( element, options ) {
         this.element = element;
+        this.$element = $(element);
         this.settings = $.extend( {}, defaults, options );
         this._defaults = defaults;
         this._name = pluginName;
+
+        // textarea style
+        this.style = {
+            paddingLeft : parseInt( this.$element.css('padding-left'), 10 ),
+            paddingRight: parseInt( this.$element.css('padding-right'), 10 ),
+            borderLeft  : parseInt( this.$element.css('border-left-width'), 10 ),
+            borderRight : parseInt( this.$element.css('border-right-width'), 10 )
+        };
+
+        this.widthExtra = this.style.paddingLeft + this.style.paddingRight + this.style.borderLeft + this.style.borderRight;
+        // Hack for firefox, some how width needs to be 2px smallet then the textarea
+        if( this.getBrowser().firefox ){
+            this.widthExtra = this.widthExtra + 2;
+        }
+
         this.init();
     }
 
@@ -28,7 +44,9 @@
                 $backgroundDiv = $(document.createElement('div'));
 
             $backgroundDiv.addClass('background-div').css({
-                'height'  : $this.height(),
+                'height': $this.height(),
+                'width' : $this.width() - _this.widthExtra,
+
                 'position': 'absolute',
                 'overflow': 'auto'
             });
@@ -67,7 +85,7 @@
                     // update size
                     if( $backgroundDiv.height() !== $this.height() ){
                         $backgroundDiv.css({
-                            // 'width' : $this.width(),
+                            'width' : $this.outerWidth() - _this.widthExtra,
                             'height': $this.height()
                         });
                     }
@@ -75,6 +93,23 @@
 
 
             $this.wrap( $div ).before( $backgroundDiv );
+        },
+        /**
+         *
+         * HELPERS
+         *
+         */
+        getBrowser: function(){
+            var ua      = navigator.userAgent,
+                msie    = /(msie|trident)/i.test(ua),
+                chrome  = /chrome/i.test(ua),
+                firefox = /firefox/i.test(ua),
+                safari  = /safari/i.test(ua) && !chrome;
+
+            if( msie ){ return { msie: true }; }
+            if( chrome ){ return { chrome: true }; }
+            if( firefox ){ return { firefox: true }; }
+            if( safari ){ return { firefox: true }; }
         }
     };
 
