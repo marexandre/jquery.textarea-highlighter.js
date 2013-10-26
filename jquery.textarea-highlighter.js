@@ -67,7 +67,7 @@
                     // update size
                     if( $backgroundDiv.height() !== $this.height() ){
                         $backgroundDiv.css({
-                            'width' : $this.width(),
+                            // 'width' : $this.width(),
                             'height': $this.height()
                         });
                     }
