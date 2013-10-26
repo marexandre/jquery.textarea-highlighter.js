@@ -109,7 +109,7 @@
             if( msie ){ return { msie: true }; }
             if( chrome ){ return { chrome: true }; }
             if( firefox ){ return { firefox: true }; }
-            if( safari ){ return { firefox: true }; }
+            if( safari ){ return { safari: true }; }
         }
     };
 
