@@ -19,16 +19,27 @@
 
         // textarea style
         this.style = {
-            paddingLeft : parseInt( this.$element.css('padding-left'), 10 ),
-            paddingRight: parseInt( this.$element.css('padding-right'), 10 ),
-            borderLeft  : parseInt( this.$element.css('border-left-width'), 10 ),
-            borderRight : parseInt( this.$element.css('border-right-width'), 10 )
+            paddingTop   : parseInt( this.$element.css('padding-top'), 10 ),
+            paddingRight : parseInt( this.$element.css('padding-right'), 10 ),
+            paddingBottom: parseInt( this.$element.css('padding-bottom'), 10 ),
+            paddingLeft  : parseInt( this.$element.css('padding-left'), 10 ),
+            borderTop    : parseInt( this.$element.css('border-top-width'), 10 ),
+            borderRight  : parseInt( this.$element.css('border-right-width'), 10 ),
+            borderBottom : parseInt( this.$element.css('border-bottom-width'), 10 ),
+            borderLeft   : parseInt( this.$element.css('border-left-width'), 10 ),
+            lineHeight   : this.$element.css('line-height')
         };
 
         this.widthExtra = this.style.paddingLeft + this.style.paddingRight + this.style.borderLeft + this.style.borderRight;
+
+        this.style.paddingTop += this.style.borderTop;
+        this.style.paddingLeft += this.style.borderLeft;
+
         // Hack for firefox, some how width needs to be 2px smallet then the textarea
+        // and padding-left needs to be added 1px
         if( this.getBrowser().firefox ){
-            this.widthExtra = this.widthExtra + 2;
+            this.widthExtra += 2;
+            this.style.paddingLeft += 1;
         }
 
         this.init();
@@ -47,8 +58,13 @@
                 'height': $this.height(),
                 'width' : $this.width() - _this.widthExtra,
 
-                'position': 'absolute',
-                'overflow': 'auto'
+                'line-height'   : _this.style.lineHeight,
+                'padding-top'   : _this.style.paddingTop,
+                'padding-right' : _this.style.paddingRight,
+                'padding-bottom': _this.style.paddingBottom,
+                'padding-left'  : _this.style.paddingLeft,
+                'position'      : 'absolute',
+                'overflow'      : 'auto'
             });
             $this.css({
                 'position': 'relative',
