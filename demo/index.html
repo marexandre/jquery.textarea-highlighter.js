@@ -52,7 +52,6 @@
             word-wrap: break-word;
             word-break: break-all;
             white-space: pre-wrap;
-            color: rgba(0,0,0,0.5);
             background-color: #f9f9f9;
         }
         .target:focus {
@@ -97,7 +96,8 @@
                 rules: [
                     {'target': '.match', 'className': 'matchHighlight', 'color': '#09f'},
                     {'target': '.hoge', 'className': 'hogeHighlight', 'color': '#4c9'},
-                ]
+                ],
+                isDebug: false
             });
 
     });

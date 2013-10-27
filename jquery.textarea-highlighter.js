@@ -5,7 +5,8 @@
         defaults = {
             rules: [
                 {'target': '', 'className': '', 'color': ''}
-            ]
+            ],
+            isDebug: false
         };
 
     // constructor
@@ -65,10 +66,8 @@
                 'height': $this.height(),
                 'width' : $this.width() - _this.widthExtra,
 
-                // 'color'         : 'transparent',
-                'color'         : '#f00',
-                // 'background-color': _this.style.backgroundColor,
-                'background-color': '#fee',
+                'color'           : ( _this.settings.isDebug ) ? '#f00' : 'transparent',
+                'background-color': ( _this.settings.isDebug ) ? '#fee' : _this.style.backgroundColor,
                 'line-height'   : _this.style.lineHeight,
                 'padding-top'   : _this.style.paddingTop,
                 'padding-right' : _this.style.paddingRight,
@@ -79,6 +78,7 @@
                 'white-space'   : 'pre-wrap'
             });
             $this.css({
+                'color'     : ( _this.settings.isDebug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
                 'position'  : 'relative',
                 'background': 'transparent'
             });
