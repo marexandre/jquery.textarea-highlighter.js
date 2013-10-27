@@ -59,17 +59,14 @@
             border-color: #888;
         }
 
-        .match {
-            color: #09f;
-        }
-        .hoge {
-            color: #4c9;
-        }
+        .match { color: #09f; }
+        .hoge { color: #4c9; }
 
         .match.added,
-        .hoge.added {
-            color: #999;
-        }
+        .hoge.added { color: #999; }
+
+        .matchHighlight { background-color: #09f; }
+        .hogeHighlight { background-color: #4c9; }
 
     </style>
 </head>
@@ -97,9 +94,9 @@
             })
             .autosize()
             .textareaHighlighter({
-                match: [
-                    {'name': '.match', 'color': '#09f'},
-                    {'name': '.hoge', 'color': '#4c9'},
+                rules: [
+                    {'target': '.match', 'className': 'matchHighlight', 'color': '#09f'},
+                    {'target': '.hoge', 'className': 'hogeHighlight', 'color': '#4c9'},
                 ]
             });
 

@@ -3,7 +3,9 @@
 
     var pluginName = "textareaHighlighter",
         defaults = {
-            rules: []
+            rules: [
+                {'target': '', 'className': '', 'color': ''}
+            ]
         };
 
     // constructor
@@ -91,10 +93,10 @@
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html();
 
                     for ( var i = 0, imax = _this.settings.rules.length; i < imax; i++ ) {
-                        $source.find( _this.settings.rules[i].name ).each(function(){
+                        $source.find( _this.settings.rules[i].target ).each(function(){
                             var $_this   = $(this),
                                 ruleText = $_this.text(),
-                                spanText = '<span style="background-color: '+ _this.settings.rules[i].color +'">'+ ruleText +'</span>';
+                                spanText = '<span class="'+ _this.settings.rules[i].className +'" style="background-color:'+ _this.settings.rules[i].color +'">'+ ruleText +'</span>';
 
                             var reg = new RegExp( _escapeRegExp( ruleText ), 'g');
                             if( reg.test( textareaText) ){
