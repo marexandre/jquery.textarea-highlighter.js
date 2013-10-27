@@ -19,6 +19,7 @@
 
         // textarea style
         this.style = {
+            backgroundColor: this.$element.css('background-color'),
             paddingTop   : parseInt( this.$element.css('padding-top'), 10 ),
             paddingRight : parseInt( this.$element.css('padding-right'), 10 ),
             paddingBottom: parseInt( this.$element.css('padding-bottom'), 10 ),
@@ -58,13 +59,17 @@
                 'height': $this.height(),
                 'width' : $this.width() - _this.widthExtra,
 
+                // 'background-color': _this.style.backgroundColor,
+                'background-color': '#fee',
                 'line-height'   : _this.style.lineHeight,
                 'padding-top'   : _this.style.paddingTop,
                 'padding-right' : _this.style.paddingRight,
                 'padding-bottom': _this.style.paddingBottom,
                 'padding-left'  : _this.style.paddingLeft,
                 'position'      : 'absolute',
-                'overflow'      : 'auto'
+                'overflow'      : 'auto',
+                // 'color'         : 'transparent'
+                'color'         : '#f00'
             });
             $this.css({
                 'position': 'relative',
