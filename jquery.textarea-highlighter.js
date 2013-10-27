@@ -3,7 +3,7 @@
 
     var pluginName = "textareaHighlighter",
         defaults = {
-            match: []
+            rules: []
         };
 
     // constructor
@@ -90,15 +90,15 @@
 
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html();
 
-                    for ( var i = 0, imax = _this.settings.match.length; i < imax; i++ ) {
-                        $source.find( _this.settings.match[i].name ).each(function(){
-                            var $_this      = $(this),
-                                matchText   = $_this.text(),
-                                replaceText = '<span style="background-color: '+ _this.settings.match[i].color +'">'+ matchText +'</span>';
+                    for ( var i = 0, imax = _this.settings.rules.length; i < imax; i++ ) {
+                        $source.find( _this.settings.rules[i].name ).each(function(){
+                            var $_this   = $(this),
+                                ruleText = $_this.text(),
+                                spanText = '<span style="background-color: '+ _this.settings.rules[i].color +'">'+ ruleText +'</span>';
 
-                            var reg = new RegExp( _escapeRegExp( matchText ), 'g');
+                            var reg = new RegExp( _escapeRegExp( ruleText ), 'g');
                             if( reg.test( textareaText) ){
-                                textareaText = textareaText.replace( reg, replaceText );
+                                textareaText = textareaText.replace( reg, spanText );
                                 $_this.addClass('added');
                             }
                             else{
