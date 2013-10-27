@@ -3,10 +3,7 @@
 
     var pluginName = "textareaHighlighter",
         defaults = {
-            match: [
-                {'name': '.match', 'color': '#09f'},
-                {'name': '.hoge', 'color': '#4c9'},
-            ]
+            match: []
         };
 
     // constructor
