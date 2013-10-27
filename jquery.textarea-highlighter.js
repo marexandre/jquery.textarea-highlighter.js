@@ -1,3 +1,10 @@
+/**
+ * jquery.textareaHighlighter.js 0.1.0
+ * Plugin for highlighting text in textarea.
+ *
+ * alexandre.kirillov@gengo.com
+ * MIT license. http://opensource.org/licenses/MIT
+ */
 ;(function ( $, window, document, undefined ) {
     "use strict";
 
