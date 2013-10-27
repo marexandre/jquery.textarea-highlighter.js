@@ -52,13 +52,22 @@
             var _this          = this,
                 $this          = $(this.element),
                 $source        = $this.closest('.translation').find('.source'),
-                $div           = $(document.createElement('div')).addClass('textarea-wrap').css({ 'position': 'relative' }),
+                $wrapDiv       = $(document.createElement('div')).addClass('textarea-wrap'),
                 $backgroundDiv = $(document.createElement('div'));
 
+            $wrapDiv.css({
+                'position'     : 'relative',
+                'word-wrap'    : 'break-word',
+                'word-break'   : 'break-all',
+                'margin'       : 0,
+                'padding-right': _this.style.paddingLeft + _this.style.paddingRight + _this.style.borderLeft + _this.style.borderRight + 'px'
+            });
             $backgroundDiv.addClass('background-div').css({
                 'height': $this.height(),
                 'width' : $this.width() - _this.widthExtra,
 
+                // 'color'         : 'transparent',
+                'color'         : '#f00',
                 // 'background-color': _this.style.backgroundColor,
                 'background-color': '#fee',
                 'line-height'   : _this.style.lineHeight,
@@ -68,11 +77,10 @@
                 'padding-left'  : _this.style.paddingLeft,
                 'position'      : 'absolute',
                 'overflow'      : 'auto',
-                // 'color'         : 'transparent'
-                'color'         : '#f00'
+                'white-space'   : 'pre-wrap'
             });
             $this.css({
-                'position': 'relative',
+                'position'  : 'relative',
                 'background': 'transparent'
             });
 
@@ -113,7 +121,7 @@
                 });
 
 
-            $this.wrap( $div ).before( $backgroundDiv );
+            $this.wrap( $wrapDiv ).before( $backgroundDiv );
         },
         /**
          *
