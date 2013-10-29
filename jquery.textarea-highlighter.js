@@ -139,12 +139,14 @@
                 msie    = /(msie|trident)/i.test(ua),
                 chrome  = /chrome/i.test(ua),
                 firefox = /firefox/i.test(ua),
-                safari  = /safari/i.test(ua) && !chrome;
+                safari  = /safari/i.test(ua) && !chrome,
+                iphone = /iphone/i.test(ua);
 
             if( msie ){ return { msie: true }; }
             if( chrome ){ return { chrome: true }; }
             if( firefox ){ return { firefox: true }; }
             if( safari ){ return { safari: true }; }
+            if( iphone ){ return { iphone: true }; }
         }
     };
 
