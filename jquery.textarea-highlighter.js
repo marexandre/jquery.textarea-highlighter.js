@@ -69,6 +69,10 @@
             this.widthExtra += 2;
             this.style.paddingLeft += 1;
         }
+        if( browser.iphone ){
+            this.style.paddingRight += 3;
+            this.style.paddingLeft += 3;
+        }
 
         this.init();
     }
@@ -109,10 +113,6 @@
                 'position'  : 'relative',
                 'background': 'transparent'
             });
-
-            if( browser.iphone ){
-                $this.css('text-indent','-3px');
-            }
 
             $this
                 .on('scroll', function(){
