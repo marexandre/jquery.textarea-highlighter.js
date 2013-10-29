@@ -8,6 +8,26 @@
 ;(function ( $, window, document, undefined ) {
     "use strict";
 
+    var browser = (function(){
+        var userAgent = navigator.userAgent,
+            msie    = /(msie|trident)/i.test( userAgent ),
+            chrome  = /chrome/i.test( userAgent ),
+            firefox = /firefox/i.test( userAgent ),
+            safari  = /safari/i.test( userAgent ) && !chrome,
+            iphone  = /iphone/i.test( userAgent );
+
+        if( msie ){ return { msie: true }; }
+        if( chrome ){ return { chrome: true }; }
+        if( firefox ){ return { firefox: true }; }
+        if( safari ){ return { safari: true }; }
+        if( iphone ){ return { iphone: true }; }
+    }());
+
+    /**
+     *
+     * PLUGIN CORE
+     *
+     */
     var pluginName = "textareaHighlighter",
         defaults = {
             rules: [
@@ -45,7 +65,7 @@
 
         // Hack for firefox, some how width needs to be 2px smallet then the textarea
         // and padding-left needs to be added 1px
-        if( this.getBrowser().firefox ){
+        if( browser.firefox ){
             this.widthExtra += 2;
             this.style.paddingLeft += 1;
         }
@@ -90,6 +110,10 @@
                 'background': 'transparent'
             });
 
+            if( browser.iphone ){
+                $this.css('text-indent','-3px');
+            }
+
             $this
                 .on('scroll', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
@@ -128,25 +152,6 @@
 
 
             $this.wrap( $wrapDiv ).before( $backgroundDiv );
-        },
-        /**
-         *
-         * HELPERS
-         *
-         */
-        getBrowser: function(){
-            var ua      = navigator.userAgent,
-                msie    = /(msie|trident)/i.test(ua),
-                chrome  = /chrome/i.test(ua),
-                firefox = /firefox/i.test(ua),
-                safari  = /safari/i.test(ua) && !chrome,
-                iphone = /iphone/i.test(ua);
-
-            if( msie ){ return { msie: true }; }
-            if( chrome ){ return { chrome: true }; }
-            if( firefox ){ return { firefox: true }; }
-            if( safari ){ return { safari: true }; }
-            if( iphone ){ return { iphone: true }; }
         }
     };
 
