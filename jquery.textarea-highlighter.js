@@ -123,6 +123,19 @@
                 'background': 'transparent'
             });
 
+            if( _this.settings.isDebug ){
+                var $debug = $(document.createElement('div')).css({
+                    'margin-top': '20px',
+                    'font-size': '12px',
+                    'color': '#999',
+                    'padding': '3px 10px',
+                    'background-color': '#f8f8f8'
+                }).html('debug:');
+                $this.after($debug);
+
+                var startTime = 0;
+            }
+
             $this
                 .on('scroll', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
@@ -132,6 +145,9 @@
 
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html();
 
+                    if( _this.settings.isDebug ){
+                        startTime = new Date().getTime();
+                    }
                     for ( var i = 0, imax = _this.settings.rules.length; i < imax; i++ ) {
                         $source.find( _this.settings.rules[i].target ).each(function(){
                             var $_this   = $(this),
@@ -148,6 +164,10 @@
                             }
                         });
                     }
+                    if( _this.settings.isDebug ){
+                        $debug.html( new Date().getTime() - startTime );
+                    }
+
                     $backgroundDiv.html( textareaText );
 
                     // update size
