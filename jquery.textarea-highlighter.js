@@ -77,11 +77,11 @@
             this.widthExtra += 2;
             this.style.paddingLeft += 1;
         }
-        console.log( browser );
-        console.log( 'is iphone : '+ browser.iphone );
+        // Hack for iphone, some how in iphone it adds 3px to textarea padding
         if( browser.iphone ){
             this.style.paddingRight += 3;
             this.style.paddingLeft += 3;
+            this.widthExtra -= 6;
         }
 
         this.init();
