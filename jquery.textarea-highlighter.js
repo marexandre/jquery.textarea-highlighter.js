@@ -69,6 +69,7 @@
             this.widthExtra += 2;
             this.style.paddingLeft += 1;
         }
+        console.log( 'is iphone : '+ browser.iphone );
         if( browser.iphone ){
             this.style.paddingRight += 3;
             this.style.paddingLeft += 3;
