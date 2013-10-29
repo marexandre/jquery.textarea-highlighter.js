@@ -21,6 +21,14 @@
         if( firefox ){ return { firefox: true }; }
         if( safari ){ return { safari: true }; }
         if( iphone ){ return { iphone: true }; }
+
+        return {
+            msie   : false,
+            chrome : false,
+            firefox: false,
+            safari : false,
+            iphone : false
+        };
     }());
 
     /**
