@@ -81,7 +81,7 @@
         if( browser.iphone ){
             this.style.paddingRight += 3;
             this.style.paddingLeft += 3;
-            this.widthExtra -= 6;
+            this.widthExtra += 6;
         }
 
         this.init();
