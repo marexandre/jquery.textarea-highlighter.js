@@ -104,9 +104,8 @@
                 'padding-right': _this.style.paddingLeft + _this.style.paddingRight + _this.style.borderLeft + _this.style.borderRight + 'px'
             });
             $backgroundDiv.addClass('background-div').css({
-                'height': $this.height(),
-                'width' : $this.width() - _this.widthExtra,
-
+                'height': 0,
+                'width' : 0,
                 'color'           : ( _this.settings.isDebug ) ? '#f00' : 'transparent',
                 'background-color': ( _this.settings.isDebug ) ? '#fee' : _this.style.backgroundColor,
                 'line-height'   : _this.style.lineHeight,
