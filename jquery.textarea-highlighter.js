@@ -19,8 +19,8 @@
         if( msie ){ return { msie: true }; }
         if( chrome ){ return { chrome: true }; }
         if( firefox ){ return { firefox: true }; }
-        if( safari ){ return { safari: true }; }
         if( iphone ){ return { iphone: true }; }
+        if( safari ){ return { safari: true }; }
 
         return {
             msie   : false,
@@ -77,6 +77,7 @@
             this.widthExtra += 2;
             this.style.paddingLeft += 1;
         }
+        console.log( browser );
         console.log( 'is iphone : '+ browser.iphone );
         if( browser.iphone ){
             this.style.paddingRight += 3;
