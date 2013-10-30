@@ -136,6 +136,56 @@
                 var startTime = 0;
             }
 
+
+            // TODO: move into a function ▽▽▽▽▽▽
+            var sourceHash = {},
+                colorHash = {},
+                i = 0,
+                imax = _this.settings.rules.length;
+            for ( i = 0; i < imax; i++ ) {
+                var rule = _this.settings.rules[i],
+                    target = rule.target;
+
+                if( ! colorHash[ target ] ){
+                    colorHash[ target ] = [];
+                }
+                colorHash[ target ].push( _this.settings.rules[i].color );
+
+                $source.find( target ).each(function(){
+                    if( ! sourceHash[ target ] ){
+                        sourceHash[ target ] = [];
+                    }
+                    sourceHash[ target ].push({'text': $(this).text(), 'color': rule.color });
+                });
+            }
+
+            var tmpText = {},
+                tmpColor = {},
+                key;
+            for( key in sourceHash ){
+                var s = sourceHash[key];
+
+                for( var ii = 0; ii < s.length; ii++ ){
+                    if( ! tmpText.hasOwnProperty( s[ii].text ) ){
+                        tmpText[s[ii].text] = key;
+                    }
+                    if( ! tmpColor.hasOwnProperty( s[ii].color ) ){
+                        // tmpColor[s[ii].color] = key;
+                        tmpColor[key] = s[ii].color;
+                    }
+                }
+            }
+
+            var uniqueText = {};
+            for( key in tmpText ){
+                if( ! uniqueText[ tmpText[key] ] ){
+                    uniqueText[ tmpText[key] ] = [];
+                }
+                uniqueText[ tmpText[key] ].push( key );
+            }
+            // TODO: move into a function △△△△△△
+
+
             $this
                 .on('scroll', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
@@ -143,31 +193,31 @@
 
                 .on('change input', function(e){
 
-                    var textareaText = $(document.createElement('div')).text( $this.val() ).html();
+                    var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
+                        key, ruleTextList, ruleText, spanText, i, imax;
 
+                    // DEBUG
                     if( _this.settings.isDebug ){
                         startTime = new Date().getTime();
                     }
+                    // DEBUG
 
-                    for ( var i = 0, imax = _this.settings.rules.length; i < imax; i++ ) {
-                        $source.find( _this.settings.rules[i].target ).each(function(){
-                            var $_this   = $(this),
-                                ruleText = $_this.text(),
-                                spanText = '<span class="'+ _this.settings.rules[i].className +'" style="background-color:'+ _this.settings.rules[i].color +'">'+ ruleText +'</span>';
+                    for (key in uniqueText) {
+                        ruleTextList = uniqueText[key];
+                        for( i = 0, imax = ruleTextList.length; i < imax; i++ ){
+                            ruleText = ruleTextList[i],
+                            spanText = '<span class="'+ key +'" style="background-color:'+ tmpColor[key] +'">'+ ruleText +'</span>';
 
                             if( textareaText.indexOf( ruleText ) !== -1 ){
                                 textareaText = textareaText.replace( new RegExp( _escapeRegExp( ruleText ), 'g'), spanText );
-                                $_this.addClass('added');
                             }
-                            else{
-                                $_this.removeClass('added');
-                            }
-                        });
+                        }
                     }
-
+                    // DEBUG
                     if( _this.settings.isDebug ){
                         $debug.html( new Date().getTime() - startTime );
                     }
+                    // DEBUG
 
                     $backgroundDiv.html( textareaText );
 
