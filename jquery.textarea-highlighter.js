@@ -39,7 +39,7 @@
     var pluginName = "textareaHighlighter",
         defaults = {
             rules: [
-                {'target': '', 'className': '', 'color': ''}
+                {'target': '', 'className': ''}
             ],
             isDebug: false
         };
@@ -139,28 +139,28 @@
 
             // TODO: move into a function ▽▽▽▽▽▽
             var sourceHash = {},
-                colorHash = {},
+                classNameHash = {},
                 i = 0,
                 imax = _this.settings.rules.length;
             for ( i = 0; i < imax; i++ ) {
                 var rule = _this.settings.rules[i],
                     target = rule.target;
 
-                if( ! colorHash[ target ] ){
-                    colorHash[ target ] = [];
+                if( ! classNameHash[ target ] ){
+                    classNameHash[ target ] = [];
                 }
-                colorHash[ target ].push( _this.settings.rules[i].color );
+                classNameHash[ target ].push( _this.settings.rules[i].className );
 
                 $source.find( target ).each(function(){
                     if( ! sourceHash[ target ] ){
                         sourceHash[ target ] = [];
                     }
-                    sourceHash[ target ].push({'text': $(this).text(), 'color': rule.color });
+                    sourceHash[ target ].push({'text': $(this).text(), 'className': rule.className });
                 });
             }
 
             var tmpText = {},
-                tmpColor = {},
+                tmpClassName = {},
                 key;
             for( key in sourceHash ){
                 var s = sourceHash[key];
@@ -169,9 +169,8 @@
                     if( ! tmpText.hasOwnProperty( s[ii].text ) ){
                         tmpText[s[ii].text] = key;
                     }
-                    if( ! tmpColor.hasOwnProperty( s[ii].color ) ){
-                        // tmpColor[s[ii].color] = key;
-                        tmpColor[key] = s[ii].color;
+                    if( ! tmpClassName.hasOwnProperty( s[ii].className ) ){
+                        tmpClassName[key] = s[ii].className;
                     }
                 }
             }
@@ -206,7 +205,7 @@
                         ruleTextList = uniqueText[key];
                         for( i = 0, imax = ruleTextList.length; i < imax; i++ ){
                             ruleText = ruleTextList[i],
-                            spanText = '<span class="'+ key +'" style="background-color:'+ tmpColor[key] +'">'+ ruleText +'</span>';
+                            spanText = '<span class="'+ tmpClassName[key] +'">'+ ruleText +'</span>';
 
                             if( textareaText.indexOf( ruleText ) !== -1 ){
                                 textareaText = textareaText.replace( new RegExp( _escapeRegExp( ruleText ), 'g'), spanText );
