@@ -221,7 +221,7 @@
                     $backgroundDiv.html( textareaText );
 
                     // update size
-                    if( $backgroundDiv.height() !== $this.height() ){
+                    if( $backgroundDiv.height() !== $this.height() || $backgroundDiv.width() !== $this.width() ){
                         $backgroundDiv.css({
                             'width' : $this.outerWidth() - _this.widthExtra,
                             'height': $this.height()
