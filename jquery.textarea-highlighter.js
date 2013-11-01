@@ -38,7 +38,7 @@
      */
     var pluginName = "textareaHighlighter",
         defaults = {
-            rules: [
+            matches: [
                 {'target': '', 'className': ''}
             ],
             isDebug: false
@@ -141,15 +141,15 @@
             var sourceHash = {},
                 classNameHash = {},
                 i = 0,
-                imax = _this.settings.rules.length;
+                imax = _this.settings.matches.length;
             for ( i = 0; i < imax; i++ ) {
-                var rule = _this.settings.rules[i],
+                var rule = _this.settings.matches[i],
                     target = rule.target;
 
                 if( ! classNameHash[ target ] ){
                     classNameHash[ target ] = [];
                 }
-                classNameHash[ target ].push( _this.settings.rules[i].className );
+                classNameHash[ target ].push( _this.settings.matches[i].className );
 
                 $source.find( target ).each(function(){
                     if( ! sourceHash[ target ] ){
