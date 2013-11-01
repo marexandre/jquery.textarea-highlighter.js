@@ -21,8 +21,8 @@
             margin: 0;
         }
         #container {
-            width: 400px;
-            margin: 0 auto;
+            width: 640px;
+            margin: 0 auto 50px auto;
         }
         hr {
             margin: 20px 0 30px;
@@ -30,7 +30,7 @@
             border-top: 1px solid #ddd;
         }
         .translation {
-            width: 400px;
+            width: 640px;
         }
         .source,
         .target {
@@ -84,24 +84,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="./js/jquery.autosize.min.js"></script>
 <script src="../jquery.textarea-highlighter.js"></script>
-<script>
-    $(function(){
-
-        $('.target')
-            .on('autosize.resize', function(){
-                $(this).trigger('resize');
-            })
-            .autosize()
-            .textareaHighlighter({
-                rules: [
-                    {'target': '.match', 'className': 'matchHighlight'},
-                    {'target': '.hoge', 'className': 'hogeHighlight'},
-                ],
-                isDebug: true
-            });
-
-    });
-</script>
+<script src="./js/index.js"></script>
 
 </body>
 </html>

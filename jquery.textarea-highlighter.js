@@ -39,7 +39,7 @@
     var pluginName = "textareaHighlighter",
         defaults = {
             matches: [
-                {'target': '', 'className': ''}
+                {'className': '', 'words': []}
             ],
             isDebug: false
         };
@@ -92,7 +92,6 @@
 
             var _this          = this,
                 $this          = $(this.element),
-                $source        = $this.closest('.translation').find('.source'),
                 $wrapDiv       = $(document.createElement('div')).addClass('textarea-wrap'),
                 $backgroundDiv = $(document.createElement('div'));
 
@@ -123,100 +122,25 @@
                 'background': 'transparent'
             });
 
-            if( _this.settings.isDebug ){
-                var $debug = $(document.createElement('div')).css({
-                    'margin-top': '20px',
-                    'font-size': '12px',
-                    'color': '#999',
-                    'padding': '3px 10px',
-                    'background-color': '#f8f8f8'
-                }).html('debug:');
-                $this.after($debug);
-
-                var startTime = 0;
-            }
-
-
-            // TODO: move into a function ▽▽▽▽▽▽
-            var sourceHash = {},
-                classNameHash = {},
-                i = 0,
-                imax = _this.settings.matches.length;
-            for ( i = 0; i < imax; i++ ) {
-                var rule = _this.settings.matches[i],
-                    target = rule.target;
-
-                if( ! classNameHash[ target ] ){
-                    classNameHash[ target ] = [];
-                }
-                classNameHash[ target ].push( _this.settings.matches[i].className );
-
-                $source.find( target ).each(function(){
-                    if( ! sourceHash[ target ] ){
-                        sourceHash[ target ] = [];
-                    }
-                    sourceHash[ target ].push({'text': $(this).text(), 'className': rule.className });
-                });
-            }
-
-            var tmpText = {},
-                tmpClassName = {},
-                key;
-            for( key in sourceHash ){
-                var s = sourceHash[key];
-
-                for( var ii = 0; ii < s.length; ii++ ){
-                    if( ! tmpText.hasOwnProperty( s[ii].text ) ){
-                        tmpText[s[ii].text] = key;
-                    }
-                    if( ! tmpClassName.hasOwnProperty( s[ii].className ) ){
-                        tmpClassName[key] = s[ii].className;
-                    }
-                }
-            }
-
-            var uniqueText = {};
-            for( key in tmpText ){
-                if( ! uniqueText[ tmpText[key] ] ){
-                    uniqueText[ tmpText[key] ] = [];
-                }
-                uniqueText[ tmpText[key] ].push( key );
-            }
-            // TODO: move into a function △△△△△△
-
-
             $this
                 .on('scroll', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
-
                 .on('change input', function(e){
-
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
-                        key, ruleTextList, ruleText, spanText, i, imax;
+                        key, ruleTextList, matchText, spanText, i, imax, j, jmax;
 
-                    // DEBUG
-                    if( _this.settings.isDebug ){
-                        startTime = new Date().getTime();
-                    }
-                    // DEBUG
-
-                    for (key in uniqueText) {
-                        ruleTextList = uniqueText[key];
-                        for( i = 0, imax = ruleTextList.length; i < imax; i++ ){
-                            ruleText = ruleTextList[i],
-                            spanText = '<span class="'+ tmpClassName[key] +'">'+ ruleText +'</span>';
-
-                            if( textareaText.indexOf( ruleText ) !== -1 ){
-                                textareaText = textareaText.replace( new RegExp( _escapeRegExp( ruleText ), 'g'), spanText );
+                    for (i = 0, imax = _this.settings.matches.length; i < imax; i++) {
+                        for (j = 0, jmax = _this.settings.matches[i].words.length; j < jmax; j++) {
+                            // get word to match
+                            matchText = _this.settings.matches[i].words[j];
+                            // check if word exists in input text
+                            if( textareaText.indexOf( matchText ) !== -1 ){
+                                spanText = '<span class="'+ _this.settings.matches[i].className +'">'+ matchText +'</span>';
+                                textareaText = textareaText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
                             }
                         }
                     }
-                    // DEBUG
-                    if( _this.settings.isDebug ){
-                        $debug.html( new Date().getTime() - startTime );
-                    }
-                    // DEBUG
 
                     $backgroundDiv.html( textareaText );
 

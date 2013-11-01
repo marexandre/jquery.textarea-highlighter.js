@@ -84,24 +84,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="./js/jquery.autosize.min.js"></script>
 <script src="../jquery.textarea-highlighter.js"></script>
-<script>
-    $(function(){
-
-        $('.target')
-            .on('autosize.resize', function(){
-                $(this).trigger('resize');
-            })
-            .autosize()
-            .textareaHighlighter({
-                rules: [
-                    {'target': '.match', 'className': 'matchHighlight', 'color': '#09f'},
-                    {'target': '.hoge', 'className': 'hogeHighlight', 'color': '#4c9'},
-                ],
-                isDebug: true
-            });
-
-    });
-</script>
+<script src="./js/index.js"></script>
 
 </body>
 </html>
