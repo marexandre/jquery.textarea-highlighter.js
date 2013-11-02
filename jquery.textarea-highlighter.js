@@ -93,7 +93,8 @@
             var _this          = this,
                 $this          = $(this.element),
                 $wrapDiv       = $(document.createElement('div')).addClass('textarea-wrap'),
-                $backgroundDiv = $(document.createElement('div'));
+                $backgroundDiv = $(document.createElement('div')),
+                lastUpdate     = new Date().getTime();
 
             $wrapDiv.css({
                 'position'     : 'relative',
@@ -127,6 +128,9 @@
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
                 .on('change input', function(e){
+
+                    if (new Date().getTime() - lastUpdate < 20) { return; }
+
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
                         key, ruleTextList, matchText, spanText, i, imax, j, jmax;
 
@@ -151,6 +155,8 @@
                             'height': $this.height()
                         });
                     }
+
+                    lastUpdate = new Date().getTime();
                 });
 
 
