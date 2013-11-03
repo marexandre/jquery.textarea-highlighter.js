@@ -9,12 +9,11 @@ jQuery plugin for highlighting text in textarea : [DEMO](http://marexandre.githu
 
 ```javascript
 
-	$('.someElement')
-	    .textareaHighlighter({
-	        matches: [
-	            {'className': 'matchHighlight', 'words': ['this is a test', 'text to match']},
-	            {'className': 'someClass', 'words': ['some', 'more', 'here']}
-	        ]
-	    });
+	$('.someElement').textareaHighlighter({
+        matches: [
+            {'className': 'matchHighlight', 'words': ['this is a test', 'text to match']},
+            {'className': 'someClass', 'words': ['some', 'more', 'here']}
+        ]
+    });
 
 ```
