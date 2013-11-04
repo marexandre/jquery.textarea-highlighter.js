@@ -86,7 +86,7 @@
         if( browser.msie ){
             this.style.paddingTop += -1;
             this.style.paddingLeft += 1;
-            this.widthExtra += 1;
+            this.style.paddingBottom += 2;
         }
 
         this.init();
