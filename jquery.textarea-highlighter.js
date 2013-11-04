@@ -135,7 +135,7 @@
                 .on('scroll', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
-                .on('change input', function(e){
+                .on('change' + ( browser.msie ) ? ' propertychange' : ' input' , function(e){
 
                     if (new Date().getTime() - lastUpdate < 50) { return; }
 
