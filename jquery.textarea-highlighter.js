@@ -85,6 +85,7 @@
         }
         if( browser.msie ){
             this.style.paddingTop += -1;
+            this.style.paddingLeft += 1;
             this.widthExtra += 1;
         }
 
@@ -119,7 +120,10 @@
                 'padding-left'  : _this.style.paddingLeft,
                 'position'      : 'absolute',
                 'overflow'      : 'auto',
-                'white-space'   : 'pre-wrap'
+                'white-space'   : 'pre-wrap',
+                // this is for IE
+                'border'        : '0px',
+                'text-decoration': 'none'
             });
             $this.css({
                 'color'     : ( _this.settings.isDebug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
@@ -134,11 +138,6 @@
                 .on('change input', function(e){
 
                     if (new Date().getTime() - lastUpdate < 50) { return; }
-
-                    console.log( "leng    :: "+ $this.val().length );
-                    console.log( "caret   :: "+ $this.caret() );
-                    console.log( "substr  :: "+ $this.val().substr( $this.caret() - 10, 20 ) );
-                    console.log("- - - - - -");
 
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
                         key, ruleTextList, matchText, spanText, i, imax, j, jmax;
