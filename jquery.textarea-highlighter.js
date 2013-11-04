@@ -136,7 +136,9 @@
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
                 .on('change keyup keydown', function(e){
-
+                    // if arrow keys, don't do anything
+                    if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) { return; }
+                    // check for last update, this is for performace
                     if (new Date().getTime() - lastUpdate < 30) { return; }
 
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
