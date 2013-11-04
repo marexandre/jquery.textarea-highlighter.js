@@ -85,7 +85,7 @@
         }
         if( browser.msie ){
             this.style.paddingTop += -1;
-            this.widthExtra += -1;
+            this.widthExtra += 1;
         }
 
         this.init();
@@ -134,6 +134,11 @@
                 .on('change input', function(e){
 
                     if (new Date().getTime() - lastUpdate < 50) { return; }
+
+                    console.log( "leng    :: "+ $this.val().length );
+                    console.log( "caret   :: "+ $this.caret() );
+                    console.log( "substr  :: "+ $this.val().substr( $this.caret() - 10, 20 ) );
+                    console.log("- - - - - -");
 
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
                         key, ruleTextList, matchText, spanText, i, imax, j, jmax;
