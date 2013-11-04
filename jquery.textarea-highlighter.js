@@ -135,9 +135,9 @@
                 .on('scroll', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
-                .on('change input propertychange', function(e){
+                .on('change keyup keydown', function(e){
 
-                    if (new Date().getTime() - lastUpdate < 50) { return; }
+                    if (new Date().getTime() - lastUpdate < 30) { return; }
 
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
                         key, ruleTextList, matchText, spanText, i, imax, j, jmax;
