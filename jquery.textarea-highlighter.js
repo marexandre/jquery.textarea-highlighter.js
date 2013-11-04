@@ -47,7 +47,7 @@
     // constructor
     function Plugin ( element, options ) {
         this.element = element;
-        this.$element = $(element);
+        this.$element = $(this.element);
         this.settings = $.extend( {}, defaults, options );
         this._defaults = defaults;
         this._name = pluginName;
@@ -96,7 +96,7 @@
         init: function () {
 
             var _this          = this,
-                $this          = $(this.element),
+                $this          = this.$element,
                 $wrapDiv       = $(document.createElement('div')).addClass('textarea-wrap'),
                 $backgroundDiv = $(document.createElement('div')),
                 lastUpdate     = new Date().getTime();
@@ -155,20 +155,22 @@
                     }
 
                     $backgroundDiv.html( textareaText );
-
-                    // update size
-                    if( $backgroundDiv.height() !== $this.height() || $backgroundDiv.width() !== $this.width() ){
-                        $backgroundDiv.css({
-                            'width' : $this.outerWidth() - _this.widthExtra,
-                            'height': $this.height()
-                        });
-                    }
-
+                    resize();
                     lastUpdate = new Date().getTime();
                 });
 
+            // update backgroundDiv size
+            var resize = function(){
+                if( $backgroundDiv.height() !== $this.height() || $backgroundDiv.width() !== $this.width() ){
+                    $backgroundDiv.css({
+                        'width' : $this.outerWidth() - _this.widthExtra,
+                        'height': $this.height()
+                    });
+                }
+            };
 
             $this.wrap( $wrapDiv ).before( $backgroundDiv );
+            resize();
         }
     };
 
