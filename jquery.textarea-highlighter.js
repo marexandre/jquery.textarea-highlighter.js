@@ -83,6 +83,10 @@
             this.style.paddingLeft += 3;
             this.widthExtra += 6;
         }
+        if( browser.msie ){
+            this.style.paddingTop += -1;
+            this.widthExtra += -1;
+        }
 
         this.init();
     }
@@ -129,7 +133,7 @@
                 })
                 .on('change input', function(e){
 
-                    if (new Date().getTime() - lastUpdate < 20) { return; }
+                    if (new Date().getTime() - lastUpdate < 50) { return; }
 
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
                         key, ruleTextList, matchText, spanText, i, imax, j, jmax;
