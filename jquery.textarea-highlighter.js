@@ -120,10 +120,7 @@
                 'padding-left'  : _this.style.paddingLeft,
                 'position'      : 'absolute',
                 'overflow'      : 'auto',
-                'white-space'   : 'pre-wrap',
-                // this is for IE
-                'border'        : '0px',
-                'text-decoration': 'none'
+                'white-space'   : 'pre-wrap'
             });
             $this.css({
                 'color'     : ( _this.settings.isDebug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
