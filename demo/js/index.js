@@ -29,7 +29,8 @@ $(function(){
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.match') )},
                         {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
-                    ]
+                    ],
+                    isDebug: false
                 });
         });
     });
