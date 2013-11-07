@@ -83,6 +83,7 @@
             this.style.paddingLeft += 3;
             this.widthExtra += 6;
         }
+        // Hack for ie
         if( browser.msie ){
             this.style.paddingTop += -1;
             this.style.paddingLeft += 1;
@@ -154,22 +155,27 @@
                     }
 
                     $backgroundDiv.html( textareaText );
-                    resize();
+                    _this.resize( $this, $backgroundDiv );
                     lastUpdate = new Date().getTime();
                 });
 
-            // update backgroundDiv size
-            var resize = function(){
-                if( $backgroundDiv.height() !== $this.height() || $backgroundDiv.width() !== $this.width() ){
-                    $backgroundDiv.css({
-                        'width' : $this.outerWidth() - _this.widthExtra,
-                        'height': $this.height()
-                    });
-                }
-            };
-
             $this.wrap( $wrapDiv ).before( $backgroundDiv );
-            resize();
+            _this.resize( $this, $backgroundDiv );
+        },
+        /**
+         * update backgroundDiv size
+         * @param  {jQuery} $target
+         * @param  {jQuery} $bgDiv
+         */
+        resize: function( $target, $bgDiv ){
+            var _this = this;
+
+            if( $bgDiv.height() !== $target.height() || $bgDiv.width() !== $target.width() ){
+                $bgDiv.css({
+                    'width' : $target.outerWidth() - _this.widthExtra,
+                    'height': $target.height()
+                });
+            }
         }
     };
 
