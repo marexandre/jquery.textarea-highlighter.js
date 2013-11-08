@@ -162,14 +162,15 @@
                             // check if word exists in input text
                             if( notOverMaxText.indexOf( matchText ) !== -1 ){
                                 spanText = '<span class="'+ _this.settings.matches[i].className +'">'+ matchText +'</span>';
-                                // textareaText = textareaText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
                                 notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
                             }
                         }
                     }
-
+                    // update background div content
                     $backgroundDiv.html( notOverMaxText + overMaxText );
+                    // check if textarea changed size
                     _this.resize( $this, $backgroundDiv );
+                    // save last update time
                     lastUpdate = new Date().getTime();
                 });
 
