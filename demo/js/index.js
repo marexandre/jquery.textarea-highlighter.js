@@ -26,6 +26,7 @@ $(function(){
                 })
                 .autosize()
                 .textareaHighlighter({
+                    // maxLength: 150,
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.match') )},
                         {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
