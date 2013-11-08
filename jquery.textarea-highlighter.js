@@ -38,7 +38,7 @@
      */
     var pluginName = "textareaHighlighter",
         defaults = {
-            maxLength: 150,
+            maxLength: -1,
             maxClass: 'error',
             matches: [
                 // {'className': '', 'words': []}
@@ -146,13 +146,18 @@
                         notOverMaxText = '', overMaxText ='',
                         i, imax, j, jmax;
 
-                    // check for max length
-                    if (_this.settings.maxLength < $this.val().length) {
-                        matchText = $this.val().slice( _this.settings.maxLength, _this.settings.maxLength + $this.val().length - 1 );
-                        overMaxText = '<span class="'+ _this.settings.maxClass +'">'+ matchText +'</span>';
-                    }
+                    if (0 < _this.settings.maxLength) {
+                        // check for max length
+                        if ( _this.settings.maxLength < $this.val().length) {
+                            matchText = $this.val().slice( _this.settings.maxLength, _this.settings.maxLength + $this.val().length - 1 );
+                            overMaxText = '<span class="'+ _this.settings.maxClass +'">'+ matchText +'</span>';
+                        }
 
-                    notOverMaxText = $this.val().slice( 0, _this.settings.maxLength );
+                        notOverMaxText = $this.val().slice( 0, _this.settings.maxLength );
+                    }
+                    else {
+                        notOverMaxText = textareaText;
+                    }
 
                     // check for matching words
                     for (i = 0, imax = _this.settings.matches.length; i < imax; i++) {
