@@ -34,6 +34,23 @@ $(function(){
                     isDebug: false
                 });
         });
+
+
+        $('.translation-max').each(function(){
+            var $this = $(this);
+
+            $this.find('.target')
+                .autosize()
+                .textareaHighlighter({
+                    maxLength: 150,
+                    matches: [
+                        {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.match') )},
+                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
+                    ],
+                    isDebug: false
+                });
+        });
+
     });
 
 });
