@@ -38,8 +38,10 @@
      */
     var pluginName = "textareaHighlighter",
         defaults = {
+            maxLength: 150,
+            maxClass: 'error',
             matches: [
-                {'className': '', 'words': []}
+                // {'className': '', 'words': []}
             ],
             isDebug: false
         };
@@ -140,21 +142,33 @@
                     if (new Date().getTime() - lastUpdate < 30) { return; }
 
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
-                        key, ruleTextList, matchText, spanText, i, imax, j, jmax;
+                        key, ruleTextList, matchText, spanText,
+                        notOverMaxText = '', overMaxText ='',
+                        i, imax, j, jmax;
 
+                    // check for max length
+                    if (_this.settings.maxLength < $this.val().length) {
+                        matchText = $this.val().slice( _this.settings.maxLength, _this.settings.maxLength + $this.val().length - 1 );
+                        overMaxText = '<span class="'+ _this.settings.maxClass +'">'+ matchText +'</span>';
+                    }
+
+                    notOverMaxText = $this.val().slice( 0, _this.settings.maxLength );
+
+                    // check for matching words
                     for (i = 0, imax = _this.settings.matches.length; i < imax; i++) {
                         for (j = 0, jmax = _this.settings.matches[i].words.length; j < jmax; j++) {
                             // get word to match
                             matchText = _this.settings.matches[i].words[j];
                             // check if word exists in input text
-                            if( textareaText.indexOf( matchText ) !== -1 ){
+                            if( notOverMaxText.indexOf( matchText ) !== -1 ){
                                 spanText = '<span class="'+ _this.settings.matches[i].className +'">'+ matchText +'</span>';
-                                textareaText = textareaText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
+                                // textareaText = textareaText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
+                                notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
                             }
                         }
                     }
 
-                    $backgroundDiv.html( textareaText );
+                    $backgroundDiv.html( notOverMaxText + overMaxText );
                     _this.resize( $this, $backgroundDiv );
                     lastUpdate = new Date().getTime();
                 });
