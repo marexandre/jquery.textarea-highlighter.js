@@ -8,29 +8,6 @@
 ;(function ( $, window, document, undefined ) {
     "use strict";
 
-    var browser = (function(){
-        var userAgent = navigator.userAgent,
-            msie    = /(msie|trident)/i.test( userAgent ),
-            chrome  = /chrome/i.test( userAgent ),
-            firefox = /firefox/i.test( userAgent ),
-            safari  = /safari/i.test( userAgent ) && !chrome,
-            iphone  = /iphone/i.test( userAgent );
-
-        if( msie ){ return { msie: true }; }
-        if( chrome ){ return { chrome: true }; }
-        if( firefox ){ return { firefox: true }; }
-        if( iphone ){ return { iphone: true }; }
-        if( safari ){ return { safari: true }; }
-
-        return {
-            msie   : false,
-            chrome : false,
-            firefox: false,
-            safari : false,
-            iphone : false
-        };
-    }());
-
     /**
      *
      * PLUGIN CORE
@@ -96,10 +73,12 @@
     }
 
     Plugin.prototype = {
-        init: function () {
+        init: function() {
 
             var _this          = this,
                 $this          = this.$element,
+                style          = this.style,
+                settings       = this.settings,
                 $wrapDiv       = $(document.createElement('div')).addClass('textarea-wrap'),
                 $backgroundDiv = $(document.createElement('div')),
                 lastUpdate     = new Date().getTime();
@@ -109,24 +88,24 @@
                 'word-wrap'    : 'break-word',
                 'word-break'   : 'break-all',
                 'margin'       : 0,
-                'padding-right': _this.style.paddingLeft + _this.style.paddingRight + _this.style.borderLeft + _this.style.borderRight + 'px'
+                'padding-right': style.paddingLeft + style.paddingRight + style.borderLeft + style.borderRight + 'px'
             });
             $backgroundDiv.addClass('background-div').css({
                 'height': 0,
                 'width' : 0,
-                'color'           : ( _this.settings.isDebug ) ? '#f00' : 'transparent',
-                'background-color': ( _this.settings.isDebug ) ? '#fee' : _this.style.backgroundColor,
-                'line-height'   : _this.style.lineHeight,
-                'padding-top'   : _this.style.paddingTop,
-                'padding-right' : _this.style.paddingRight,
-                'padding-bottom': _this.style.paddingBottom,
-                'padding-left'  : _this.style.paddingLeft,
+                'color'           : ( settings.isDebug ) ? '#f00' : 'transparent',
+                'background-color': ( settings.isDebug ) ? '#fee' : style.backgroundColor,
+                'line-height'   : style.lineHeight,
+                'padding-top'   : style.paddingTop,
+                'padding-right' : style.paddingRight,
+                'padding-bottom': style.paddingBottom,
+                'padding-left'  : style.paddingLeft,
                 'position'      : 'absolute',
                 'overflow'      : 'auto',
                 'white-space'   : 'pre-wrap'
             });
             $this.css({
-                'color'     : ( _this.settings.isDebug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
+                'color'     : ( settings.isDebug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
                 'position'  : 'relative',
                 'background': 'transparent'
             });
@@ -146,27 +125,27 @@
                         notOverMaxText = '', overMaxText ='',
                         i, imax, j, jmax;
 
-                    if (0 < _this.settings.maxLength) {
+                    if (0 < settings.maxLength) {
                         // check for max length
-                        if ( _this.settings.maxLength < $this.val().length) {
-                            matchText = $this.val().slice( _this.settings.maxLength, _this.settings.maxLength + $this.val().length - 1 );
-                            overMaxText = '<span class="'+ _this.settings.maxClass +'">'+ matchText +'</span>';
+                        if ( settings.maxLength < $this.val().length) {
+                            matchText = $this.val().slice( settings.maxLength, settings.maxLength + $this.val().length - 1 );
+                            overMaxText = '<span class="'+ settings.maxClass +'">'+ matchText +'</span>';
                         }
 
-                        notOverMaxText = $this.val().slice( 0, _this.settings.maxLength );
+                        notOverMaxText = $this.val().slice( 0, settings.maxLength );
                     }
                     else {
                         notOverMaxText = textareaText;
                     }
 
                     // check for matching words
-                    for (i = 0, imax = _this.settings.matches.length; i < imax; i++) {
-                        for (j = 0, jmax = _this.settings.matches[i].words.length; j < jmax; j++) {
+                    for (i = 0, imax = settings.matches.length; i < imax; i++) {
+                        for (j = 0, jmax = settings.matches[i].words.length; j < jmax; j++) {
                             // get word to match
-                            matchText = _this.settings.matches[i].words[j];
+                            matchText = settings.matches[i].words[j];
                             // check if word exists in input text
                             if( notOverMaxText.indexOf( matchText ) !== -1 ){
-                                spanText = '<span class="'+ _this.settings.matches[i].className +'">'+ matchText +'</span>';
+                                spanText = '<span class="'+ settings.matches[i].className +'">'+ matchText +'</span>';
                                 notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
                             }
                         }
@@ -187,25 +166,16 @@
          * @param  {jQuery} $target
          * @param  {jQuery} $bgDiv
          */
-        resize: function( $target, $bgDiv ){
+        resize: function( $target, $bgDiv ) {
             var _this = this;
 
-            if( $bgDiv.height() !== $target.height() || $bgDiv.width() !== $target.width() ){
+            if ($bgDiv.height() !== $target.height() || $bgDiv.width() !== $target.width()) {
                 $bgDiv.css({
                     'width' : $target.outerWidth() - _this.widthExtra,
                     'height': $target.height()
                 });
             }
         }
-    };
-
-    /**
-     *
-     * HELPER FUNCTIONS
-     *
-     */
-    var _escapeRegExp = function(str){
-        return str.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
     };
 
     // A really lightweight plugin wrapper around the constructor,
@@ -217,5 +187,37 @@
             }
         });
     };
+
+    /**
+     *
+     * HELPER FUNCTIONS
+     *
+     */
+    var _escapeRegExp = function(str){
+        return str.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+    };
+    // get curretn bworser type
+    var browser = (function(){
+        var userAgent = navigator.userAgent,
+            msie    = /(msie|trident)/i.test( userAgent ),
+            chrome  = /chrome/i.test( userAgent ),
+            firefox = /firefox/i.test( userAgent ),
+            safari  = /safari/i.test( userAgent ) && !chrome,
+            iphone  = /iphone/i.test( userAgent );
+
+        if( msie ){ return { msie: true }; }
+        if( chrome ){ return { chrome: true }; }
+        if( firefox ){ return { firefox: true }; }
+        if( iphone ){ return { iphone: true }; }
+        if( safari ){ return { safari: true }; }
+
+        return {
+            msie   : false,
+            chrome : false,
+            firefox: false,
+            safari : false,
+            iphone : false
+        };
+    }());
 
 })( jQuery, window, document );
