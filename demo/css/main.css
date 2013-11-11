@@ -68,9 +68,10 @@ hr {
 .match { color: #09f; }
 .hoge { color: #4c9; }
 
+.matchHighlight { background-color: #09f; opacity: 0.6; }
+.hogeHighlight { background-color: #4c9; opacity: 0.6; }
+
 .match.added,
 .hoge.added { color: #999; }
 
-.matchHighlight { background-color: #09f; }
-.hogeHighlight { background-color: #4c9; }
 .error { background-color: #fdd; }
