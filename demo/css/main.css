@@ -22,8 +22,11 @@ hr {
     border: 0;
     border-top: 1px solid #ddd;
 }
-.translation {
+.translation,
+.translation-max {
     width: 400px;
+    position: relative;
+
 }
 .source,
 .target {
@@ -49,6 +52,17 @@ hr {
 }
 .target:focus {
     border-color: #888;
+}
+
+.max-length {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 1px 2px;
+    padding: 2px 6px;
+}
+.max-length.over-max {
+    color: #F77;
 }
 
 .match { color: #09f; }

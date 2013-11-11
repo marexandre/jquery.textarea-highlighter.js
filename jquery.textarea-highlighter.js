@@ -15,11 +15,13 @@
      */
     var pluginName = "textareaHighlighter",
         defaults = {
-            maxLength: -1,
             maxClass: 'error',
             matches: [
                 // {'className': '', 'words': []}
             ],
+            maxLength: -1,
+            maxLengthClass: '',
+            maxLengthElement: null,
             isDebug: false
         };
 
@@ -123,13 +125,29 @@
                     var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
                         key, ruleTextList, matchText, spanText,
                         notOverMaxText = '', overMaxText ='',
-                        i, imax, j, jmax;
+                        i, imax, j, jmax, maxSize;
 
                     if (0 < settings.maxLength) {
                         // check for max length
                         if ( settings.maxLength < $this.val().length) {
                             matchText = $this.val().slice( settings.maxLength, settings.maxLength + $this.val().length - 1 );
                             overMaxText = '<span class="'+ settings.maxClass +'">'+ matchText +'</span>';
+
+                        }
+                        if (settings.maxLengthElement !== null) {
+                            maxSize = settings.maxLength - $this.val().length;
+                            if (maxSize < 0) {
+                                if (! settings.maxLengthElement.hasClass( settings.maxLengthClass )) {
+                                    settings.maxLengthElement.addClass( settings.maxLengthClass );
+                                }
+                            }
+                            else {
+                                if (settings.maxLengthElement.hasClass( settings.maxLengthClass )) {
+                                    settings.maxLengthElement.removeClass( settings.maxLengthClass );
+                                }
+                            }
+                            // update max length
+                            settings.maxLengthElement.text( maxSize );
                         }
 
                         notOverMaxText = $this.val().slice( 0, settings.maxLength );
@@ -158,7 +176,14 @@
                     lastUpdate = new Date().getTime();
                 });
 
+
+            // insert backgroundDiv
             $this.wrap( $wrapDiv ).before( $backgroundDiv );
+            // update maxLength
+            if (settings.maxLengthElement !== null) {
+                settings.maxLengthElement.text( settings.maxLength );
+            }
+            // adjust size
             _this.resize( $this, $backgroundDiv );
         },
         /**
