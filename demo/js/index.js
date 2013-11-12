@@ -42,13 +42,12 @@ $(function(){
             $this.find('.target')
                 .autosize()
                 .textareaHighlighter({
-                    maxlengthMatchHighlight: 'error',
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.match') )},
                         {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
                     ],
                     // maxlength: 150,
-                    maxlengthWarning: '.warning',
+                    maxlengthWarning: 'warning',
                     maxlengthElement: $this.find('.max-length'),
                     isDebug: false
                 });

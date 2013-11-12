@@ -62,8 +62,11 @@ hr {
     padding: 2px 6px;
     font-size: 13px;
 }
-.max-length.warning {
+
+.warning { background-color: #fdd; }
+.warning.max-length {
     color: #F77;
+    background-color: inherit;
 }
 
 .match { color: #09f; }
@@ -75,4 +78,3 @@ hr {
 .match.added,
 .hoge.added { color: #999; }
 
-.error { background-color: #fdd; }

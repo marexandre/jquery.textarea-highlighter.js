@@ -15,7 +15,6 @@
      */
     var pluginName = "textareaHighlighter",
         defaults = {
-            maxlengthMatchHighlight: '',
             matches: [
                 // {'className': '', 'words': []}
             ],
@@ -131,7 +130,7 @@
                         // check for max length
                         if ( settings.maxlength < $this.val().length) {
                             matchText = $this.val().slice( settings.maxlength, settings.maxlength + $this.val().length - 1 );
-                            overMaxText = '<span class="'+ settings.maxlengthMatchHighlight +'">'+ matchText +'</span>';
+                            overMaxText = '<span class="'+ settings.maxlengthWarning +'">'+ matchText +'</span>';
 
                         }
                         // update maxlength
