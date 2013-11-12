@@ -54,17 +54,18 @@ hr {
     border-color: #888;
 }
 
-.max-length {
+.maxlength {
     position: absolute;
     bottom: 0;
     right: 0;
     margin: 1px 2px;
     padding: 2px 6px;
     font-size: 13px;
+    color: #999;
 }
 
 .warning { background-color: #fdd; }
-.warning.max-length {
+.warning.maxlength {
     color: #F77;
     background-color: inherit;
 }
