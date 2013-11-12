@@ -26,7 +26,7 @@ $(function(){
                 })
                 .autosize()
                 .textareaHighlighter({
-                    // maxLength: 150,
+                    // maxlength: 150,
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.match') )},
                         {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
@@ -42,13 +42,14 @@ $(function(){
             $this.find('.target')
                 .autosize()
                 .textareaHighlighter({
+                    maxlengthMatchHighlight: 'error',
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.match') )},
                         {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
                     ],
-                    maxLength: 150,
-                    maxLengthClass: 'over-max',
-                    maxLengthElement: $this.find('.max-length'),
+                    // maxlength: 150,
+                    maxlengthWarning: '.warning',
+                    maxlengthElement: $this.find('.max-length'),
                     isDebug: false
                 });
         });

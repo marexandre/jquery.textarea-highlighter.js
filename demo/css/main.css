@@ -60,8 +60,9 @@ hr {
     right: 0;
     margin: 1px 2px;
     padding: 2px 6px;
+    font-size: 13px;
 }
-.max-length.over-max {
+.max-length.warning {
     color: #F77;
 }
 
