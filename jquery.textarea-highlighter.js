@@ -15,13 +15,13 @@
      */
     var pluginName = "textareaHighlighter",
         defaults = {
-            maxClass: 'error',
+            maxlengthMatchHighlight: '',
             matches: [
                 // {'className': '', 'words': []}
             ],
-            maxLength: -1,
-            maxLengthClass: '',
-            maxLengthElement: null,
+            maxlength: -1,
+            maxlengthWarning: '',
+            maxlengthElement: null,
             isDebug: false
         };
 
@@ -29,7 +29,7 @@
     function Plugin ( element, options ) {
         this.element = element;
         this.$element = $(this.element);
-        this.settings = $.extend( {}, defaults, options );
+        this.settings = $.extend( {}, defaults, this.$element.data(), options );
         this._defaults = defaults;
         this._name = pluginName;
 
@@ -127,30 +127,31 @@
                         notOverMaxText = '', overMaxText ='',
                         i, imax, j, jmax, maxSize;
 
-                    if (0 < settings.maxLength) {
+                    if (0 < settings.maxlength) {
                         // check for max length
-                        if ( settings.maxLength < $this.val().length) {
-                            matchText = $this.val().slice( settings.maxLength, settings.maxLength + $this.val().length - 1 );
-                            overMaxText = '<span class="'+ settings.maxClass +'">'+ matchText +'</span>';
+                        if ( settings.maxlength < $this.val().length) {
+                            matchText = $this.val().slice( settings.maxlength, settings.maxlength + $this.val().length - 1 );
+                            overMaxText = '<span class="'+ settings.maxlengthMatchHighlight +'">'+ matchText +'</span>';
 
                         }
-                        if (settings.maxLengthElement !== null) {
-                            maxSize = settings.maxLength - $this.val().length;
+                        // update maxlength
+                        if (settings.maxlengthElement !== null) {
+                            maxSize = settings.maxlength - $this.val().length;
                             if (maxSize < 0) {
-                                if (! settings.maxLengthElement.hasClass( settings.maxLengthClass )) {
-                                    settings.maxLengthElement.addClass( settings.maxLengthClass );
+                                if (! settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+                                    settings.maxlengthElement.addClass( settings.maxlengthWarning );
                                 }
                             }
                             else {
-                                if (settings.maxLengthElement.hasClass( settings.maxLengthClass )) {
-                                    settings.maxLengthElement.removeClass( settings.maxLengthClass );
+                                if (settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+                                    settings.maxlengthElement.removeClass( settings.maxlengthWarning );
                                 }
                             }
                             // update max length
-                            settings.maxLengthElement.text( maxSize );
+                            settings.maxlengthElement.text( maxSize );
                         }
 
-                        notOverMaxText = $this.val().slice( 0, settings.maxLength );
+                        notOverMaxText = $this.val().slice( 0, settings.maxlength );
                     }
                     else {
                         notOverMaxText = textareaText;
@@ -179,12 +180,10 @@
 
             // insert backgroundDiv
             $this.wrap( $wrapDiv ).before( $backgroundDiv );
-            // update maxLength
-            if (settings.maxLengthElement !== null) {
-                settings.maxLengthElement.text( settings.maxLength );
-            }
             // adjust size
             _this.resize( $this, $backgroundDiv );
+            // do initial check for input
+            $this.trigger('keyup');
         },
         /**
          * update backgroundDiv size
