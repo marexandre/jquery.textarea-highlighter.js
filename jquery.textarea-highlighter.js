@@ -82,7 +82,7 @@
                 settings       = this.settings,
                 $wrapDiv       = $(document.createElement('div')).addClass('textarea-wrap'),
                 $backgroundDiv = $(document.createElement('div')),
-                lastUpdate     = new Date().getTime();
+                lastUpdate     = 0;
 
             $wrapDiv.css({
                 'position'     : 'relative',
