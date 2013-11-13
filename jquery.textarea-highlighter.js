@@ -21,7 +21,7 @@
             maxlength: -1,
             maxlengthWarning: '',
             maxlengthElement: null,
-            isDebug: false
+            debug: false
         };
 
     // constructor
@@ -94,8 +94,8 @@
             $backgroundDiv.addClass('background-div').css({
                 'height': 0,
                 'width' : 0,
-                'color'           : ( settings.isDebug ) ? '#f00' : 'transparent',
-                'background-color': ( settings.isDebug ) ? '#fee' : style.backgroundColor,
+                'color'           : ( settings.debug ) ? '#f00' : 'transparent',
+                'background-color': ( settings.debug ) ? '#fee' : style.backgroundColor,
                 'line-height'   : style.lineHeight,
                 'padding-top'   : style.paddingTop,
                 'padding-right' : style.paddingRight,
@@ -106,7 +106,7 @@
                 'white-space'   : 'pre-wrap'
             });
             $this.css({
-                'color'     : ( settings.isDebug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
+                'color'     : ( settings.debug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
                 'position'  : 'relative',
                 'background': 'transparent'
             });
