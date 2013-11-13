@@ -30,8 +30,7 @@ $(function(){
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.match') )},
                         {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
-                    ],
-                    isDebug: false
+                    ]
                 });
         });
 
@@ -48,8 +47,7 @@ $(function(){
                     ],
                     // maxlength: 150,
                     maxlengthWarning: 'warning',
-                    maxlengthElement: $this.find('.max-length'),
-                    isDebug: false
+                    maxlengthElement: $this.find('.max-length')
                 });
         });
 
