@@ -47,7 +47,7 @@ $(function(){
                     ],
                     // maxlength: 150,
                     maxlengthWarning: 'warning',
-                    maxlengthElement: $this.find('.max-length')
+                    maxlengthElement: $this.find('.maxlength')
                 });
         });
 
