@@ -46,7 +46,7 @@ $(function(){
                         {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
                     ],
                     // maxlength: 150,
-                    maxlengthWarning: 'warning',
+                    // maxlengthWarning: 'warning',
                     maxlengthElement: $this.find('.maxlength')
                 });
         });
