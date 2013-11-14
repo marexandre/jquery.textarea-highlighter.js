@@ -183,7 +183,7 @@
             // adjust size
             _this.resize( $this, $backgroundDiv );
             // do initial check for input
-            $this.trigger('keyup');
+            $this.trigger('keydown');
         },
         /**
          * update backgroundDiv size
