@@ -63,12 +63,6 @@
             this.style.paddingLeft += 3;
             this.widthExtra += 6;
         }
-        // Hack for ie
-        if( browser.msie ){
-            this.style.paddingTop += -1;
-            this.style.paddingLeft += 1;
-            this.style.paddingBottom += 2;
-        }
 
         this.init();
     }
