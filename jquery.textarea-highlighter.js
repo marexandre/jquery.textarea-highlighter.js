@@ -81,8 +81,7 @@
                 style          = this.style,
                 settings       = this.settings,
                 $wrapDiv       = $(document.createElement('div')).addClass('textarea-wrap'),
-                $backgroundDiv = $(document.createElement('div')),
-                lastUpdate     = 0;
+                $backgroundDiv = $(document.createElement('div'));
 
             $wrapDiv.css({
                 'position'     : 'relative',
@@ -105,75 +104,83 @@
                 'overflow'      : 'auto',
                 'white-space'   : 'pre-wrap'
             });
-            $this.css({
-                'color'     : ( settings.debug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
-                'position'  : 'relative',
-                'background': 'transparent'
-            });
+
 
             $this
+                .data('changeTimerId', -1)
+                .css({
+                    'color'     : ( settings.debug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
+                    'position'  : 'relative',
+                    'background': 'transparent'
+                })
+                // Bind events
                 .on('scroll', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
-                .on('change keyup keydown', function(e){
+                .on('change keydown', function(e){
                     // if arrow keys, don't do anything
                     if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) { return; }
                     // check for last update, this is for performace
-                    if (new Date().getTime() - lastUpdate < 30) { return; }
+                    if ($this.data('changeTimerId') !== -1) {
+                        clearTimeout( $this.data('changeTimerId') );
+                        $this.data('changeTimerId', -1);
+                    }
 
-                    var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
-                        key, ruleTextList, matchText, spanText,
-                        notOverMaxText = '', overMaxText ='',
-                        i, imax, j, jmax, maxSize;
+                    var changeId = setTimeout(function(){
+                        var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
+                            key, ruleTextList, matchText, spanText,
+                            notOverMaxText = '', overMaxText ='',
+                            i, imax, j, jmax, maxSize;
 
-                    if (0 < settings.maxlength) {
-                        // check for max length
-                        if ( settings.maxlength < $this.val().length) {
-                            matchText = $this.val().slice( settings.maxlength, settings.maxlength + $this.val().length - 1 );
-                            overMaxText = '<span class="'+ settings.maxlengthWarning +'">'+ matchText +'</span>';
+                        if (0 < settings.maxlength) {
+                            // check for max length
+                            if ( settings.maxlength < $this.val().length) {
+                                matchText = $this.val().slice( settings.maxlength, settings.maxlength + $this.val().length - 1 );
+                                overMaxText = '<span class="'+ settings.maxlengthWarning +'">'+ matchText +'</span>';
 
+                            }
+                            // update maxlength
+                            if (settings.maxlengthElement !== null) {
+                                maxSize = settings.maxlength - $this.val().length;
+                                if (maxSize < 0) {
+                                    if (! settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+                                        settings.maxlengthElement.addClass( settings.maxlengthWarning );
+                                    }
+                                }
+                                else {
+                                    if (settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+                                        settings.maxlengthElement.removeClass( settings.maxlengthWarning );
+                                    }
+                                }
+                                // update max length
+                                settings.maxlengthElement.text( maxSize );
+                            }
+
+                            notOverMaxText = $this.val().slice( 0, settings.maxlength );
                         }
-                        // update maxlength
-                        if (settings.maxlengthElement !== null) {
-                            maxSize = settings.maxlength - $this.val().length;
-                            if (maxSize < 0) {
-                                if (! settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
-                                    settings.maxlengthElement.addClass( settings.maxlengthWarning );
+                        else {
+                            notOverMaxText = textareaText;
+                        }
+
+                        // check for matching words
+                        for (i = 0, imax = settings.matches.length; i < imax; i++) {
+                            for (j = 0, jmax = settings.matches[i].words.length; j < jmax; j++) {
+                                // get word to match
+                                matchText = settings.matches[i].words[j];
+                                // check if word exists in input text
+                                if( notOverMaxText.indexOf( matchText ) !== -1 ){
+                                    spanText = '<span class="'+ settings.matches[i].className +'">'+ matchText +'</span>';
+                                    notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
                                 }
                             }
-                            else {
-                                if (settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
-                                    settings.maxlengthElement.removeClass( settings.maxlengthWarning );
-                                }
-                            }
-                            // update max length
-                            settings.maxlengthElement.text( maxSize );
                         }
+                        // update background div content
+                        $backgroundDiv.html( notOverMaxText + overMaxText );
+                        // check if textarea changed size
+                        _this.resize( $this, $backgroundDiv );
+                    }, 30);
 
-                        notOverMaxText = $this.val().slice( 0, settings.maxlength );
-                    }
-                    else {
-                        notOverMaxText = textareaText;
-                    }
-
-                    // check for matching words
-                    for (i = 0, imax = settings.matches.length; i < imax; i++) {
-                        for (j = 0, jmax = settings.matches[i].words.length; j < jmax; j++) {
-                            // get word to match
-                            matchText = settings.matches[i].words[j];
-                            // check if word exists in input text
-                            if( notOverMaxText.indexOf( matchText ) !== -1 ){
-                                spanText = '<span class="'+ settings.matches[i].className +'">'+ matchText +'</span>';
-                                notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
-                            }
-                        }
-                    }
-                    // update background div content
-                    $backgroundDiv.html( notOverMaxText + overMaxText );
-                    // check if textarea changed size
-                    _this.resize( $this, $backgroundDiv );
-                    // save last update time
-                    lastUpdate = new Date().getTime();
+                    $this.data('changeTimerId', changeId);
                 });
 
 
