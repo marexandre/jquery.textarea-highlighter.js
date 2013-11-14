@@ -21,9 +21,6 @@ $(function(){
             var $this = $(this);
 
             $this.find('.target')
-                .on('autosize.resize', function(){
-                    // $(this).trigger('resize');
-                })
                 .autosize()
                 .textareaHighlighter({
                     // maxlength: 150,
