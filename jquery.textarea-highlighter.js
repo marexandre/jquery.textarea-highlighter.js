@@ -111,7 +111,7 @@
                 .on('scroll', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
-                .on('change keydown paste', function(e){
+                .on('change keydown keyup paste', function(e){
                     // if arrow keys, don't do anything
                     if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) { return; }
                     // check for last update, this is for performace
