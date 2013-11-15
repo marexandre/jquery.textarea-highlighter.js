@@ -1,8 +1,8 @@
 ###
-    jquery.textareaHighlighter.js 0.1.1
+    jquery.textareaHighlighter.js 0.1.4
     jQuery plugin for highlighting text in textarea.
 
-    alexandre.kirillov@gengo.com
+    alexandre.kirillov@gmail.com
     MIT license. http://opensource.org/licenses/MIT
 ###
 do ($ = jQuery, window, document) ->
@@ -11,18 +11,19 @@ do ($ = jQuery, window, document) ->
     # Create the defaults once
     pluginName = "textareaHighlighter"
     defaults =
-        maxLength: -1
-        maxClass: 'error'
         matches: [
             # {'className': '', 'words': []}
-        ]
-        isDebug: false
+        ],
+        maxlength: -1
+        maxlengthWarning: ''
+        maxlengthElement: null
+        debug: false
 
     # The actual plugin constructor
     class Plugin
         constructor: (@element, options) ->
             @$element  = $(@element)
-            @settings  = $.extend {}, defaults, options
+            @settings  = $.extend( {}, defaults, @$element.data(), options )
             @_defaults = defaults
             @_name     = pluginName
 
@@ -57,12 +58,6 @@ do ($ = jQuery, window, document) ->
                 @style.paddingLeft += 3
                 @widthExtra += 6
 
-            # Hack for ie
-            if browser.msie
-                @style.paddingTop += -1
-                @style.paddingLeft += 1
-                @style.paddingBottom += 2
-
             @init()
 
         init: ->
@@ -72,7 +67,6 @@ do ($ = jQuery, window, document) ->
             settings       = @settings
             $wrapDiv       = $(document.createElement('div')).addClass('textarea-wrap')
             $backgroundDiv = $(document.createElement('div'))
-            lastUpdate     = new Date().getTime()
 
             $wrapDiv.css
                 'position'     : 'relative'
@@ -84,8 +78,8 @@ do ($ = jQuery, window, document) ->
             $backgroundDiv.addClass('background-div').css
                 'height'          : 0
                 'width'           : 0
-                'color'           : if settings.isDebug then '#f00' else 'transparent'
-                'background-color': if settings.isDebug then '#fee' else style.backgroundColor
+                'color'           : if settings.debug then '#f00' else 'transparent'
+                'background-color': if settings.debug then '#fee' else style.backgroundColor
                 'line-height'     : style.lineHeight
                 'padding-top'     : style.paddingTop
                 'padding-right'   : style.paddingRight
@@ -95,52 +89,74 @@ do ($ = jQuery, window, document) ->
                 'overflow'        : 'auto'
                 'white-space'     : 'pre-wrap'
 
-            $this.css
-                'color'     : if settings.isDebug then 'rgba(0,0,0,0.5)' else 'inherit'
-                'position'  : 'relative'
-                'background': 'transparent'
-
             $this
+                .data('changeTimerId', -1)
+                .css
+                    'color'     : if settings.debug then 'rgba(0,0,0,0.5)' else 'inherit'
+                    'position'  : 'relative'
+                    'background': 'transparent'
+
                 .on 'scroll', ->
                     $backgroundDiv.scrollTop $this.scrollTop()
 
-                .on 'change keyup keydown', (e) ->
+                .on 'change keydown keyup paste', (e) ->
                     # if arrow keys, don't do anything
                     return if e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40
                     # check for last update, this is for performace
-                    return if new Date().getTime() - lastUpdate < 30
+                    if $this.data('changeTimerId') != -1
+                        clearTimeout( $this.data('changeTimerId') )
+                        $this.data('changeTimerId', -1)
 
-                    textareaText = $(document.createElement('div')).text( $this.val() ).html()
-                    notOverMaxText = ""
-                    overMaxText = ""
-                    # check for max length
-                    if 0 < settings.maxLength
+
+                    changeId = setTimeout ->
+                        textareaText = $(document.createElement('div')).text( $this.val() ).html()
+                        notOverMaxText = ""
+                        overMaxText = ""
                         # check for max length
-                        if settings.maxLength < $this.val().length
-                            matchText = $this.val().slice( settings.maxLength, settings.maxLength + $this.val().length - 1 )
-                            overMaxText = "<span class='#{ settings.maxClass }'>#{ matchText }</span>"
+                        if 0 < settings.maxlength
+                            # check for max length
+                            if settings.maxlength < $this.val().length
+                                matchText = $this.val().slice( settings.maxlength, settings.maxlength + $this.val().length - 1 )
+                                overMaxText = "<span class='#{ settings.maxlengthWarning }'>#{ matchText }</span>"
 
-                        notOverMaxText = $this.val().slice( 0, settings.maxLength )
-                    else
-                        notOverMaxText = textareaText;
+                             # update maxlength
+                            if settings.maxlengthElement != null
+                                maxSize = settings.maxlength - $this.val().length;
+                                if maxSize < 0
+                                    if ! settings.maxlengthElement.hasClass( settings.maxlengthWarning )
+                                        settings.maxlengthElement.addClass( settings.maxlengthWarning );
+                                else
+                                    if settings.maxlengthElement.hasClass( settings.maxlengthWarning )
+                                        settings.maxlengthElement.removeClass( settings.maxlengthWarning )
 
-                    # check for matching words
-                    for matches, i in settings.matches
-                        for words, j in matches.words
-                            # check if word exists in input text
-                            if notOverMaxText.indexOf( words ) != -1
-                                spanText = "<span class='#{ matches.className }'>#{ words }</span>"
-                                notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( words ), 'g'), spanText )
+                                # update max length
+                                settings.maxlengthElement.text( maxSize );
 
-                    # update background div content
-                    $backgroundDiv.html( notOverMaxText + overMaxText )
-                    # check if textarea changed size
-                    _this.resize( $this, $backgroundDiv )
-                    # save last update time
-                    lastUpdate = new Date().getTime()
 
+                            notOverMaxText = $this.val().slice( 0, settings.maxlength )
+                        else
+                            notOverMaxText = textareaText;
+
+                        # check for matching words
+                        for matches, i in settings.matches
+                            for words, j in matches.words
+                                # check if word exists in input text
+                                if notOverMaxText.indexOf( words ) != -1
+                                    spanText = "<span class='#{ matches.className }'>#{ words }</span>"
+                                    notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( words ), 'g'), spanText )
+
+                        # update background div content
+                        $backgroundDiv.html( notOverMaxText + overMaxText )
+                        # check if textarea changed size
+                        _this.resize( $this, $backgroundDiv )
+                    $this.data('changeTimerId', changeId)
+
+            # insert backgroundDiv
             $this.wrap( $wrapDiv ).before( $backgroundDiv )
+            # adjust size
             _this.resize( $this, $backgroundDiv )
+            # do initial check for input
+            $this.trigger('keydown')
 
         # FUNCTIONS
 
