@@ -18,29 +18,35 @@ $(function(){
     $(function(){
 
         $('.translation').each(function(){
-            var $this = $(this);
+            var $this = $(this),
+                $source = $this.find('.source'),
+                $target = $this.find('.target');
 
-            $this.find('.target')
+            $target
                 .autosize()
+                .on('textarea.highlighter.match', function(e, data){
+                })
                 .textareaHighlighter({
                     // maxlength: 150,
                     matches: [
-                        {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.match') )},
-                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
+                        {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
+                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )}
                     ]
                 });
         });
 
 
         $('.translation-max').each(function(){
-            var $this = $(this);
+            var $this = $(this),
+                $source = $this.find('.source'),
+                $target = $this.find('.target');
 
-            $this.find('.target')
+            $target
                 .autosize()
                 .textareaHighlighter({
                     matches: [
-                        {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.match') )},
-                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $this.find('.source').find('.hoge') )}
+                        {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
+                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )}
                     ],
                     // maxlength: 150,
                     maxlengthWarning: 'warning',
