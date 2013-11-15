@@ -26,11 +26,11 @@
 
     // constructor
     function Plugin ( element, options ) {
-        this.element = element;
-        this.$element = $(this.element);
-        this.settings = $.extend( {}, defaults, this.$element.data(), options );
+        this.element   = element;
+        this.$element  = $(this.element);
+        this.settings  = $.extend( {}, defaults, this.$element.data(), options );
         this._defaults = defaults;
-        this._name = pluginName;
+        this._name     = pluginName;
 
         // textarea style
         this.style = {
@@ -163,6 +163,9 @@
                                 matchText = settings.matches[i].words[j];
                                 // check if word exists in input text
                                 if( notOverMaxText.indexOf( matchText ) !== -1 ){
+
+                                    $this.trigger('textarea.highlighter.match', {'text': matchText});
+
                                     spanText = '<span class="'+ settings.matches[i].className +'">'+ matchText +'</span>';
                                     notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
                                 }
