@@ -169,14 +169,13 @@
                                 }
                             }
                         }
-                        if (matchTextList.length > 0) {
-                            $this.trigger('textarea.highlighter.match', {'textList': matchTextList});
-                        }
 
                         // update background div content
                         $backgroundDiv.html( notOverMaxText + overMaxText );
                         // check if textarea changed size
                         _this.resize( $this, $backgroundDiv );
+                        // trigger update event
+                        $this.trigger('textarea.highlighter.update', {'textList': matchTextList});
                     }, 30);
 
                     $this.data('changeTimerId', changeId);

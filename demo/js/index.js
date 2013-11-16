@@ -37,7 +37,7 @@ $(function(){
 
             $target
                 .autosize()
-                .on('textarea.highlighter.match', function(e, data){
+                .on('textarea.highlighter.update', function(e, data){
                     if (matchDelayTimerId !== -1) {
                         clearTimeout(matchDelayTimerId);
                         matchDelayTimerId = -1;
