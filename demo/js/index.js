@@ -32,30 +32,37 @@ $(function(){
             var $this = $(this),
                 $source = $this.find('.source'),
                 $target = $this.find('.target'),
-                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge'));
+                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge')),
+                matchDelayTimerId = -1;
 
             $target
                 .autosize()
                 .on('textarea.highlighter.match', function(e, data){
+                    if (matchDelayTimerId !== -1) {
+                        clearTimeout(matchDelayTimerId);
+                        matchDelayTimerId = -1;
+                    }
+                    matchDelayTimerId = setTimeout(function(){
+                        matchDelayTimerId = -1;
+                        var i = 0, j = 0, imax = 0, jmax = 0, tmpList = null, tmpText = null;
 
-                    $source.find('.added').removeClass('added');
+                        $source.find('.added').removeClass('added');
 
-                    var i = 0, j = 0, imax = 0, jmax = 0, tmpList = null, tmpText = null;
+                        imax = data.textList.length;
 
-                    imax = data.textList.length;
+                        for (i = 0; i < imax; i++) {
+                            tmpText = data.textList[i];
 
-                    for (i = 0; i < imax; i++) {
-                        tmpText = data.textList[i];
+                            if (elementObj[ tmpText ]) {
+                                tmpList = elementObj[ tmpText ];
+                                jmax = tmpList.length;
 
-                        if (elementObj[ tmpText ]) {
-                            tmpList = elementObj[ tmpText ];
-                            jmax = tmpList.length;
-
-                            for (j = 0; j < jmax; j++) {
-                                tmpList[j].addClass('added');
+                                for (j = 0; j < jmax; j++) {
+                                    tmpList[j].addClass('added');
+                                }
                             }
                         }
-                    }
+                    }, 80);
                 })
                 .textareaHighlighter({
                     // maxlength: 150,
