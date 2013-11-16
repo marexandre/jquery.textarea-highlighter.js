@@ -122,7 +122,7 @@
 
                     var changeId = setTimeout(function(){
                         var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
-                            key, ruleTextList, matchText, spanText,
+                            key, ruleTextList, matchText, spanText, matchTextList = [],
                             notOverMaxText = '', overMaxText ='',
                             i, imax, j, jmax, maxSize;
 
@@ -163,14 +163,16 @@
                                 matchText = settings.matches[i].words[j];
                                 // check if word exists in input text
                                 if( notOverMaxText.indexOf( matchText ) !== -1 ){
-
-                                    $this.trigger('textarea.highlighter.match', {'text': matchText});
-
+                                    matchTextList.push( matchText );
                                     spanText = '<span class="'+ settings.matches[i].className +'">'+ matchText +'</span>';
                                     notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
                                 }
                             }
                         }
+                        if (matchTextList.length > 0) {
+                            $this.trigger('textarea.highlighter.match', {'textList': matchTextList});
+                        }
+
                         // update background div content
                         $backgroundDiv.html( notOverMaxText + overMaxText );
                         // check if textarea changed size
