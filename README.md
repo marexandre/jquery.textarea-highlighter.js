@@ -28,6 +28,16 @@ This is the basic using with data- in HTML:
 <textarea data-maxlength="150" data-debug="true" data-maxlength-warning="warning"></textarea>
 ```
 
+# Events
+
+Event triggered when a matching text is found
+
+```javascript
+$('#someElement').on('textarea.highlighter.update', function(e, data){
+    // data -> {'textList': []}
+    // textList is an arry with matched text
+});
+```
 
 # Options
 
