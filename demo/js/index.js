@@ -26,46 +26,50 @@ $(function(){
         return tmpObj;
     };
 
+    var matchDelayTimerId = -1;
+    var checkForMatchInSource = function( $source, elementObj, data ){
+        if (matchDelayTimerId !== -1) {
+            clearTimeout(matchDelayTimerId);
+            matchDelayTimerId = -1;
+        }
+        matchDelayTimerId = setTimeout(function(){
+            matchDelayTimerId = -1;
+            var i = 0, j = 0, imax = 0, jmax = 0, tmpList = null, tmpText = null;
+
+            $source.find('.added').removeClass('added');
+
+            imax = data.textList.length;
+
+            for (i = 0; i < imax; i++) {
+                tmpText = data.textList[i];
+
+                if (elementObj[ tmpText ]) {
+                    tmpList = elementObj[ tmpText ];
+                    jmax = tmpList.length;
+
+                    for (j = 0; j < jmax; j++) {
+                        tmpList[j].addClass('added');
+                    }
+                }
+            }
+        }, 80);
+    };
+
+
     $(function(){
 
         $('.translation').each(function(){
             var $this = $(this),
                 $source = $this.find('.source'),
                 $target = $this.find('.target'),
-                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge')),
-                matchDelayTimerId = -1;
+                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge'));
 
             $target
                 .autosize()
                 .on('textarea.highlighter.update', function(e, data){
-                    if (matchDelayTimerId !== -1) {
-                        clearTimeout(matchDelayTimerId);
-                        matchDelayTimerId = -1;
-                    }
-                    matchDelayTimerId = setTimeout(function(){
-                        matchDelayTimerId = -1;
-                        var i = 0, j = 0, imax = 0, jmax = 0, tmpList = null, tmpText = null;
-
-                        $source.find('.added').removeClass('added');
-
-                        imax = data.textList.length;
-
-                        for (i = 0; i < imax; i++) {
-                            tmpText = data.textList[i];
-
-                            if (elementObj[ tmpText ]) {
-                                tmpList = elementObj[ tmpText ];
-                                jmax = tmpList.length;
-
-                                for (j = 0; j < jmax; j++) {
-                                    tmpList[j].addClass('added');
-                                }
-                            }
-                        }
-                    }, 80);
+                    checkForMatchInSource( $source, elementObj, data);
                 })
                 .textareaHighlighter({
-                    // maxlength: 150,
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
                         {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )}
@@ -77,10 +81,14 @@ $(function(){
         $('.translation-max').each(function(){
             var $this = $(this),
                 $source = $this.find('.source'),
-                $target = $this.find('.target');
+                $target = $this.find('.target'),
+                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge'));
 
             $target
                 .autosize()
+                .on('textarea.highlighter.update', function(e, data){
+                    checkForMatchInSource( $source, elementObj, data);
+                })
                 .textareaHighlighter({
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
