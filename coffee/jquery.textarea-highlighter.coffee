@@ -1,5 +1,5 @@
 ###
-    jquery.textareaHighlighter.js 0.1.4
+    jquery.textareaHighlighter.js 0.1.6
     jQuery plugin for highlighting text in textarea.
 
     alexandre.kirillov@gmail.com
@@ -108,10 +108,11 @@ do ($ = jQuery, window, document) ->
                         $this.data('changeTimerId', -1)
 
 
-                    changeId = setTimeout ->
+                    changeId = setTimeout ( ->
                         textareaText = $(document.createElement('div')).text( $this.val() ).html()
                         notOverMaxText = ""
                         overMaxText = ""
+                        matchTextList = []
                         # check for max length
                         if 0 < settings.maxlength
                             # check for max length
@@ -142,6 +143,7 @@ do ($ = jQuery, window, document) ->
                             for words, j in matches.words
                                 # check if word exists in input text
                                 if notOverMaxText.indexOf( words ) != -1
+                                    matchTextList.push( matchText )
                                     spanText = "<span class='#{ matches.className }'>#{ words }</span>"
                                     notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( words ), 'g'), spanText )
 
@@ -149,6 +151,9 @@ do ($ = jQuery, window, document) ->
                         $backgroundDiv.html( notOverMaxText + overMaxText )
                         # check if textarea changed size
                         _this.resize( $this, $backgroundDiv )
+                        # trigger update event
+                        $this.trigger( 'textarea.highlighter.update', {'textList': matchTextList} )
+                    ), 30
                     $this.data('changeTimerId', changeId)
 
             # insert backgroundDiv
