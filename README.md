@@ -54,3 +54,7 @@ $.textareaHighlighter.defaults = {
     debug: false                        // Flag to show debug mode
 };
 ```
+
+# Tested
+
+Chrome 30+, FireFox 24+, IE 9+ (OSX & PC)
