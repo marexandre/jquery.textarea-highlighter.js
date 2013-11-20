@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.1.6
+ * jquery.textareaHighlighter.js 0.2.0
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
@@ -34,34 +34,17 @@
 
         // textarea style
         this.style = {
-            backgroundColor: this.$element.css('background-color'),
             paddingTop   : parseInt( this.$element.css('padding-top'), 10 ),
             paddingRight : parseInt( this.$element.css('padding-right'), 10 ),
             paddingBottom: parseInt( this.$element.css('padding-bottom'), 10 ),
             paddingLeft  : parseInt( this.$element.css('padding-left'), 10 ),
-            borderTop    : parseInt( this.$element.css('border-top-width'), 10 ),
-            borderRight  : parseInt( this.$element.css('border-right-width'), 10 ),
-            borderBottom : parseInt( this.$element.css('border-bottom-width'), 10 ),
-            borderLeft   : parseInt( this.$element.css('border-left-width'), 10 ),
-            lineHeight   : this.$element.css('line-height')
         };
-
-        this.widthExtra = this.style.paddingLeft + this.style.paddingRight + this.style.borderLeft + this.style.borderRight;
-
-        this.style.paddingTop += this.style.borderTop;
-        this.style.paddingLeft += this.style.borderLeft;
 
         // Hack for firefox, some how width needs to be 2px smallet then the textarea
         // and padding-left needs to be added 1px
         if( browser.firefox ){
-            this.widthExtra += 2;
+            this.style.paddingRight += 1;
             this.style.paddingLeft += 1;
-        }
-        // Hack for iphone, some how in iphone it adds 3px to textarea padding
-        if( browser.iphone ){
-            this.style.paddingRight += 3;
-            this.style.paddingLeft += 3;
-            this.widthExtra += 6;
         }
 
         this.init();
@@ -81,24 +64,19 @@
                 'position'     : 'relative',
                 'word-wrap'    : 'break-word',
                 'word-break'   : 'break-all',
-                'margin'       : 0,
-                'padding-right': style.paddingLeft + style.paddingRight + style.borderLeft + style.borderRight + 'px'
+                'margin'       : 0
             });
-            $backgroundDiv.addClass('background-div').css({
-                'height': 0,
-                'width' : 0,
+            $backgroundDiv.addClass('background-div').addClass( $this.attr('class') ).css({
+                'height'          : '100%',
                 'color'           : ( settings.debug ) ? '#f00' : 'transparent',
                 'background-color': ( settings.debug ) ? '#fee' : style.backgroundColor,
-                'line-height'   : style.lineHeight,
                 'padding-top'   : style.paddingTop,
                 'padding-right' : style.paddingRight,
                 'padding-bottom': style.paddingBottom,
                 'padding-left'  : style.paddingLeft,
                 'position'      : 'absolute',
-                'overflow'      : 'auto',
-                'white-space'   : 'pre-wrap'
+                'overflow'      : 'auto'
             });
-
 
             $this
                 .data('changeTimerId', -1)
@@ -172,8 +150,6 @@
 
                         // update background div content
                         $backgroundDiv.html( notOverMaxText + overMaxText );
-                        // check if textarea changed size
-                        _this.resize( $this, $backgroundDiv );
                         // trigger update event
                         $this.trigger('textarea.highlighter.update', {'textList': matchTextList});
                     }, 30);
@@ -184,25 +160,8 @@
 
             // insert backgroundDiv
             $this.wrap( $wrapDiv ).before( $backgroundDiv );
-            // adjust size
-            _this.resize( $this, $backgroundDiv );
             // do initial check for input
             $this.trigger('keydown');
-        },
-        /**
-         * update backgroundDiv size
-         * @param  {jQuery} $target
-         * @param  {jQuery} $bgDiv
-         */
-        resize: function( $target, $bgDiv ) {
-            var _this = this;
-
-            if ($bgDiv.height() !== $target.height() || $bgDiv.width() !== $target.width()) {
-                $bgDiv.css({
-                    'width' : $target.outerWidth() - _this.widthExtra,
-                    'height': $target.height()
-                });
-            }
         }
     };
 
