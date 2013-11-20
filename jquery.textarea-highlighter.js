@@ -46,6 +46,10 @@
             this.style.paddingRight += 1;
             this.style.paddingLeft += 1;
         }
+        if( browser.iphone ){
+            // this.style.paddingRight += 3;
+            this.style.paddingLeft += 3;
+        }
 
         this.init();
     }
