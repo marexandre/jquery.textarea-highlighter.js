@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.2.0
+ * jquery.textareaHighlighter.js 0.2.1
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
@@ -47,7 +47,7 @@
             this.style.paddingLeft += 1;
         }
         if( browser.iphone ){
-            // this.style.paddingRight += 3;
+            this.style.paddingRight += 3;
             this.style.paddingLeft += 3;
         }
 
