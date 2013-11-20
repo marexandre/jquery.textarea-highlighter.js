@@ -113,7 +113,7 @@
                 })
                 .on('change keydown keyup paste', function(e){
                     // if arrow keys, don't do anything
-                    if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) { return; }
+                    if (/(37|38|39|40)/.test(e.keyCode)) { return; }
                     // check for last update, this is for performace
                     if ($this.data('changeTimerId') !== -1) {
                         clearTimeout( $this.data('changeTimerId') );
