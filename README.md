@@ -1,7 +1,7 @@
 jquery.textarea-highlighter.js
 ==============================
 
-jQuery plugin for highlighting text in textarea : [DEMO](http://marexandre.github.io/jquery.textarea-highlighter.js/demo/ "DEMO")
+jQuery plugin for highlighting text in textarea : [DEMO](http://marexandre.github.io/jquery.textarea-highlighter.js/demo/ "DEMO") | [DEMO with debug](http://marexandre.github.io/jquery.textarea-highlighter.js/demo/test.html "DEMO with debug")
 
 
 # Usage
