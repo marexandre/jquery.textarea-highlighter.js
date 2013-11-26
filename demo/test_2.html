@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Demo - jquery.textarea-highlighter.js</title>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <style>
+        .source,
+        .target {
+            font-size: 16px;
+        }
+        .target {
+            background-color: #FFF;
+        }
+        .tags,
+        .brackets {
+            background-color: #DDDDDD;
+            border-radius: 10px;
+            padding: 2px 0;
+        }
+        .glossary {
+            border-bottom: 2px solid #AEDBB3;
+        }
+        .misspell {
+            border-bottom: 2px dotted #EA5E47;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <h1>Demo</h1>
+        <hr/>
+        <div class="translation-max">
+            <div class="source">some cool text is <span class="hoge">here for</span> you to translate. And <span class="match">[[[text here too]]]</span> some more to translation for you. some cool text is <span class="hoge">for they</span> you to translate.<span class="match">[[[text here too]]]</span> add some more <span class="hoge">for me</span> and some more <span class="hoge">for them</span> and me</div>
+            <textarea class="target" placeholder="Type your text here" data-maxlength="260" data-debug="false" data-maxlength-warning="warning">some cool text is here for you to translate. And [[[text here too]]] some more to translation for you. some cool text is for they you to translate.[[[text here too]]] add some more for me and some more for them and me. {1}this is {2}a{/2} tag test{/1} some cool text is here for you to translate. </textarea>
+            <span class="maxlength"></span>
+        </div>
+
+    </div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="./js/jquery.autosize.min.js"></script>
+<script src="../jquery.textarea-highlighter.js"></script>
+<script>
+$(function(){
+
+    var getUniqueArray = function( array ){
+        return array.filter(function(elem, pos, self) {
+            return self.indexOf(elem) === pos;
+        });
+    };
+
+    var getUniqueWordListFromSource = function( $target ){
+        var tmpArray = [];
+        $target.each(function(){
+            tmpArray.push( $(this).text() );
+        });
+
+        return getUniqueArray( tmpArray );
+    };
+
+    var getUniqueElementListFromSource = function( $target ){
+        var tmpObj = {};
+        $target.each(function(){
+            if (! tmpObj.hasOwnProperty($(this).text())) {
+                tmpObj[ $(this).text() ] = [];
+            }
+            tmpObj[ $(this).text() ].push( $(this) );
+        });
+        return tmpObj;
+    };
+
+    var matchDelayTimerId = -1;
+    var checkForMatchInSource = function( $source, elementObj, data ){
+        if (matchDelayTimerId !== -1) {
+            clearTimeout(matchDelayTimerId);
+            matchDelayTimerId = -1;
+        }
+        matchDelayTimerId = setTimeout(function(){
+            matchDelayTimerId = -1;
+            var i = 0, j = 0, imax = 0, jmax = 0, tmpList = null, tmpText = null;
+
+            $source.find('.added').removeClass('added');
+
+            imax = data.textList.length;
+
+            for (i = 0; i < imax; i++) {
+                tmpText = data.textList[i];
+
+                if (elementObj[ tmpText ]) {
+                    tmpList = elementObj[ tmpText ];
+                    jmax = tmpList.length;
+
+                    for (j = 0; j < jmax; j++) {
+                        tmpList[j].addClass('added');
+                    }
+                }
+            }
+        }, 80);
+    };
+
+    $(function(){
+        $('.translation-max').each(function(){
+            var $this = $(this),
+                $source = $this.find('.source'),
+                $target = $this.find('.target'),
+                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge'));
+
+            $target
+                .autosize()
+                .on('textarea.highlighter.update', function(e, data){
+                    checkForMatchInSource( $source, elementObj, data);
+                })
+                .textareaHighlighter({
+                    matches: [
+                        {'className': 'brackets', 'words': getUniqueWordListFromSource( $source.find('.match') )},
+                        {'className': 'glossary', 'words': getUniqueWordListFromSource( $source.find('.hoge') )},
+                        {'className': 'misspell', 'words': ['some']},
+                        {'className': 'tags', 'words': ['{1}', '{/1}','{2}', '{/2}']}
+                    ],
+                    // maxlength: 150,
+                    maxlengthWarning: 'warning',
+                    maxlengthElement: $this.find('.maxlength')
+                });
+        });
+
+    });
+
+});
+</script>
+
+</body>
+</html>
