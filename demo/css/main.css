@@ -46,9 +46,10 @@ hr {
     margin-bottom: 6px;
 }
 .target {
+    overflow: hidden;
+
     border: 1px solid #ddd;
     border-radius: 3px;
-    outline: none;
     resize: none;
     height: 100px;
 
@@ -59,6 +60,7 @@ hr {
 }
 .target:focus {
     border-color: #888;
+    outline: none;
 }
 
 .maxlength {
