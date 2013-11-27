@@ -16,12 +16,13 @@ $(function(){
     };
 
     var getUniqueElementListFromSource = function( $target ){
-        var tmpObj = {};
+        var tmpObj = {}, $this = null;
         $target.each(function(){
-            if (! tmpObj.hasOwnProperty($(this).text())) {
-                tmpObj[ $(this).text() ] = [];
+            $this = $(this);
+            if (! tmpObj.hasOwnProperty($this.text())) {
+                tmpObj[ $this.text() ] = [];
             }
-            tmpObj[ $(this).text() ].push( $(this) );
+            tmpObj[ $this.text() ].push( $this );
         });
         return tmpObj;
     };
