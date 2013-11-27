@@ -13,12 +13,12 @@
         }
         .target {
             background-color: #FFF;
+            overflow: hidden;
         }
+
         .tags,
         .brackets {
             background-color: #DDDDDD;
-            border-radius: 10px;
-            padding: 2px 0;
         }
         .glossary {
             border-bottom: 2px solid #AEDBB3;
@@ -63,12 +63,13 @@ $(function(){
     };
 
     var getUniqueElementListFromSource = function( $target ){
-        var tmpObj = {};
+        var tmpObj = {}, $this = null;
         $target.each(function(){
-            if (! tmpObj.hasOwnProperty($(this).text())) {
-                tmpObj[ $(this).text() ] = [];
+            $this = $(this);
+            if (! tmpObj.hasOwnProperty($this.text())) {
+                tmpObj[ $this.text() ] = [];
             }
-            tmpObj[ $(this).text() ].push( $(this) );
+            tmpObj[ $this.text() ].push( $this );
         });
         return tmpObj;
     };
@@ -121,7 +122,7 @@ $(function(){
                         {'className': 'misspell', 'words': ['some']},
                         {'className': 'tags', 'words': ['{1}', '{/1}','{2}', '{/2}']}
                     ],
-                    // maxlength: 150,
+                    // maxlength: 260,
                     maxlengthWarning: 'warning',
                     maxlengthElement: $this.find('.maxlength')
                 });
