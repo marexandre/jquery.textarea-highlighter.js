@@ -81,10 +81,13 @@ hr {
 
 .match { color: #09f; }
 .hoge { color: #4c9; }
+.fuga { color: #ff9d00; }
 
 .matchHighlight { background-color: #09f; opacity: 0.6; }
-.hogeHighlight { background-color: #4c9; opacity: 0.6; }
+.hogeHighlight { border-bottom: 2px solid #4c9; opacity: 0.6; }
+.fugaHighlight { background-color: #ff9d00; opacity: 0.6; }
 
 .match.added,
-.hoge.added { color: #999; }
+.hoge.added,
+.fuga.added { color: #999; }
 

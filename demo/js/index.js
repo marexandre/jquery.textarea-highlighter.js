@@ -63,7 +63,7 @@ $(function(){
             var $this = $(this),
                 $source = $this.find('.source'),
                 $target = $this.find('.target'),
-                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge'));
+                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge, .fuga'));
 
             $target
                 .autosize()
@@ -73,7 +73,8 @@ $(function(){
                 .textareaHighlighter({
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
-                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )}
+                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )},
+                        {'className': 'fugaHighlight', 'words': getUniqueWordListFromSource( $source.find('.fuga') )}
                     ]
                 });
         });
@@ -83,7 +84,7 @@ $(function(){
             var $this = $(this),
                 $source = $this.find('.source'),
                 $target = $this.find('.target'),
-                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge'));
+                elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge, .fuga'));
 
             $target
                 .autosize()
@@ -93,7 +94,8 @@ $(function(){
                 .textareaHighlighter({
                     matches: [
                         {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
-                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )}
+                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )},
+                        {'className': 'fugaHighlight', 'words': getUniqueWordListFromSource( $source.find('.fuga') )}
                     ],
                     // maxlength: 150,
                     maxlengthWarning: 'warning',
