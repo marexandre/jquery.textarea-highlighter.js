@@ -145,8 +145,6 @@
                 'position'  : 'relative',
                 'background': 'transparent'
             });
-
-            _this.change({});
         },
         change: function(e){
             var _this = this;
