@@ -66,78 +66,13 @@
                     _this.updateStyle();
                 })
                 .on('change keydown keyup paste', function(e){
-                    // if arrow keys, don't do anything
-                    if (/(37|38|39|40)/.test(e.keyCode)) { return true; }
-
-                    // check for last update, this is for performace
-                    if ($this.data('highlighterTimerId') !== -1) {
-                        clearTimeout( $this.data('highlighterTimerId') );
-                        $this.data('highlighterTimerId', -1);
-                    }
-
-                    var changeId = setTimeout(function(){
-                        var textareaText = $(document.createElement('div')).text( $this.val() ).html(),
-                            key, ruleTextList, matchText, spanText, matchTextList = [],
-                            notOverMaxText = '', overMaxText ='',
-                            i, imax, j, jmax, maxSize;
-
-                        if (0 < settings.maxlength) {
-                            // check for max length
-                            if ( settings.maxlength < $this.val().length) {
-                                matchText = $this.val().slice( settings.maxlength, settings.maxlength + $this.val().length - 1 );
-                                overMaxText = '<span class="'+ settings.maxlengthWarning +'">'+ matchText +'</span>';
-
-                            }
-                            // update maxlength
-                            if (settings.maxlengthElement !== null) {
-                                maxSize = settings.maxlength - $this.val().length;
-                                if (maxSize < 0) {
-                                    if (! settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
-                                        settings.maxlengthElement.addClass( settings.maxlengthWarning );
-                                    }
-                                }
-                                else {
-                                    if (settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
-                                        settings.maxlengthElement.removeClass( settings.maxlengthWarning );
-                                    }
-                                }
-                                // update max length
-                                settings.maxlengthElement.text( maxSize );
-                            }
-
-                            notOverMaxText = $this.val().slice( 0, settings.maxlength );
-                        }
-                        else {
-                            notOverMaxText = textareaText;
-                        }
-
-                        // check for matching words
-                        for (i = 0, imax = settings.matches.length; i < imax; i++) {
-                            for (j = 0, jmax = settings.matches[i].words.length; j < jmax; j++) {
-                                // get word to match
-                                matchText = settings.matches[i].words[j];
-                                // check if word exists in input text
-                                if( notOverMaxText.indexOf( matchText ) !== -1 ){
-                                    matchTextList.push( matchText );
-                                    spanText = '<span class="'+ settings.matches[i].className +'">'+ matchText +'</span>';
-                                    notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
-                                }
-                            }
-                        }
-
-                        // update background div content
-                        $backgroundDiv.html( notOverMaxText + overMaxText );
-                        // trigger update event
-                        $this.trigger('textarea.highlighter.update', {'textList': matchTextList});
-                    }, 30);
-
-                    $this.data('highlighterTimerId', changeId);
+                    _this.change(e);
                 });
 
             // insert backgroundDiv
             $this.wrap( $wrapDiv ).before( $backgroundDiv );
             // do initial check for input
-            $this.trigger('keydown');
+            _this.change({});
         },
         updateStyle: function(){
             var _this    = this,
@@ -199,6 +134,75 @@
                 'position'  : 'relative',
                 'background': 'transparent'
             });
+        },
+        change: function(e){
+            var _this = this;
+            // if arrow keys, don't do anything
+            if (/(37|38|39|40)/.test(e.keyCode)) { return true; }
+
+            // check for last update, this is for performace
+            if (_this.$element.data('highlighterTimerId') !== -1) {
+                clearTimeout( _this.$element.data('highlighterTimerId') );
+                _this.$element.data('highlighterTimerId', -1);
+            }
+
+            var changeId = setTimeout(function(){
+                var textareaText = $(document.createElement('div')).text( _this.$element.val() ).html(),
+                    key, ruleTextList, matchText, spanText, matchTextList = [],
+                    notOverMaxText = '', overMaxText ='',
+                    i, imax, j, jmax, maxSize;
+
+                if (0 < _this.settings.maxlength) {
+                    // check for max length
+                    if ( _this.settings.maxlength < _this.$element.val().length) {
+                        matchText = _this.$element.val().slice( _this.settings.maxlength, _this.settings.maxlength + _this.$element.val().length - 1 );
+                        overMaxText = '<span class="'+ _this.settings.maxlengthWarning +'">'+ matchText +'</span>';
+
+                    }
+                    // update text max length
+                    if (_this.settings.maxlengthElement !== null) {
+                        maxSize = _this.settings.maxlength - _this.$element.val().length;
+                        if (maxSize < 0) {
+                            if (! _this.settings.maxlengthElement.hasClass( _this.settings.maxlengthWarning )) {
+                                _this.settings.maxlengthElement.addClass( _this.settings.maxlengthWarning );
+                            }
+                        }
+                        else {
+                            if (_this.settings.maxlengthElement.hasClass( _this.settings.maxlengthWarning )) {
+                                _this.settings.maxlengthElement.removeClass( _this.settings.maxlengthWarning );
+                            }
+                        }
+                        // update max length
+                        _this.settings.maxlengthElement.text( maxSize );
+                    }
+
+                    notOverMaxText = _this.$element.val().slice( 0, _this.settings.maxlength );
+                }
+                else {
+                    notOverMaxText = textareaText;
+                }
+
+                // check for matching words
+                for (i = 0, imax = _this.settings.matches.length; i < imax; i++) {
+                    for (j = 0, jmax = _this.settings.matches[i].words.length; j < jmax; j++) {
+                        // get word to match
+                        matchText = _this.settings.matches[i].words[j];
+                        // check if word exists in input text
+                        if( notOverMaxText.indexOf( matchText ) !== -1 ){
+                            matchTextList.push( matchText );
+                            spanText = '<span class="'+ _this.settings.matches[i].className +'">'+ matchText +'</span>';
+                            notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
+                        }
+                    }
+                }
+
+                // update background div content
+                _this.$backgroundDiv.html( notOverMaxText + overMaxText );
+                // trigger update event
+                _this.$element.trigger('textarea.highlighter.update', {'textList': matchTextList});
+            }, 30);
+
+            _this.$element.data('highlighterTimerId', changeId);
         }
     };
 
