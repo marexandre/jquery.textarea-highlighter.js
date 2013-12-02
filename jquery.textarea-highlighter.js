@@ -59,9 +59,10 @@
             $this
                 .data('highlighterTimerId', -1)
                 // Bind events
-                .on('scroll', function(){
+                .on('scroll.textarea.highlighter', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
+                // ORIGINAL EVENTS
                 .on('textarea.highlighter.update', function(){
                     _this.updateStyle();
                 });
@@ -144,6 +145,8 @@
                 'position'  : 'relative',
                 'background': 'transparent'
             });
+
+            _this.change({});
         },
         change: function(e){
             var _this = this;
