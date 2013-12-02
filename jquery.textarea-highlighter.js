@@ -64,10 +64,20 @@
                 })
                 .on('textarea.highlighter.update', function(){
                     _this.updateStyle();
-                })
-                .on('change keydown keyup paste', function(e){
+                });
+
+            if (browser.msie) {
+                // IE
+                $this.on('input.textarea.highlighter keyup.textarea.highlighter', function(e){
                     _this.change(e);
                 });
+            }
+            else {
+                // Modern browsers
+                $this.on('input.textarea.highlighter', function(e){
+                    _this.change(e);
+                });
+            }
 
             // insert backgroundDiv
             $this.wrap( $wrapDiv ).before( $backgroundDiv );
