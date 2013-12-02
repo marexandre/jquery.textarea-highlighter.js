@@ -21,6 +21,7 @@
             maxlength: -1,
             maxlengthWarning: '',
             maxlengthElement: null,
+            isCustomeCss: false,
             debug: false
         };
 
@@ -32,24 +33,13 @@
         this._defaults = defaults;
         this._name     = pluginName;
 
-        // textarea style
-        this.style = {
-            paddingTop   : parseInt( this.$element.css('padding-top'), 10 ),
-            paddingRight : parseInt( this.$element.css('padding-right'), 10 ),
-            paddingBottom: parseInt( this.$element.css('padding-bottom'), 10 ),
-            paddingLeft  : parseInt( this.$element.css('padding-left'), 10 ),
-        };
+        // check if plugin was initialized on the element.
+        if ( this.$element.data(pluginName) ) { return; }
+        this.$element.data(pluginName, true);
 
-        // Hack for firefox, some how width needs to be 2px smallet then the textarea
-        // and padding-left needs to be added 1px
-        if( browser.firefox ){
-            this.style.paddingRight += 1;
-            this.style.paddingLeft += 1;
-        }
-        if( browser.iphone ){
-            this.style.paddingRight += 3;
-            this.style.paddingLeft += 3;
-        }
+        this.style = {};
+        this.$wrapDiv       = $(document.createElement('div')).addClass('textarea-highlighter-wrap');
+        this.$backgroundDiv = $(document.createElement('div'));
 
         this.init();
     }
@@ -61,45 +51,28 @@
                 $this          = this.$element,
                 style          = this.style,
                 settings       = this.settings,
-                $wrapDiv       = $(document.createElement('div')).addClass('textarea-wrap'),
-                $backgroundDiv = $(document.createElement('div'));
+                $wrapDiv       = this.$wrapDiv,
+                $backgroundDiv = this.$backgroundDiv;
 
-            $wrapDiv.css({
-                'position'     : 'relative',
-                'word-wrap'    : 'break-word',
-                'word-break'   : 'break-all',
-                'margin'       : 0
-            });
-            $backgroundDiv.addClass('background-div').addClass( $this.attr('class') ).css({
-                'height'          : '100%',
-                'color'           : ( settings.debug ) ? '#f00' : 'transparent',
-                'background-color': ( settings.debug ) ? '#fee' : style.backgroundColor,
-                'padding-top'   : style.paddingTop,
-                'padding-right' : style.paddingRight,
-                'padding-bottom': style.paddingBottom,
-                'padding-left'  : style.paddingLeft,
-                'position'      : 'absolute',
-                'overflow'      : 'auto'
-            });
+            _this.updateStyle();
 
             $this
-                .data('changeTimerId', -1)
-                .css({
-                    'color'     : ( settings.debug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
-                    'position'  : 'relative',
-                    'background': 'transparent'
-                })
+                .data('highlighterTimerId', -1)
                 // Bind events
                 .on('scroll', function(){
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
+                .on('textarea.highlighter.update', function(){
+                    _this.updateStyle();
+                })
                 .on('change keydown keyup paste', function(e){
                     // if arrow keys, don't do anything
-                    if (/(37|38|39|40)/.test(e.keyCode)) { return; }
+                    if (/(37|38|39|40)/.test(e.keyCode)) { return true; }
+
                     // check for last update, this is for performace
-                    if ($this.data('changeTimerId') !== -1) {
-                        clearTimeout( $this.data('changeTimerId') );
-                        $this.data('changeTimerId', -1);
+                    if ($this.data('highlighterTimerId') !== -1) {
+                        clearTimeout( $this.data('highlighterTimerId') );
+                        $this.data('highlighterTimerId', -1);
                     }
 
                     var changeId = setTimeout(function(){
@@ -158,14 +131,74 @@
                         $this.trigger('textarea.highlighter.update', {'textList': matchTextList});
                     }, 30);
 
-                    $this.data('changeTimerId', changeId);
+                    $this.data('highlighterTimerId', changeId);
                 });
-
 
             // insert backgroundDiv
             $this.wrap( $wrapDiv ).before( $backgroundDiv );
             // do initial check for input
             $this.trigger('keydown');
+        },
+        updateStyle: function(){
+            var _this    = this,
+                $this    = this.$element,
+                settings = this.settings,
+                style    = this.style;
+
+            // textarea style
+            this.style = {
+                // background   : this.$element.css('background'),
+                paddingTop   : parseInt( $this.css('padding-top'), 10 ),
+                paddingRight : parseInt( $this.css('padding-right'), 10 ),
+                paddingBottom: parseInt( $this.css('padding-bottom'), 10 ),
+                paddingLeft  : parseInt( $this.css('padding-left'), 10 ),
+            };
+
+            // Hack for firefox, some how width needs to be 2px smallet then the textarea
+            // and padding-left needs to be added 1px
+            if( browser.firefox ){
+                style.paddingRight += 1;
+                style.paddingLeft += 1;
+            }
+            if( browser.iphone ){
+                style.paddingRight += 3;
+                style.paddingLeft += 3;
+            }
+
+            this.$wrapDiv.css({
+                'position'     : 'relative',
+                'word-wrap'    : 'break-word',
+                'word-break'   : 'break-all',
+                'margin'       : 0
+            });
+            this.$backgroundDiv.addClass('background-div').addClass( $this.attr('class') ).css({
+                'height'        : '100%',
+                'color'         : ( settings.debug ) ? '#f00' : 'transparent',
+                // 'background'    : ( settings.debug ) ? '#fee' : style.background,
+                // 'padding-top'   : style.paddingTop,
+                // 'padding-right' : style.paddingRight,
+                // 'padding-bottom': style.paddingBottom,
+                // 'padding-left'  : style.paddingLeft,
+                'position'      : 'absolute',
+                'overflow'      : 'auto',
+                'margin'        : '0'
+            });
+            if (! settings.isCustomeCss) {
+                this.$backgroundDiv.css({
+                    'padding-top'   : style.paddingTop,
+                    'padding-right' : style.paddingRight,
+                    'padding-bottom': style.paddingBottom,
+                    'padding-left'  : style.paddingLeft,
+                    'box-sizing'    : 'border-box',
+                    'border-color'  : 'transparent'
+                });
+            }
+
+            $this.css({
+                'color'     : ( settings.debug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
+                'position'  : 'relative',
+                'background': 'transparent'
+            });
         }
     };
 
