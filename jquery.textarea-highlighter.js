@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.2.1
+ * jquery.textareaHighlighter.js 0.2.2
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
