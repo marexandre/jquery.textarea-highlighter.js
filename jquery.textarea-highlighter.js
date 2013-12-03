@@ -58,8 +58,14 @@
                     $backgroundDiv.scrollTop( $this.scrollTop() );
                 })
                 // ORIGINAL EVENTS
+                .on('textarea.highlighter.destroy', function(){
+                    _this.destroy();
+                })
                 .on('textarea.highlighter.update', function(){
                     _this.updateStyle();
+                })
+                .on('textarea.highlighter.change', function(){
+                    _this.change({});
                 });
 
             if (browser.msie) {
@@ -208,6 +214,22 @@
             }, 30);
 
             _this.$element.data('highlighterTimerId', changeId);
+        },
+        destroy: function(){
+            $.data( this.element, "plugin_" + pluginName, false );
+            this.$backgroundDiv.remove();
+            this.$element
+                .off('scroll.textarea.highlighter')
+                .off('input.textarea.highlighter keyup.textarea.highlighter')
+                .off('textarea.highlighter.destroy')
+                .off('textarea.highlighter.update')
+                .off('textarea.highlighter.change')
+                .css({
+                    'color'     : '',
+                    'position'  : '',
+                    'background': ''
+                })
+                .unwrap();
         }
     };
 
