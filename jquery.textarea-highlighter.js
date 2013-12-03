@@ -33,10 +33,6 @@
         this._defaults = defaults;
         this._name     = pluginName;
 
-        // check if plugin was initialized on the element.
-        if ( this.$element.data(pluginName) ) { return; }
-        this.$element.data(pluginName, true);
-
         this.style = {};
         this.$wrapDiv       = $(document.createElement('div')).addClass('textarea-highlighter-wrap');
         this.$backgroundDiv = $(document.createElement('div'));
@@ -46,7 +42,6 @@
 
     Plugin.prototype = {
         init: function() {
-
             var _this          = this,
                 $this          = this.$element,
                 style          = this.style,
@@ -126,7 +121,6 @@
                 // 'padding-bottom': style.paddingBottom,
                 // 'padding-left'  : style.paddingLeft,
                 'position'      : 'absolute',
-                'overflow'      : 'auto',
                 'margin'        : '0'
             });
             if (! settings.isCustomeCss) {
