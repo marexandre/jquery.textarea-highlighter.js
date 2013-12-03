@@ -113,10 +113,8 @@
             }
 
             this.$wrapDiv.css({
-                'position'     : 'relative',
-                'word-wrap'    : 'break-word',
-                'word-break'   : 'break-all',
-                'margin'       : 0
+                'position': 'relative',
+                'margin'  : 0
             });
             this.$backgroundDiv.addClass('background-div').addClass( $this.attr('class') ).css({
                 'height'        : '100%',

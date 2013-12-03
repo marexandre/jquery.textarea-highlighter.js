@@ -41,6 +41,9 @@ hr {
     min-height: 24px;
     line-height: 24px;
     padding: 3px 6px;
+
+    word-wrap: break-word;
+    word-break: break-all;
 }
 .source {
     margin-bottom: 6px;
@@ -53,8 +56,6 @@ hr {
     resize: none;
     height: 100px;
 
-    word-wrap: break-word;
-    word-break: break-all;
     white-space: pre-wrap;
     background-color: #f9f9f9;
 }
