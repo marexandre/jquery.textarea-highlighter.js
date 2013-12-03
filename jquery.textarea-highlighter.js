@@ -158,7 +158,7 @@
             }
 
             var changeId = setTimeout(function(){
-                var textareaText = $(document.createElement('div')).text( _this.$element.val() ).html(),
+                var textareaText = _this.$element.val(),
                     key, ruleTextList, matchText, spanText, matchTextList = [],
                     notOverMaxText = '', overMaxText ='',
                     i, imax, j, jmax, maxSize;
@@ -166,7 +166,7 @@
                 if (0 < _this.settings.maxlength) {
                     // check for max length
                     if ( _this.settings.maxlength < _this.$element.val().length) {
-                        matchText = _this.$element.val().slice( _this.settings.maxlength, _this.settings.maxlength + _this.$element.val().length - 1 );
+                        matchText = textareaText.slice( _this.settings.maxlength, _this.settings.maxlength + _this.$element.val().length - 1 );
                         overMaxText = '<span class="'+ _this.settings.maxlengthWarning +'">'+ matchText +'</span>';
 
                     }
