@@ -35,7 +35,7 @@
         <hr/>
         <div class="translation-max">
             <div class="source">some cool text is <span class="hoge">here for</span> you to translate. And <span class="match">[[[text here too]]]</span> some more to translation for you. some cool text is <span class="hoge">for they</span> you to translate.<span class="match">[[[text here too]]]</span> add some more <span class="hoge">for me</span> and some more <span class="hoge">for them</span> and me</div>
-            <textarea class="target" placeholder="Type your text here" data-maxlength="260" data-debug="false" data-maxlength-warning="warning">some cool text is here for you to translate. And [[[text here too]]] some more to translation for you. some cool text is for they you to translate.[[[text here too]]] add some more for me and some more for them and me. {1}this is {2}a{/2} tag test{/1} some cool text is here for you to translate. </textarea>
+            <textarea class="target" placeholder="Type your text here">some cool text is here for you to translate. And [[[text here too]]] some more to translation for you. some cool text is for they you to translate.[[[text here too]]] add some more for me and some more for them and me. {1}this is {2}a{/2} tag test{/1} some cool text is here for you to translate. </textarea>
             <span class="maxlength"></span>
         </div>
 
@@ -122,7 +122,7 @@ $(function(){
                         {'className': 'misspell', 'words': ['some']},
                         {'className': 'tags', 'words': ['{1}', '{/1}','{2}', '{/2}']}
                     ],
-                    // maxlength: 260,
+                    maxlength: 260,
                     maxlengthWarning: 'warning',
                     maxlengthElement: $this.find('.maxlength')
                 });
