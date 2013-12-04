@@ -44,6 +44,12 @@ $('#someElement').on('textarea.highlighter.update', function(e, data){
 });
 ```
 
+Remove all added HTML/CSS and plugin related event bindings etc..
+
+```javascript
+$('#someElement').trigger('textarea.highlighter.destroy');
+```
+
 # Options
 
 These are the supported options and their default values:
