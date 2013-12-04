@@ -56,6 +56,7 @@ These are the supported options and their default values:
 
 ```javascript
 $.textareaHighlighter.defaults = {
+    isCustomeCss: false,                // Set to 'true' if you prefer to use minimal css added with the plugin
     matches: [                          // Array of matches with className & word array
     // {'className': '', 'words': []}   // Match template
     ],
