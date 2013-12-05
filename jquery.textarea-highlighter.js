@@ -27,6 +27,7 @@
 
     // constructor
     function Plugin ( element, options ) {
+        this.isInited  = false;
         this.element   = element;
         this.$element  = $(this.element);
         this.settings  = $.extend( {}, defaults, this.$element.data(), options );
@@ -209,6 +210,11 @@
                 _this.$backgroundDiv.html( notOverMaxText + overMaxText );
                 // trigger update event
                 _this.$element.trigger('textarea.highlighter.update', {'textList': matchTextList});
+
+                if (!_this.isInited) {
+                    _this.isInited = true;
+                    _this.$element.trigger('textarea.highlighter.init.complete');
+                }
             }, 30);
 
             _this.$element.data('highlighterTimerId', changeId);
