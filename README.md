@@ -35,6 +35,12 @@ This is the basic using with data- in HTML:
 
 # Events
 
+This is triggered when plugin's initialization is complete.
+
+```javascript
+$('#someElement').on('textarea.highlighter.init.complete');
+```
+
 Event triggered when a matching text is found
 
 ```javascript
