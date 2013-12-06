@@ -158,8 +158,8 @@
 
             var changeId = setTimeout(function(){
                 var textareaText = _this.$element.val(),
-                    key, ruleTextList, matchText, spanText, matchTextList = [],
-                    notOverMaxText = '', overMaxText ='',
+                    key, ruleTextList, matchText, spanText, matchTextList = [], matchesList = [],
+                    notOverMaxText = '', overMaxText ='', className = '',
                     i, imax, j, jmax, maxSize,
                     isUnique = false;
 
@@ -200,17 +200,32 @@
                         isUnique = _this.settings.matches[i].isUnique;
                     }
 
-                    for (j = 0, jmax = _this.settings.matches[i].words.length; j < jmax; j++) {
+                    // check if match rule is a RegExp
+                    if (_this.settings.matches[i].words instanceof RegExp) {
+                        matchesList = notOverMaxText.match( _this.settings.matches[i].words ) || [];
+                    }
+                    else {
+                        matchesList = _this.settings.matches[i].words.slice(0);
+                    }
+
+                    for (j = 0, jmax = matchesList.length; j < jmax; j++) {
                         // get word to match
-                        matchText = _this.settings.matches[i].words[j];
+                        matchText = matchesList[j];
+                        className = '';
 
                         if (isUnique && notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') ).length > 1) {
-                            notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, _this.settings.matches[i].warningClass );
+                            if (_this.settings.matches[i].hasOwnProperty('warningClass')) {
+                                className = _this.settings.matches[i].warningClass;
+                            }
+                            notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, className );
                         }
                         else {
                             // check if word exists in input text
                             if( notOverMaxText.indexOf( matchText ) !== -1 ){
-                                notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, _this.settings.matches[i].className );
+                                if (_this.settings.matches[i].hasOwnProperty('className')) {
+                                    className = _this.settings.matches[i].className;
+                                }
+                                notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, className );
                             }
                         }
                     }
