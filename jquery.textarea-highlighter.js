@@ -16,7 +16,7 @@
     var pluginName = "textareaHighlighter",
         defaults = {
             matches: [
-                // {'className': '', 'words': []}
+                // {'className': '', 'words': [], isUnique: false}
             ],
             maxlength: -1,
             maxlengthWarning: '',
@@ -160,7 +160,8 @@
                 var textareaText = _this.$element.val(),
                     key, ruleTextList, matchText, spanText, matchTextList = [],
                     notOverMaxText = '', overMaxText ='',
-                    i, imax, j, jmax, maxSize;
+                    i, imax, j, jmax, maxSize,
+                    isUnique = false;
 
                 if (0 < _this.settings.maxlength) {
                     // check for max length
@@ -194,14 +195,23 @@
 
                 // check for matching words
                 for (i = 0, imax = _this.settings.matches.length; i < imax; i++) {
+
+                    if (_this.settings.matches[i].hasOwnProperty('isUnique')) {
+                        isUnique = _this.settings.matches[i].isUnique;
+                    }
+
                     for (j = 0, jmax = _this.settings.matches[i].words.length; j < jmax; j++) {
                         // get word to match
                         matchText = _this.settings.matches[i].words[j];
-                        // check if word exists in input text
-                        if( notOverMaxText.indexOf( matchText ) !== -1 ){
-                            matchTextList.push( matchText );
-                            spanText = '<span class="'+ _this.settings.matches[i].className +'">'+ matchText +'</span>';
-                            notOverMaxText = notOverMaxText.replace( new RegExp( _escapeRegExp( matchText ), 'g'), spanText );
+
+                        if (isUnique && notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') ).length > 1) {
+                            notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, _this.settings.matches[i].warningClass );
+                        }
+                        else {
+                            // check if word exists in input text
+                            if( notOverMaxText.indexOf( matchText ) !== -1 ){
+                                notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, _this.settings.matches[i].className );
+                            }
                         }
                     }
                 }
@@ -218,6 +228,10 @@
             }, 30);
 
             _this.$element.data('highlighterTimerId', changeId);
+        },
+        getWrapedText: function( text, textList, matchedText, className ){
+            textList.push( matchedText );
+            return text.replace( new RegExp( _escapeRegExp( matchedText ), 'g'), '<span class="'+ className +'">'+ matchedText +'</span>' );
         },
         destroy: function(){
             $.data( this.element, "plugin_" + pluginName, false );
