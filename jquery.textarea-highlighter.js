@@ -16,7 +16,7 @@
     var pluginName = "textareaHighlighter",
         defaults = {
             matches: [
-                // {'matchClass': '', 'words': [], isUnique: false}
+                // {'matchClass': '', 'words': [], isUnique: false, 'warningClass': 'warning'}
             ],
             maxlength: -1,
             maxlengthWarning: '',
