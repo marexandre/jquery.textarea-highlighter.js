@@ -16,7 +16,7 @@
     var pluginName = "textareaHighlighter",
         defaults = {
             matches: [
-                // {'className': '', 'words': [], isUnique: false}
+                // {'matchClass': '', 'words': [], isUnique: false}
             ],
             maxlength: -1,
             maxlengthWarning: '',
@@ -159,7 +159,7 @@
             var changeId = setTimeout(function(){
                 var textareaText = _this.$element.val(),
                     key, ruleTextList, matchText, spanText, matchTextList = [], matchesList = [],
-                    notOverMaxText = '', overMaxText ='', className = '',
+                    notOverMaxText = '', overMaxText ='', matchClass = '',
                     i, imax, j, jmax, maxSize,
                     isUnique = false;
 
@@ -211,21 +211,21 @@
                     for (j = 0, jmax = matchesList.length; j < jmax; j++) {
                         // get word to match
                         matchText = matchesList[j];
-                        className = '';
+                        matchClass = '';
 
                         if (isUnique && notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') ).length > 1) {
                             if (_this.settings.matches[i].hasOwnProperty('warningClass')) {
-                                className = _this.settings.matches[i].warningClass;
+                                matchClass = _this.settings.matches[i].warningClass;
                             }
-                            notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, className );
+                            notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, matchClass );
                         }
                         else {
                             // check if word exists in input text
                             if( notOverMaxText.indexOf( matchText ) !== -1 ){
-                                if (_this.settings.matches[i].hasOwnProperty('className')) {
-                                    className = _this.settings.matches[i].className;
+                                if (_this.settings.matches[i].hasOwnProperty('matchClass')) {
+                                    matchClass = _this.settings.matches[i].matchClass;
                                 }
-                                notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, className );
+                                notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, matchClass );
                             }
                         }
                     }
@@ -244,9 +244,9 @@
 
             _this.$element.data('highlighterTimerId', changeId);
         },
-        getWrapedText: function( text, textList, matchedText, className ){
+        getWrapedText: function( text, textList, matchedText, matchClass ){
             textList.push( matchedText );
-            return text.replace( new RegExp( _escapeRegExp( matchedText ), 'g'), '<span class="'+ className +'">'+ matchedText +'</span>' );
+            return text.replace( new RegExp( _escapeRegExp( matchedText ), 'g'), '<span class="'+ matchClass +'">'+ matchedText +'</span>' );
         },
         destroy: function(){
             $.data( this.element, "plugin_" + pluginName, false );

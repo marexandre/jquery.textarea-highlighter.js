@@ -72,9 +72,9 @@ $(function(){
                 })
                 .textareaHighlighter({
                     matches: [
-                        {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
-                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )},
-                        {'className': 'fugaHighlight', 'words': getUniqueWordListFromSource( $source.find('.fuga') )}
+                        {'matchClass': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
+                        {'matchClass': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )},
+                        {'matchClass': 'fugaHighlight', 'words': getUniqueWordListFromSource( $source.find('.fuga') )}
                     ]
                 });
         });
@@ -93,9 +93,9 @@ $(function(){
                 })
                 .textareaHighlighter({
                     matches: [
-                        {'className': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
-                        {'className': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )},
-                        {'className': 'fugaHighlight', 'words': getUniqueWordListFromSource( $source.find('.fuga') )}
+                        {'matchClass': 'matchHighlight', 'words': getUniqueWordListFromSource( $source.find('.match') )},
+                        {'matchClass': 'hogeHighlight', 'words': getUniqueWordListFromSource( $source.find('.hoge') )},
+                        {'matchClass': 'fugaHighlight', 'words': getUniqueWordListFromSource( $source.find('.fuga') )}
                     ],
                     // maxlength: 150,
                     maxlengthWarning: 'warning',
