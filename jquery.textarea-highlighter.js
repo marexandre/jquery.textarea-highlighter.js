@@ -16,7 +16,7 @@
     var pluginName = "textareaHighlighter",
         defaults = {
             matches: [
-                // {'matchClass': '', 'words': [], isUnique: false, 'warningClass': 'warning'}
+                // {'matchClass': '', 'words': [], maxMatchCnt: 1, 'warningClass': 'warning'}
             ],
             maxlength: -1,
             maxlengthWarning: '',
@@ -161,7 +161,7 @@
                     key, ruleTextList, matchText, spanText, matchTextList = [], matchesList = [],
                     notOverMaxText = '', overMaxText ='', matchClass = '',
                     i, imax, j, jmax, maxSize,
-                    isUnique = false;
+                    maxMatchCnt = 0;
 
                 if (0 < _this.settings.maxlength) {
                     // check for max length
@@ -195,17 +195,20 @@
 
                 // check for matching words
                 for (i = 0, imax = _this.settings.matches.length; i < imax; i++) {
-                    isUnique = false;
+                    maxMatchCnt = 0;
 
-                    if (_this.settings.matches[i].hasOwnProperty('isUnique')) {
-                        isUnique = _this.settings.matches[i].isUnique;
+                    // check for max match count
+                    if (_this.settings.matches[i].hasOwnProperty('maxMatchCnt')) {
+                        maxMatchCnt = _this.settings.matches[i].maxMatchCnt;
                     }
 
                     // check if match rule is a RegExp
                     if (_this.settings.matches[i].words instanceof RegExp) {
+                        // set matched words array
                         matchesList = notOverMaxText.match( _this.settings.matches[i].words ) || [];
                     }
                     else {
+                        // copy words array
                         matchesList = _this.settings.matches[i].words.slice(0);
                     }
 
@@ -214,18 +217,23 @@
                         matchText = matchesList[j];
                         matchClass = '';
 
-                        if (isUnique && notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') ).length > 1) {
+                        // check if the match count is over max
+                        if (maxMatchCnt !== 0 && notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') ).length > maxMatchCnt) {
+                            // check for match class name
                             if (_this.settings.matches[i].hasOwnProperty('warningClass')) {
                                 matchClass = _this.settings.matches[i].warningClass;
                             }
+                            // update replaced text
                             notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, matchClass );
                         }
                         else {
                             // check if word exists in input text
                             if( notOverMaxText.indexOf( matchText ) !== -1 ){
+                                // check for match class name
                                 if (_this.settings.matches[i].hasOwnProperty('matchClass')) {
                                     matchClass = _this.settings.matches[i].matchClass;
                                 }
+                                // update replaced text
                                 notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, matchClass );
                             }
                         }
@@ -237,12 +245,13 @@
                 // trigger update event
                 _this.$element.trigger('textarea.highlighter.update', {'textList': matchTextList});
 
+                // if not initialize execution the trigger an initialization complete event
                 if (!_this.isInited) {
                     _this.isInited = true;
                     _this.$element.trigger('textarea.highlighter.init.complete');
                 }
             }, 30);
-
+            // set setTimeout id
             _this.$element.data('highlighterTimerId', changeId);
         },
         getWrapedText: function( text, textList, matchedText, matchClass ){
