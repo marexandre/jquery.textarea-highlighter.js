@@ -17,8 +17,8 @@ This is the basic usage in javascript:
 // can be a class too $('.someElement')
 $('#someElement').textareaHighlighter({
     matches: [
-        {'className': 'match', 'words': ['this is a test', 'text to match']},
-        {'className': 'someClass', 'words': ['some', 'more', 'here']},
+        {'matchClass': 'match', 'rule': ['this is a test', 'text to match']},
+        {'matchClass': 'someClass', 'rule': ['some', 'more', 'here']},
     ]
     maxlength: 150,
     maxlengthWarning: 'warning',
@@ -63,8 +63,13 @@ These are the supported options and their default values:
 ```javascript
 $.textareaHighlighter.defaults = {
     isCustomeCss: false,                // Set to 'true' if you prefer to use minimal css added with the plugin
-    matches: [                          // Array of matches with className & word array
-    // {'className': '', 'words': []}   // Match template
+    matches: [                          // Array of matches with matchClass & word array
+    //    {
+    //        'matchClass': 'match',
+    //        'rule': [] or RegExp,
+    //        'maxMatchCnt': 1,
+    //        'warningClass': 'warning'
+    //    }
     ],
     maxlength: -1,                      // -1: disable, some int number over 0
     maxlengthWarning: '',               // Class name to add to text when it's over max length
