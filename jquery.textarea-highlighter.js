@@ -195,6 +195,7 @@
 
                 // check for matching words
                 for (i = 0, imax = _this.settings.matches.length; i < imax; i++) {
+                    isUnique = false;
 
                     if (_this.settings.matches[i].hasOwnProperty('isUnique')) {
                         isUnique = _this.settings.matches[i].isUnique;
