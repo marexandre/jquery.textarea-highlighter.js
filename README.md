@@ -38,7 +38,9 @@ This is the basic using with data- in HTML:
 This is triggered when plugin's initialization is complete.
 
 ```javascript
-$('#someElement').on('textarea.highlighter.init.complete');
+$('#someElement').on('textarea.highlighter.init.complete', function(){
+    // do some cool stuff :)
+});
 ```
 
 Event triggered when a matching text is found
