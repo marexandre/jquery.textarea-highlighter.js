@@ -147,7 +147,8 @@
             });
         },
         change: function(e){
-            var _this = this;
+            var _this = this,
+                settings = _this.settings;
             // if arrow keys, don't do anything
             if (/(37|38|39|40)/.test(e.keyCode)) { return true; }
 
@@ -164,53 +165,53 @@
                     i, imax, j, jmax, maxSize,
                     maxMatchCnt = 0;
 
-                if (0 < _this.settings.maxlength) {
+                if (0 < settings.maxlength) {
                     // check for max length
-                    if ( _this.settings.maxlength < _this.$element.val().length) {
-                        matchText = textareaText.slice( _this.settings.maxlength, _this.settings.maxlength + _this.$element.val().length - 1 );
-                        overMaxText = '<span class="'+ _this.settings.maxlengthWarning +'">'+ matchText +'</span>';
+                    if ( settings.maxlength < _this.$element.val().length) {
+                        matchText = textareaText.slice( settings.maxlength, settings.maxlength + _this.$element.val().length - 1 );
+                        overMaxText = '<span class="'+ settings.maxlengthWarning +'">'+ matchText +'</span>';
 
                     }
                     // update text max length
-                    if (_this.settings.maxlengthElement !== null) {
-                        maxSize = _this.settings.maxlength - _this.$element.val().length;
+                    if (settings.maxlengthElement !== null) {
+                        maxSize = settings.maxlength - _this.$element.val().length;
                         if (maxSize < 0) {
-                            if (! _this.settings.maxlengthElement.hasClass( _this.settings.maxlengthWarning )) {
-                                _this.settings.maxlengthElement.addClass( _this.settings.maxlengthWarning );
+                            if (! settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+                                settings.maxlengthElement.addClass( settings.maxlengthWarning );
                             }
                         }
                         else {
-                            if (_this.settings.maxlengthElement.hasClass( _this.settings.maxlengthWarning )) {
-                                _this.settings.maxlengthElement.removeClass( _this.settings.maxlengthWarning );
+                            if (settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+                                settings.maxlengthElement.removeClass( settings.maxlengthWarning );
                             }
                         }
                         // update max length
-                        _this.settings.maxlengthElement.text( maxSize );
+                        settings.maxlengthElement.text( maxSize );
                     }
 
-                    notOverMaxText = _this.$element.val().slice( 0, _this.settings.maxlength );
+                    notOverMaxText = _this.$element.val().slice( 0, settings.maxlength );
                 }
                 else {
                     notOverMaxText = textareaText;
                 }
 
                 // check for matching words
-                for (i = 0, imax = _this.settings.matches.length; i < imax; i++) {
+                for (i = 0, imax = settings.matches.length; i < imax; i++) {
                     maxMatchCnt = 0;
 
                     // check for max match count
-                    if (_this.settings.matches[i].hasOwnProperty('maxMatchCnt')) {
-                        maxMatchCnt = _this.settings.matches[i].maxMatchCnt;
+                    if (settings.matches[i].hasOwnProperty('maxMatchCnt')) {
+                        maxMatchCnt = settings.matches[i].maxMatchCnt;
                     }
 
                     // check if match rule is a RegExp
-                    if (_this.settings.matches[i].rule instanceof RegExp) {
+                    if (settings.matches[i].rule instanceof RegExp) {
                         // set matched words array
-                        matchesList = notOverMaxText.match( _this.settings.matches[i].rule ) || [];
+                        matchesList = notOverMaxText.match( settings.matches[i].rule ) || [];
                     }
                     else {
                         // copy words array
-                        matchesList = _this.settings.matches[i].rule.slice(0);
+                        matchesList = settings.matches[i].rule.slice(0);
                     }
 
                     for (j = 0, jmax = matchesList.length; j < jmax; j++) {
@@ -221,8 +222,8 @@
                         // check if the match count is over max
                         if (maxMatchCnt !== 0 && notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') ).length > maxMatchCnt) {
                             // check for match class name
-                            if (_this.settings.matches[i].hasOwnProperty('warningClass')) {
-                                matchClass = _this.settings.matches[i].warningClass;
+                            if (settings.matches[i].hasOwnProperty('warningClass')) {
+                                matchClass = settings.matches[i].warningClass;
                             }
                             // update replaced text
                             notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, matchClass );
@@ -231,8 +232,8 @@
                             // check if word exists in input text
                             if( notOverMaxText.indexOf( matchText ) !== -1 ){
                                 // check for match class name
-                                if (_this.settings.matches[i].hasOwnProperty('matchClass')) {
-                                    matchClass = _this.settings.matches[i].matchClass;
+                                if (settings.matches[i].hasOwnProperty('matchClass')) {
+                                    matchClass = settings.matches[i].matchClass;
                                 }
                                 // update replaced text
                                 notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, matchClass );
@@ -251,7 +252,7 @@
                     _this.isInited = true;
                     _this.$element.trigger('textarea.highlighter.init.complete');
                 }
-            }, _this.settings.typingDelay);
+            }, settings.typingDelay);
             // set setTimeout id
             _this.$element.data('highlighterTimerId', changeId);
         },
