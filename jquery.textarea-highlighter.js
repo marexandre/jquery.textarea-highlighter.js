@@ -22,7 +22,8 @@
             maxlengthWarning: '',
             maxlengthElement: null,
             isCustomeCss: false,
-            debug: false
+            debug: false,
+            typingDelay: 30
         };
 
     // constructor
@@ -250,7 +251,7 @@
                     _this.isInited = true;
                     _this.$element.trigger('textarea.highlighter.init.complete');
                 }
-            }, 30);
+            }, _this.settings.typingDelay);
             // set setTimeout id
             _this.$element.data('highlighterTimerId', changeId);
         },
