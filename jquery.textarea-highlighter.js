@@ -63,7 +63,7 @@
                 .on('textarea.highlighter.destroy', function(){
                     _this.destroy();
                 })
-                .on('textarea.highlighter.update', function(){
+                .on('textarea.highlighter.updateStyle', function(){
                     _this.updateStyle();
                 })
                 .on('textarea.highlighter.change', function(){
