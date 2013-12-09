@@ -68,6 +68,13 @@
                 })
                 .on('textarea.highlighter.change', function(){
                     _this.change({});
+                })
+                // debug mode toggle
+                .on('textarea.highlighter.debug.on', function(){
+                    _this.debugModeOn();
+                })
+                .on('textarea.highlighter.debug.off', function(){
+                    _this.debugModeOff();
                 });
 
             if (browser.msie) {
@@ -279,6 +286,16 @@
                     'background': ''
                 })
                 .unwrap();
+        },
+        debugModeOn: function(){
+            this.settings.debug = true;
+            this.$backgroundDiv.css({ 'color': '#f00' });
+            this.$element.css({ 'color': 'rgba(0,0,0,0.5)' });
+        },
+        debugModeOff: function(){
+            this.settings.debug = false;
+            this.$backgroundDiv.css({ 'color': 'transparent' });
+            this.$element.css({ 'color': 'inherit' });
         }
     };
 
