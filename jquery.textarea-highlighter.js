@@ -165,42 +165,16 @@
                 _this.$element.data('highlighterTimerId', -1);
             }
 
+            // id for set timeout
             var changeId = setTimeout(function(){
-                var textareaText = _this.$element.val(),
-                    key, ruleTextList, matchText, spanText, matchTextList = [], matchesList = [],
-                    notOverMaxText = '', overMaxText ='', matchClass = '',
-                    i, imax, j, jmax, maxSize,
-                    maxMatchCnt = 0, maxMatch = null;
+                // init variables
+                var matchText, spanText, matchTextList = [], matchesList = [],
+                    maxMatchCnt = 0, maxMatch = null,
+                    i, imax, j, jmax;
 
-                if (0 < settings.maxlength) {
-                    // check for max length
-                    if ( settings.maxlength < _this.$element.val().length) {
-                        matchText = textareaText.slice( settings.maxlength, settings.maxlength + _this.$element.val().length - 1 );
-                        overMaxText = '<span class="'+ settings.maxlengthWarning +'">'+ matchText +'</span>';
-
-                    }
-                    // update text max length
-                    if (settings.maxlengthElement !== null) {
-                        maxSize = settings.maxlength - _this.$element.val().length;
-                        if (maxSize < 0) {
-                            if (! settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
-                                settings.maxlengthElement.addClass( settings.maxlengthWarning );
-                            }
-                        }
-                        else {
-                            if (settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
-                                settings.maxlengthElement.removeClass( settings.maxlengthWarning );
-                            }
-                        }
-                        // update max length
-                        settings.maxlengthElement.text( maxSize );
-                    }
-
-                    notOverMaxText = _this.$element.val().slice( 0, settings.maxlength );
-                }
-                else {
-                    notOverMaxText = textareaText;
-                }
+                var tmp = _this.checkMaxLength();
+                var overMaxText = tmp.overMaxText;
+                var notOverMaxText = tmp.notOverMaxText;
 
                 // check for matching words
                 for (i = 0, imax = settings.matches.length; i < imax; i++) {
@@ -224,13 +198,14 @@
                     for (j = 0, jmax = matchesList.length; j < jmax; j++) {
                         // get word to match
                         matchText = matchesList[j];
-                        matchClass = '';
                         maxMatch = null;
+                        var matchClass = '';
 
+                        // check if max count for matches was set
                         if (maxMatchCnt !== 0 ) {
                             maxMatch = notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') );
                         }
-                        // check if the match count is over max
+                        // check if the match count is over max match count
                         if (maxMatch && maxMatch.length > maxMatchCnt){
                             // check for match class name
                             if (settings.matches[i].hasOwnProperty('warningClass')) {
@@ -267,10 +242,65 @@
             // set setTimeout id
             _this.$element.data('highlighterTimerId', changeId);
         },
+        // wrap matched text with an HTML element
         getWrapedText: function( text, textList, matchedText, matchClass ){
             textList.push( matchedText );
-            return text.replace( new RegExp( _escapeRegExp( matchedText ), 'g'), '<span class="'+ matchClass +'">'+ matchedText +'</span>' );
+            return text.replace( new RegExp( _escapeRegExp( matchedText ), 'g'), this.getTextInSpan( matchClass, matchedText ) );
         },
+        getTextInSpan: function( className, text ){
+            return '<span class="'+ className +'">'+ text +'</span>';
+        },
+
+        checkMaxLength: function(){
+            var _this = this,
+                textareaText = _this.$element.val(),
+                settings = _this.settings,
+                maxSize = 0,
+                textObj = {
+                    overMaxText: '',
+                    notOverMaxText: ''
+                };
+
+            if (0 < settings.maxlength) {
+                // check for max length
+                if ( settings.maxlength < textareaText.length) {
+                    // get text that was over max length
+                    var matchText = textareaText.slice( settings.maxlength, settings.maxlength + textareaText.length - 1 );
+                    // wrap matched text with an HTML element for highlighting
+                    textObj.overMaxText = _this.getTextInSpan( settings.maxlengthWarning, matchText );
+                }
+                // update text max length
+                if (settings.maxlengthElement !== null) {
+                    maxSize = settings.maxlength - textareaText.length;
+
+                    if (maxSize < 0) {
+                        // add max length warning class
+                        if (! settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+                            settings.maxlengthElement.addClass( settings.maxlengthWarning );
+                        }
+                    }
+                    else {
+                        // remove max length warning class
+                        if (settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+                            settings.maxlengthElement.removeClass( settings.maxlengthWarning );
+                        }
+                    }
+                    // update max length
+                    settings.maxlengthElement.text( maxSize );
+                }
+                // set text that wasn't over max length
+                textObj.notOverMaxText = textareaText.slice( 0, settings.maxlength );
+            }
+            else {
+                // max length wasn't set so use input text without any extra settings
+                textObj.notOverMaxText = textareaText;
+            }
+
+            return textObj;
+        },
+
+
+        // Destroy plugin in settings & extra elements that were added
         destroy: function(){
             $.data( this.element, "plugin_" + pluginName, false );
             this.$backgroundDiv.remove();
@@ -287,11 +317,13 @@
                 })
                 .unwrap();
         },
+        // Turn on debug mode
         debugModeOn: function(){
             this.settings.debug = true;
             this.$backgroundDiv.css({ 'color': '#f00' });
             this.$element.css({ 'color': 'rgba(0,0,0,0.5)' });
         },
+        // Turn off debug mode
         debugModeOff: function(){
             this.settings.debug = false;
             this.$backgroundDiv.css({ 'color': 'transparent' });
