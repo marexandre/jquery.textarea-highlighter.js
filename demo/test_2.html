@@ -117,11 +117,11 @@ $(function(){
                 })
                 .textareaHighlighter({
                     matches: [
-                        {'matchClass': 'brackets', 'rule': getUniqueWordListFromSource( $source.find('.match') )},
-                        {'matchClass': 'glossary', 'rule': getUniqueWordListFromSource( $source.find('.hoge') )},
-                        {'matchClass': 'misspell', 'rule': ['some']},
-                        // {'matchClass': 'tags', 'rule': ['{1}', '{/1}','{2}', '{/2}'], 'maxMatchCnt': 1, 'warningClass': 'warning'},
-                        {'matchClass': 'tags', 'rule': /\{\/?\d+\}/g, 'maxMatchCnt': 1, 'warningClass': 'warning' }
+                        {'matchClass': 'brackets', 'match': getUniqueWordListFromSource( $source.find('.match') )},
+                        {'matchClass': 'glossary', 'match': getUniqueWordListFromSource( $source.find('.hoge') )},
+                        {'matchClass': 'misspell', 'match': ['some']},
+                        // {'matchClass': 'tags', 'match': ['{1}', '{/1}','{2}', '{/2}'], 'maxMatchCnt': 1, 'warningClass': 'warning'},
+                        {'matchClass': 'tags', 'match': /\{\/?\d+\}/g, 'maxMatchCnt': 1, 'warningClass': 'warning' }
                     ],
                     maxlength: 260,
                     maxlengthWarning: 'warning',

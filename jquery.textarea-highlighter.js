@@ -16,7 +16,7 @@
     var pluginName = "textareaHighlighter",
         defaults = {
             matches: [
-                // {'matchClass': '', 'rule': [], 'maxMatchCnt': 1, 'warningClass': 'warning'}
+                // {'matchClass': '', 'match': [], 'maxMatchCnt': 1, 'warningClass': 'warning'}
             ],
             maxlength: -1,
             maxlengthWarning: '',
@@ -185,14 +185,14 @@
                         maxMatchCnt = settings.matches[i].maxMatchCnt;
                     }
 
-                    // check if match rule is a RegExp
-                    if (settings.matches[i].rule instanceof RegExp) {
+                    // check if match match is a RegExp
+                    if (settings.matches[i].match instanceof RegExp) {
                         // set matched words array
-                        matchesList = notOverMaxText.match( settings.matches[i].rule ) || [];
+                        matchesList = notOverMaxText.match( settings.matches[i].match ) || [];
                     }
                     else {
                         // copy words array
-                        matchesList = settings.matches[i].rule;
+                        matchesList = settings.matches[i].match;
                     }
 
                     for (j = 0, jmax = matchesList.length; j < jmax; j++) {
