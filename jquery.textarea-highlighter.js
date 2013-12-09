@@ -16,7 +16,7 @@
     var pluginName = "textareaHighlighter",
         defaults = {
             matches: [
-                // {'matchClass': '', 'rule': [], maxMatchCnt: 1, 'warningClass': 'warning'}
+                // {'matchClass': '', 'rule': [], 'maxMatchCnt': 1, 'warningClass': 'warning'}
             ],
             maxlength: -1,
             maxlengthWarning: '',
@@ -163,7 +163,7 @@
                     key, ruleTextList, matchText, spanText, matchTextList = [], matchesList = [],
                     notOverMaxText = '', overMaxText ='', matchClass = '',
                     i, imax, j, jmax, maxSize,
-                    maxMatchCnt = 0;
+                    maxMatchCnt = 0, maxMatch = null;
 
                 if (0 < settings.maxlength) {
                     // check for max length
@@ -211,16 +211,20 @@
                     }
                     else {
                         // copy words array
-                        matchesList = settings.matches[i].rule.slice(0);
+                        matchesList = settings.matches[i].rule;
                     }
 
                     for (j = 0, jmax = matchesList.length; j < jmax; j++) {
                         // get word to match
                         matchText = matchesList[j];
                         matchClass = '';
+                        maxMatch = null;
 
+                        if (maxMatchCnt !== 0 ) {
+                            maxMatch = notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') );
+                        }
                         // check if the match count is over max
-                        if (maxMatchCnt !== 0 && notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') ).length > maxMatchCnt) {
+                        if (maxMatch && maxMatch.length > maxMatchCnt){
                             // check for match class name
                             if (settings.matches[i].hasOwnProperty('warningClass')) {
                                 matchClass = settings.matches[i].warningClass;
