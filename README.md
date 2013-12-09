@@ -17,9 +17,9 @@ This is the basic usage in javascript:
 // can be a class too $('.someElement')
 $('#someElement').textareaHighlighter({
     matches: [
-        {'matchClass': 'match', 'rule': ['this is a test', 'text to match']},
-        {'matchClass': 'someClass', 'rule': ['some', 'more', 'here']},
-        {'matchClass': 'tags', 'rule': /\{\/?\d+\}/g }
+        {'matchClass': 'match', 'match': ['this is a test', 'text to match']},
+        {'matchClass': 'someClass', 'match': ['some', 'more', 'here']},
+        {'matchClass': 'tags', 'match': /\{\/?\d+\}/g }
     ]
     maxlength: 150,
     maxlengthWarning: 'warning',
@@ -69,7 +69,7 @@ $.textareaHighlighter.defaults = {
     matches: [               // Array of matches with matchClass & word array
     //    {
     //        'matchClass': 'match',
-    //        'rule': ['a','b'] or RegExp,
+    //        'match': ['a','b'] or RegExp,
     //        'maxMatchCnt': 1,
     //        'warningClass': 'warning'
     //    }
