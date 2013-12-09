@@ -64,8 +64,8 @@ These are the supported options and their default values:
 
 ```javascript
 $.textareaHighlighter.defaults = {
-    isCustomeCss: false,                // Set to 'true' if you prefer to use minimal css added with the plugin
-    matches: [                          // Array of matches with matchClass & word array
+    isCustomeCss: false,     // Set to 'true' if you prefer to use minimal css added with the plugin
+    matches: [               // Array of matches with matchClass & word array
     //    {
     //        'matchClass': 'match',
     //        'rule': [] or RegExp,
@@ -73,11 +73,11 @@ $.textareaHighlighter.defaults = {
     //        'warningClass': 'warning'
     //    }
     ],
-    maxlength: -1,                      // -1: disable, some int number over 0
-    maxlengthWarning: '',               // Class name to add to text when it's over max length
-    maxlengthElement: null,             // jQuery element to update letter count in the view
-    debug: false,                       // Flag to show debug mode
-    typingDelay: 30                     // Typing delay in milliseconds
+    maxlength: -1,           // -1: disable, some int number over 0
+    maxlengthWarning: '',    // Class name to add to text when it's over max length
+    maxlengthElement: null,  // jQuery element to update letter count in the view
+    debug: false,            // Flag to show debug mode
+    typingDelay: 30          // Typing delay in milliseconds
 };
 ```
 
