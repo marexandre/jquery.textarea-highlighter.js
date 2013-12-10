@@ -30,8 +30,8 @@ $('#someElement').textareaHighlighter({
             'matchClass': 'tags'
         },
         {
-            'match': 'match': ['this', 'is', 'a', 'unique', 'test'],,
-            'matchClass': 'tags',
+            'match': 'match': ['this', 'is', 'a', 'unique', 'test'],
+            'matchClass': 'unique',
             'maxMatchCnt': 1,           // match max count
             'warningClass': 'warning'   // when match count is over then max then this class will be added to matched elements
         }
