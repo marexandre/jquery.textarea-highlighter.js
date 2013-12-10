@@ -36,6 +36,7 @@ This is the basic using with data- in HTML:
 
 # Events
 
+### textarea.highlighter.init.complete
 This is triggered when plugin's initialization is complete.
 
 ```javascript
@@ -44,6 +45,7 @@ $('#someElement').on('textarea.highlighter.init.complete', function(){
 });
 ```
 
+### textarea.highlighter.update
 Event triggered when a matching text is found
 
 ```javascript
@@ -53,10 +55,25 @@ $('#someElement').on('textarea.highlighter.update', function(e, data){
 });
 ```
 
+### textarea.highlighter.destroy
 Remove all added HTML/CSS and plugin related event bindings etc..
 
 ```javascript
 $('#someElement').trigger('textarea.highlighter.destroy');
+```
+
+### textarea.highlighter.debug.on
+Turn debug mode on
+
+```javascript
+$('#someElement').trigger('textarea.highlighter.debug.on');
+```
+
+### textarea.highlighter.debug.off
+Turn debug mode off
+
+```javascript
+$('#someElement').trigger('textarea.highlighter.debug.off');
 ```
 
 # Options
