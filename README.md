@@ -18,8 +18,8 @@ This is the basic usage in javascript:
 $('#someElement').textareaHighlighter({
     matches: [
         {
-            'match': ['this is a test', 'text to match'],
-            'matchClass': 'match'
+            'match': ['this is a test', 'text to match'], // will check for this matches
+            'matchClass': 'match'                         // on matched text this class will be added
         },
         {
             'match': ['some', 'more', 'here'],
