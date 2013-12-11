@@ -167,71 +167,13 @@
 
             // id for set timeout
             var changeId = setTimeout(function(){
-                // init variables
-                var matchText, spanText, matchTextList = [], matchesList = [],
-                    maxMatchCnt = 0, maxMatch = null,
-                    i, imax, j, jmax;
-
-                var tmp = _this.checkMaxLength();
-                var overMaxText = tmp.overMaxText;
-                var notOverMaxText = tmp.notOverMaxText;
-
-                // check for matching words
-                for (i = 0, imax = settings.matches.length; i < imax; i++) {
-                    maxMatchCnt = 0;
-
-                    // check for max match count
-                    if (settings.matches[i].hasOwnProperty('maxMatchCnt')) {
-                        maxMatchCnt = settings.matches[i].maxMatchCnt;
-                    }
-
-                    // check if match match is a RegExp
-                    if (settings.matches[i].match instanceof RegExp) {
-                        // set matched words array
-                        matchesList = notOverMaxText.match( settings.matches[i].match ) || [];
-                    }
-                    else {
-                        // copy words array
-                        matchesList = settings.matches[i].match;
-                    }
-
-                    for (j = 0, jmax = matchesList.length; j < jmax; j++) {
-                        // get word to match
-                        matchText = matchesList[j];
-                        maxMatch = null;
-                        var matchClass = '';
-
-                        // check if max count for matches was set
-                        if (maxMatchCnt !== 0 ) {
-                            maxMatch = notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') );
-                        }
-                        // check if the match count is over max match count
-                        if (maxMatch && maxMatch.length > maxMatchCnt){
-                            // check for match class name
-                            if (settings.matches[i].hasOwnProperty('warningClass')) {
-                                matchClass = settings.matches[i].warningClass;
-                            }
-                            // update replaced text
-                            notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, matchClass );
-                        }
-                        else {
-                            // check if word exists in input text
-                            if( notOverMaxText.indexOf( matchText ) !== -1 ){
-                                // check for match class name
-                                if (settings.matches[i].hasOwnProperty('matchClass')) {
-                                    matchClass = settings.matches[i].matchClass;
-                                }
-                                // update replaced text
-                                notOverMaxText = _this.getWrapedText( notOverMaxText, matchTextList, matchText, matchClass );
-                            }
-                        }
-                    }
-                }
+                var tmpMaxLengthObj = _this.checkMaxLength();
+                var tmpMatchedObj = _this.checkMatchWords( tmpMaxLengthObj.notOverMaxText );
 
                 // update background div content
-                _this.$backgroundDiv.html( notOverMaxText + overMaxText );
+                _this.$backgroundDiv.html( tmpMatchedObj.txt + tmpMaxLengthObj.overMaxText );
                 // trigger update event
-                _this.$element.trigger('textarea.highlighter.update', {'textList': matchTextList});
+                _this.$element.trigger('textarea.highlighter.update', {'textList': tmpMatchedObj.matchedList});
 
                 // if not initialize execution the trigger an initialization complete event
                 if (!_this.isInited) {
@@ -243,8 +185,7 @@
             _this.$element.data('highlighterTimerId', changeId);
         },
         // wrap matched text with an HTML element
-        getWrapedText: function( text, textList, matchedText, matchClass ){
-            textList.push( matchedText );
+        getWrapedText: function( text, matchedText, matchClass ){
             return text.replace( new RegExp( _escapeRegExp( matchedText ), 'g'), this.getTextInSpan( matchClass, matchedText ) );
         },
         getTextInSpan: function( className, text ){
@@ -256,10 +197,8 @@
                 textareaText = _this.$element.val(),
                 settings = _this.settings,
                 maxSize = 0,
-                textObj = {
-                    overMaxText: '',
-                    notOverMaxText: ''
-                };
+                overMaxText = '',
+                notOverMaxText = '';
 
             if (0 < settings.maxlength) {
                 // check for max length
@@ -267,7 +206,7 @@
                     // get text that was over max length
                     var matchText = textareaText.slice( settings.maxlength, settings.maxlength + textareaText.length - 1 );
                     // wrap matched text with an HTML element for highlighting
-                    textObj.overMaxText = _this.getTextInSpan( settings.maxlengthWarning, matchText );
+                    overMaxText = _this.getTextInSpan( settings.maxlengthWarning, matchText );
                 }
                 // update text max length
                 if (settings.maxlengthElement !== null) {
@@ -289,14 +228,84 @@
                     settings.maxlengthElement.text( maxSize );
                 }
                 // set text that wasn't over max length
-                textObj.notOverMaxText = textareaText.slice( 0, settings.maxlength );
+                notOverMaxText = textareaText.slice( 0, settings.maxlength );
             }
             else {
                 // max length wasn't set so use input text without any extra settings
-                textObj.notOverMaxText = textareaText;
+                notOverMaxText = textareaText;
             }
 
-            return textObj;
+            return {
+                'overMaxText': overMaxText,
+                'notOverMaxText': notOverMaxText
+            };
+        },
+
+        checkMatchWords: function( notOverMaxText ){
+            var settings = this.settings;
+            var i = 0, imax = 0, maxMatchCnt = 0, j = 0, jmax = 0,
+                matchesList = [], matchTextList = [],
+                maxMatch = null, matchText = '';
+
+            // check for matching words
+            for (i = 0, imax = settings.matches.length; i < imax; i++) {
+                maxMatchCnt = 0;
+
+                // check for max match count
+                if (settings.matches[i].hasOwnProperty('maxMatchCnt')) {
+                    maxMatchCnt = settings.matches[i].maxMatchCnt;
+                }
+
+                // check if match match is a RegExp
+                if (settings.matches[i].match instanceof RegExp) {
+                    // set matched words array
+                    matchesList = notOverMaxText.match( settings.matches[i].match ) || [];
+                }
+                else {
+                    // copy words array
+                    matchesList = settings.matches[i].match;
+                }
+
+                for (j = 0, jmax = matchesList.length; j < jmax; j++) {
+                    // get word to match
+                    matchText = matchesList[j];
+                    maxMatch = null;
+                    var matchClass = '';
+
+                    // check if max count for matches was set
+                    if (maxMatchCnt !== 0 ) {
+                        maxMatch = notOverMaxText.match( new RegExp( _escapeRegExp( matchText ), 'g') );
+                    }
+                    // check if the match count is over max match count
+                    if (maxMatch && maxMatch.length > maxMatchCnt){
+                        matchTextList.push( matchText );
+                        // check for match class name
+                        if (settings.matches[i].hasOwnProperty('warningClass')) {
+                            matchClass = settings.matches[i].warningClass;
+                        }
+                        // update replaced text
+                        notOverMaxText = this.getWrapedText( notOverMaxText, matchText, matchClass );
+                    }
+                    else {
+                        // check if word exists in input text
+                        if (notOverMaxText.indexOf( matchText ) !== -1){
+                            matchTextList.push( matchText );
+
+                            // check for match class name
+                            if (settings.matches[i].hasOwnProperty('matchClass')) {
+                                matchClass = settings.matches[i].matchClass;
+                            }
+                            // update replaced text
+                            notOverMaxText = this.getWrapedText( notOverMaxText, matchText, matchClass );
+                        }
+                    }
+                }
+            }
+
+            return {
+                'txt': notOverMaxText,
+                'matchedList': matchTextList
+            };
         },
 
 
