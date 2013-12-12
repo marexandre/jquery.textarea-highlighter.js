@@ -120,8 +120,8 @@ $(function(){
                         {'matchClass': 'brackets', 'match': getUniqueWordListFromSource( $source.find('.match') )},
                         {'matchClass': 'glossary', 'match': getUniqueWordListFromSource( $source.find('.hoge') )},
                         {'matchClass': 'misspell', 'match': ['some']},
-                        // {'matchClass': 'tags', 'match': ['{1}', '{/1}','{2}', '{/2}'], 'maxMatchCnt': 1, 'warningClass': 'warning'},
-                        {'matchClass': 'tags', 'match': /\{\/?\d+\}/g, 'maxMatchCnt': 1, 'warningClass': 'warning' }
+                        // {'matchClass': 'tags', 'match': ['{1}', '{/1}','{2}', '{/2}']},
+                        {'matchClass': 'tags', 'match': /\{\/?\d+\}/g }
                     ],
                     maxlength: 260,
                     maxlengthWarning: 'warning',
