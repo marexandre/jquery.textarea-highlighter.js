@@ -28,12 +28,6 @@ $('#someElement').textareaHighlighter({
         {
             'match': /\{\/?\d+\}/g,
             'matchClass': 'tags'
-        },
-        {
-            'match': 'match': ['this', 'is', 'a', 'unique', 'test'],
-            'matchClass': 'unique',
-            'maxMatchCnt': 1,           // match max count
-            'warningClass': 'warning'   // when match count is over then max then this class will be added to matched elements
         }
     ]
     maxlength: 150,
@@ -101,9 +95,7 @@ $.textareaHighlighter.defaults = {
     matches: [               // Array of matches with matchClass & word array
     //    {
     //        'matchClass': 'match',
-    //        'match': ['a','b'] or RegExp,
-    //        'maxMatchCnt': 1,
-    //        'warningClass': 'warning'
+    //        'match': ['a','b'] or RegExp
     //    }
     ],
     maxlength: -1,           // -1: disable, some int number over 0
