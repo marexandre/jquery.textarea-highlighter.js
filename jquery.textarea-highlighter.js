@@ -102,7 +102,7 @@
                 style    = this.style;
 
             // textarea style
-            this.style = {
+            style = {
                 // background   : this.$element.css('background'),
                 paddingTop   : parseInt( $this.css('padding-top'), 10 ),
                 paddingRight : parseInt( $this.css('padding-right'), 10 ),
