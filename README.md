@@ -4,17 +4,17 @@ jquery.textarea-highlighter.js
 jQuery plugin for highlighting text in textarea
 
 
-# Screen Shot
+## Screen Shot
 ![screen shot](screenshot.png)
 
 
-#DEMO
+## DEMO
 
 - [DEMO](http://marexandre.github.io/jquery.textarea-highlighter.js/demo/ "DEMO")
 - [DEMO with debug mode: ON](http://marexandre.github.io/jquery.textarea-highlighter.js/demo/test.html "DEMO with debug mode: ON")
 
 
-# Usage
+## Usage
 
 This is the basic usage in javascript:
 
@@ -48,7 +48,7 @@ This is the basic using with data- in HTML:
 <textarea data-maxlength="150" data-debug="true"></textarea>
 ```
 
-# Events
+## Events
 
 ### textarea.highlighter.init.complete
 This is triggered when plugin's initialization is complete.
@@ -90,7 +90,7 @@ Turn debug mode off
 $('#someElement').trigger('textarea.highlighter.debug.off');
 ```
 
-# Options
+## Options
 
 These are the supported options and their default values:
 
@@ -111,7 +111,7 @@ $.textareaHighlighter.defaults = {
 };
 ```
 
-# Tested
+## Tested
 
 - Chrome 30+, FireFox 24+ (OSX & PC)
 - Latest Safari & Chrome for ios 7+
