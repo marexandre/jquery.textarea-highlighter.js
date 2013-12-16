@@ -11,7 +11,7 @@ jQuery plugin for highlighting text in textarea
 #DEMO
 
 - [DEMO](http://marexandre.github.io/jquery.textarea-highlighter.js/demo/ "DEMO")
-- [DEMO with debug](http://marexandre.github.io/jquery.textarea-highlighter.js/demo/test.html "DEMO with debug")
+- [DEMO with debug mode: ON](http://marexandre.github.io/jquery.textarea-highlighter.js/demo/test.html "DEMO with debug mode: ON")
 
 
 # Usage
