@@ -9,6 +9,9 @@ jQuery plugin for highlighting text in textarea
 - [DEMO with debug](http://marexandre.github.io/jquery.textarea-highlighter.js/demo/test.html "DEMO with debug")
 
 
+# Screen Shot
+![screen shot](screenshot.png)
+
 # Usage
 
 This is the basic usage in javascript:
