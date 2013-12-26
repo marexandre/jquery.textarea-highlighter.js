@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.3.2
+ * jquery.textareaHighlighter.js 0.3.3
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
@@ -77,11 +77,30 @@
                     _this.debugModeOff();
                 });
 
-            if (browser.msie) {
-                // IE
-                $this.on('input.textarea.highlighter keyup.textarea.highlighter', function(e){
-                    _this.change(e);
-                });
+
+            if ('onpropertychange' in _this.element) {
+                if ('oninput' in _this.element) {
+                    // IE 9+
+                    $this.on('input.textarea.highlighter keyup.textarea.highlighter', function(e){
+                        _this.change(e);
+                    });
+                    // on backspace key long press
+                    var lastUpdate = new Date().getTime();
+                    var timeDiff = 0;
+                    $this.on('keydown.textarea.highlighter', function(e){
+                        timeDiff = Math.abs(lastUpdate - new Date().getTime());
+                        if (e.which === 8 && (timeDiff < 10 || 250 < timeDiff)) {
+                            _this.change(e);
+                            lastUpdate = new Date().getTime();
+                        }
+                    });
+                }
+                else {
+                    // IE 7/8
+                    $this.on('propertychange.textarea.highlighter', function(e){
+                        _this.change(e);
+                    });
+                }
             }
             else {
                 // Modern browsers
