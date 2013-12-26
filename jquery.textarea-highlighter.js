@@ -236,16 +236,16 @@
             }
 
             return {
-                'overMaxText': overMaxText,
-                'notOverMaxText': notOverMaxText
+                'overMaxText': helper.escapeHTML( overMaxText ),
+                'notOverMaxText': helper.escapeHTML( notOverMaxText )
             };
         },
 
-        checkMatchWords: function( notOverMaxText ){
+        checkMatchWords: function( escapedTargetText ){
             var settings = this.settings;
             var i = 0, imax = 0, j = 0, jmax = 0,
                 matchesList = [], matchTextList = [],
-                matchText = '', matchClass = '';
+                matchText = '', matchTextEscape = '', matchClass = '';
 
             // check for matching words
             for (i = 0, imax = settings.matches.length; i < imax; i++) {
@@ -253,7 +253,7 @@
                 // check if match match is a RegExp
                 if (settings.matches[i].match instanceof RegExp) {
                     // set matched words array
-                    matchesList = helper.getUniqueArray( notOverMaxText.match( settings.matches[i].match ) || [] );
+                    matchesList = helper.getUniqueArray( escapedTargetText.match( settings.matches[i].match ) || [] );
                 }
                 else {
                     // copy words array
@@ -263,10 +263,11 @@
                 for (j = 0, jmax = matchesList.length; j < jmax; j++) {
                     // get word to match
                     matchText = matchesList[j];
+                    matchTextEscape = helper.escapeHTML( matchText );
                     matchClass = '';
 
                     // check if word exists in input text
-                    if (notOverMaxText.indexOf( matchText ) !== -1){
+                    if (escapedTargetText.indexOf( matchTextEscape ) !== -1){
                         matchTextList.push( matchText );
 
                         // check for match class name
@@ -274,7 +275,7 @@
                             matchClass = settings.matches[i].matchClass;
                         }
                         // update replaced text
-                        notOverMaxText = this.getWrapedText( notOverMaxText, matchText, matchClass );
+                        escapedTargetText = this.getWrapedText( escapedTargetText, matchTextEscape, matchClass );
                     }
                 }
             }
@@ -333,6 +334,9 @@
      *
      */
     var helper = {
+        escapeHTML: function(str){
+            return $( document.createElement('div') ).text(str).html();
+        },
         escapeRegExp: function(str){
             return str.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
         },
