@@ -281,7 +281,7 @@
             }
 
             return {
-                'txt': notOverMaxText,
+                'txt': escapedTargetText,
                 'matchedList': matchTextList
             };
         },
