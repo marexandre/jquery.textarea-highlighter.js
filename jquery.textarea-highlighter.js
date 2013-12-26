@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.3.0
+ * jquery.textareaHighlighter.js 0.3.1
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
@@ -253,7 +253,7 @@
                 // check if match match is a RegExp
                 if (settings.matches[i].match instanceof RegExp) {
                     // set matched words array
-                    matchesList = helper.getUniqueArray( notOverMaxText.match( settings.matches[i].match ) ) || [];
+                    matchesList = helper.getUniqueArray( notOverMaxText.match( settings.matches[i].match ) || [] );
                 }
                 else {
                     // copy words array
