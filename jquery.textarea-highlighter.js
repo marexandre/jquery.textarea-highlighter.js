@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.2.9
+ * jquery.textareaHighlighter.js 0.3.0
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
@@ -186,7 +186,7 @@
         },
         // wrap matched text with an HTML element
         getWrapedText: function( text, matchedText, matchClass ){
-            return text.replace( new RegExp( _escapeRegExp( matchedText ), 'g'), this.getTextInSpan( matchClass, matchedText ) );
+            return text.replace( new RegExp( helper.escapeRegExp( matchedText ), 'g'), this.getTextInSpan( matchClass, matchedText ) );
         },
         getTextInSpan: function( className, text ){
             return '<span class="'+ className +'">'+ text +'</span>';
@@ -253,7 +253,7 @@
                 // check if match match is a RegExp
                 if (settings.matches[i].match instanceof RegExp) {
                     // set matched words array
-                    matchesList = notOverMaxText.match( settings.matches[i].match ) || [];
+                    matchesList = helper.getUniqueArray( notOverMaxText.match( settings.matches[i].match ) ) || [];
                 }
                 else {
                     // copy words array
@@ -332,8 +332,18 @@
      * HELPER FUNCTIONS
      *
      */
-    var _escapeRegExp = function(str){
-        return str.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+    var helper = {
+        escapeRegExp: function(str){
+            return str.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+        },
+        getUniqueArray: function( array ){
+            return array.filter(function(elem, pos, self) {
+                if ( elem === '' ) {
+                    return false;
+                }
+                return self.indexOf(elem) === pos;
+            });
+        }
     };
     // get curretn bworser type
     var browser = (function(){
