@@ -113,5 +113,7 @@ $.textareaHighlighter.defaults = {
 
 ## Tested
 
-- Chrome 30+, FireFox 24+ (OSX & PC)
-- Latest Safari & Chrome for ios 7+
+- Chrome 30+ (OSX & PC)
+- FireFox 24+ (OSX & PC)
+- IE 9+
+- ios 7+ (Safari & Chrome)
