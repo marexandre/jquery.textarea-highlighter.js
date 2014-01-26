@@ -223,9 +223,9 @@
                 // check for max length
                 if ( settings.maxlength < textareaText.length) {
                     // get text that was over max length
-                    var matchText = textareaText.slice( settings.maxlength, settings.maxlength + textareaText.length - 1 );
-                    // wrap matched text with an HTML element for highlighting
-                    overMaxText = _this.getTextInSpan( settings.maxlengthWarning, matchText );
+                    overMaxText = textareaText.slice( settings.maxlength, settings.maxlength + textareaText.length - 1 );
+                    overMaxText = helper.escapeHTML( overMaxText );
+                    overMaxText = _this.getTextInSpan(settings.maxlengthWarning, overMaxText);
                 }
                 // update text max length
                 if (settings.maxlengthElement !== null) {
@@ -255,7 +255,7 @@
             }
 
             return {
-                'overMaxText': helper.escapeHTML( overMaxText ),
+                'overMaxText': overMaxText,
                 'notOverMaxText': helper.escapeHTML( notOverMaxText )
             };
         },
