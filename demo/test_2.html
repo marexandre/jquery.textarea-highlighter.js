@@ -42,7 +42,7 @@
     </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="./js/jquery.autosize.min.js"></script>
+<script src="./js/expanding.js"></script>
 <script src="../jquery.textarea-highlighter.js"></script>
 <script>
 $(function(){
@@ -111,7 +111,6 @@ $(function(){
                 elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge'));
 
             $target
-                .autosize()
                 .on('textarea.highlighter.update', function(e, data){
                     checkForMatchInSource( $source, elementObj, data);
                 })
@@ -126,7 +125,8 @@ $(function(){
                     maxlength: 260,
                     maxlengthWarning: 'warning',
                     maxlengthElement: $this.find('.maxlength')
-                });
+                })
+                .expandingTextarea();
         });
 
     });

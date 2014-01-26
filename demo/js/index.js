@@ -66,7 +66,6 @@ $(function(){
                 elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge, .fuga'));
 
             $target
-                .autosize()
                 .on('textarea.highlighter.update', function(e, data){
                     checkForMatchInSource( $source, elementObj, data);
                 })
@@ -76,7 +75,8 @@ $(function(){
                         {'matchClass': 'hogeHighlight', 'match': getUniqueWordListFromSource( $source.find('.hoge') )},
                         {'matchClass': 'fugaHighlight', 'match': getUniqueWordListFromSource( $source.find('.fuga') )}
                     ]
-                });
+                })
+                .expandingTextarea();
         });
 
 
@@ -87,7 +87,6 @@ $(function(){
                 elementObj = getUniqueElementListFromSource($this.find('.source').find('.match, .hoge, .fuga'));
 
             $target
-                .autosize()
                 .on('textarea.highlighter.update', function(e, data){
                     checkForMatchInSource( $source, elementObj, data);
                 })
@@ -100,7 +99,8 @@ $(function(){
                     // maxlength: 150,
                     maxlengthWarning: 'warning',
                     maxlengthElement: $this.find('.maxlength')
-                });
+                })
+                .expandingTextarea();
         });
 
     });
