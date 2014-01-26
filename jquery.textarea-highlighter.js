@@ -264,7 +264,8 @@
             var settings = this.settings;
             var i = 0, imax = 0, j = 0, jmax = 0,
                 matchesList = [], matchTextList = [],
-                matchText = '', matchTextEscape = '', matchClass = '';
+                matchText = '', matchTextEscape = '', matchClass = '',
+                matched = null;
 
             // check for matching words
             for (i = 0, imax = settings.matches.length; i < imax; i++) {
@@ -285,9 +286,13 @@
                     matchTextEscape = helper.escapeHTML( matchText );
                     matchClass = '';
 
+                    matched = escapedTargetText.match(new RegExp( helper.escapeRegExp(matchTextEscape), 'g' ));
                     // check if word exists in input text
-                    if (escapedTargetText.indexOf( matchTextEscape ) !== -1){
-                        matchTextList.push( matchText );
+                    if (matched && 0 < matched.length){
+                        matchTextList.push({
+                            text: matchText,
+                            matched: matched
+                        });
 
                         // check for match class name
                         if (settings.matches[i].hasOwnProperty('matchClass')) {

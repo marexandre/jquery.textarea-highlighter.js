@@ -42,11 +42,11 @@ $(function(){
             imax = data.textList.length;
 
             for (i = 0; i < imax; i++) {
-                tmpText = data.textList[i];
-
+                tmpText = data.textList[i].text;
+                // check if text exists in source
                 if (elementObj[ tmpText ]) {
                     tmpList = elementObj[ tmpText ];
-                    jmax = tmpList.length;
+                    jmax = data.textList[i].matched.length;
 
                     for (j = 0; j < jmax; j++) {
                         tmpList[j].addClass('added');
