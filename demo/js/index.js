@@ -75,8 +75,8 @@ $(function(){
                         {'matchClass': 'hogeHighlight', 'match': getUniqueWordListFromSource( $source.find('.hoge') )},
                         {'matchClass': 'fugaHighlight', 'match': getUniqueWordListFromSource( $source.find('.fuga') )}
                     ]
-                })
-                .expandingTextarea();
+                });
+                // .expandingTextarea();
         });
 
 
@@ -99,8 +99,8 @@ $(function(){
                     // maxlength: 150,
                     maxlengthWarning: 'warning',
                     maxlengthElement: $this.find('.maxlength')
-                })
-                .expandingTextarea();
+                });
+                // .expandingTextarea();
         });
 
     });

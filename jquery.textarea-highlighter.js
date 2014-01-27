@@ -8,6 +8,21 @@
 ;(function ( $, window, document, undefined ) {
     "use strict";
 
+    var cloneCSSProperties = [
+        'lineHeight', 'textDecoration', 'letterSpacing',
+        'fontSize', 'fontFamily', 'fontStyle',
+        'fontWeight', 'textTransform', 'textAlign',
+        'direction', 'wordSpacing', 'fontSizeAdjust',
+        'wordWrap', 'word-break',
+        'borderLeftWidth', 'borderRightWidth',
+        'borderTopWidth','borderBottomWidth',
+        'paddingLeft', 'paddingRight',
+        'paddingTop','paddingBottom',
+        'marginLeft', 'marginRight',
+        'marginTop','marginBottom',
+        'boxSizing', 'webkitBoxSizing', 'mozBoxSizing', 'msBoxSizing'
+    ];
+
     /**
      *
      * PLUGIN CORE
@@ -37,7 +52,8 @@
 
         this.style = {};
         this.$wrapDiv       = $(document.createElement('div')).addClass('textarea-highlighter-wrap');
-        this.$backgroundDiv = $(document.createElement('div'));
+        this.$backgroundDiv = $(document.createElement('div')),
+        this.$autoSize = $('<pre><div class="autosize"></div></pre>').hide();
 
         this.init();
     }
@@ -108,9 +124,14 @@
                     _this.change(e);
                 });
             }
+            // $this.on('keydown.textarea.highlighter', function(e){
+            //     if (e.keyCode === 13) {
+            //         _this.updateHeight();
+            //     }
+            // });
 
             // insert backgroundDiv
-            $this.wrap( $wrapDiv ).before( $backgroundDiv );
+            $this.wrap( $wrapDiv ).before( $backgroundDiv );//.after( _this.$autoSize );
             // do initial check for input
             _this.change({});
         },
@@ -166,6 +187,15 @@
                 });
             }
 
+            // $.each(cloneCSSProperties, function(i, p) {
+            //     var val = $this.css(p);
+
+            //     // Only set if different to prevent overriding percentage css values.
+            //     if (_this.$autoSize.css(p) !== val) {
+            //         _this.$autoSize.css(p, val);
+            //     }
+            // });
+
             $this.css({
                 'color'     : ( settings.debug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
                 'position'  : 'relative',
@@ -177,6 +207,8 @@
                 settings = _this.settings;
             // if arrow keys, don't do anything
             if (/(37|38|39|40)/.test(e.keyCode)) { return true; }
+
+            // _this.updateHeight();
 
             // check for last update, this is for performace
             if (_this.$element.data('highlighterTimerId') !== -1) {
@@ -308,6 +340,17 @@
                 'txt': escapedTargetText,
                 'matchedList': matchTextList
             };
+        },
+
+        updateHeight: function(){
+            var _this = this;
+
+            _this.$autoSize.find('.autosize').html( _this.$element.val().replace(/\r\n/g, "\n") + ' ' );
+
+            var h = _this.$autoSize.height();
+            // _this.$element.height( _this.$backgroundDiv.height() );
+            _this.$element.height( h );
+            _this.$backgroundDiv.height( h );
         },
 
 
