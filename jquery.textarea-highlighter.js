@@ -160,8 +160,7 @@
 
             // wrap div
             this.$wrapDiv.css({
-                'position': 'relative',
-                'margin'  : 0
+                'position': 'relative'
             });
 
             // background div
@@ -170,7 +169,6 @@
                 'color'     : ( settings.debug ) ? '#f00' : 'transparent',
                 'background': ( settings.debug ) ? '#fee' : style.background,
                 'position'  : 'absolute',
-                // 'margin'    : 0,
                 'padding-top'   : style.paddingTop,
                 'padding-right' : style.paddingRight,
                 'padding-bottom': style.paddingBottom,
