@@ -57,6 +57,7 @@ hr {
 
     white-space: pre-wrap;
     background-color: #f9f9f9;
+    -webkit-appearance: none;
 }
 .target:focus {
     border-color: #888;
