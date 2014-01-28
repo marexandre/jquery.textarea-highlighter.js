@@ -27,14 +27,14 @@ $(function(){
         return tmpObj;
     };
 
-    var matchDelayTimerId = -1;
     var checkForMatchInSource = function( $source, elementObj, data ){
-        if (matchDelayTimerId !== -1) {
-            clearTimeout(matchDelayTimerId);
-            matchDelayTimerId = -1;
+        if ($source.data('th-delay-timer-id') !== -1) {
+            clearTimeout($source.data('th-delay-timer-id'));
+            $source.data('th-delay-timer-id', -1);
         }
-        matchDelayTimerId = setTimeout(function(){
-            matchDelayTimerId = -1;
+
+        var id = setTimeout(function(){
+            $source.data('th-delay-timer-id', -1);
             var i = 0, j = 0, imax = 0, jmax = 0, tmpList = null, tmpText = null;
 
             $source.find('.added').removeClass('added');
@@ -54,6 +54,7 @@ $(function(){
                 }
             }
         }, 80);
+        $source.data('th-delay-timer-id', id);
     };
 
 
