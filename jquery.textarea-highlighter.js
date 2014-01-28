@@ -16,10 +16,6 @@
         'wordWrap', 'word-break',
         'borderLeftWidth', 'borderRightWidth',
         'borderTopWidth','borderBottomWidth',
-        'paddingLeft', 'paddingRight',
-        'paddingTop','paddingBottom',
-        'marginLeft', 'marginRight',
-        'marginTop','marginBottom',
         'boxSizing', 'webkitBoxSizing', 'mozBoxSizing', 'msBoxSizing'
     ];
 
@@ -36,8 +32,8 @@
             maxlength: -1,
             maxlengthWarning: '',
             maxlengthElement: null,
-            isCustomeCss: false,
             debug: false,
+            isAutoExpand: true,
             typingDelay: 30
         };
 
@@ -124,14 +120,13 @@
                     _this.change(e);
                 });
             }
-            // $this.on('keydown.textarea.highlighter', function(e){
-            //     if (e.keyCode === 13) {
-            //         _this.updateHeight();
-            //     }
-            // });
 
             // insert backgroundDiv
-            $this.wrap( $wrapDiv ).before( $backgroundDiv );//.after( _this.$autoSize );
+            $this.wrap( $wrapDiv ).before( $backgroundDiv );
+
+            if (settings.isAutoExpand) {
+                $this.after( _this.$autoSize );
+            }
             // do initial check for input
             _this.change({});
         },
@@ -161,41 +156,31 @@
                 style.paddingLeft += 3;
             }
 
+            // wrap div
             this.$wrapDiv.css({
                 'position': 'relative',
                 'margin'  : 0
             });
+
+            // background div
             this.$backgroundDiv.addClass('background-div').addClass( $this.attr('class') ).css({
-                'height'        : '100%',
-                'color'         : ( settings.debug ) ? '#f00' : 'transparent',
-                // 'background'    : ( settings.debug ) ? '#fee' : style.background,
-                // 'padding-top'   : style.paddingTop,
-                // 'padding-right' : style.paddingRight,
-                // 'padding-bottom': style.paddingBottom,
-                // 'padding-left'  : style.paddingLeft,
-                'position'      : 'absolute',
-                'margin'        : '0'
+                'height'    : '100%',
+                'color'     : ( settings.debug ) ? '#f00' : 'transparent',
+                'background': ( settings.debug ) ? '#fee' : style.background,
+                'position'  : 'absolute',
+                'margin'    : 0
             });
-            if (! settings.isCustomeCss) {
-                this.$backgroundDiv.css({
-                    'padding-top'   : style.paddingTop,
-                    'padding-right' : style.paddingRight,
-                    'padding-bottom': style.paddingBottom,
-                    'padding-left'  : style.paddingLeft,
-                    'box-sizing'    : 'border-box',
-                    'border-color'  : 'transparent'
-                });
-            }
+            _this.cloneCSSToTarget( _this.$backgroundDiv );
 
-            // $.each(cloneCSSProperties, function(i, p) {
-            //     var val = $this.css(p);
+            // auto size div
+            _this.$autoSize.addClass( $this.attr('class') ).css({
+                'position': 'absolute',
+                'top'     : 0,
+                'left'    : 0
+            });
+            _this.cloneCSSToTarget( _this.$autoSize );
 
-            //     // Only set if different to prevent overriding percentage css values.
-            //     if (_this.$autoSize.css(p) !== val) {
-            //         _this.$autoSize.css(p, val);
-            //     }
-            // });
-
+            // text area element
             $this.css({
                 'color'     : ( settings.debug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
                 'position'  : 'relative',
@@ -208,7 +193,7 @@
             // if arrow keys, don't do anything
             if (/(37|38|39|40)/.test(e.keyCode)) { return true; }
 
-            // _this.updateHeight();
+            _this.updateHeight();
 
             // check for last update, this is for performace
             if (_this.$element.data('highlighterTimerId') !== -1) {
@@ -345,14 +330,27 @@
         updateHeight: function(){
             var _this = this;
 
-            _this.$autoSize.find('.autosize').html( _this.$element.val().replace(/\r\n/g, "\n") + ' ' );
+            if (_this.settings.isAutoExpand) {
 
-            var h = _this.$autoSize.height();
-            // _this.$element.height( _this.$backgroundDiv.height() );
-            _this.$element.height( h );
-            _this.$backgroundDiv.height( h );
+                _this.$autoSize.find('.autosize').html( _this.$element.val().replace(/\r\n/g, "\n") + ' ' );
+
+                var h = _this.$autoSize.height();
+                _this.$element.height( h );
+                _this.$backgroundDiv.height( h );
+            }
         },
 
+        cloneCSSToTarget: function( $t ){
+            var $element = this.$element;
+            var val = null;
+            $.each(cloneCSSProperties, function(i, p) {
+                val = $element.css(p);
+                // Only set if different to prevent overriding percentage css values.
+                if ($t.css(p) !== val) {
+                    $t.css(p, val);
+                }
+            });
+        },
 
         // Destroy plugin in settings & extra elements that were added
         destroy: function(){
