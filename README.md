@@ -96,7 +96,7 @@ These are the supported options and their default values:
 
 ```javascript
 $.textareaHighlighter.defaults = {
-    isCustomeCss: false,     // Set to 'true' if you prefer to use minimal css added with the plugin
+    isAutoExpand: true,     // Set to 'false' if you don't want to expand textarea on input
     matches: [               // Array of matches with matchClass & word array
     //    {
     //        'matchClass': 'match',

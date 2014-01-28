@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.3.5
+ * jquery.textareaHighlighter.js 0.3.6
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
@@ -14,8 +14,6 @@
         'fontWeight', 'textTransform', 'textAlign',
         'direction', 'wordSpacing', 'fontSizeAdjust',
         'wordWrap', 'word-break',
-        // 'paddingLeft', 'paddingRight',
-        // 'paddingTop','paddingBottom',
         'marginLeft', 'marginRight',
         'marginTop','marginBottom',
         'borderLeftWidth', 'borderRightWidth',
