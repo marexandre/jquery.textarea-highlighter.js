@@ -14,6 +14,10 @@
         'fontWeight', 'textTransform', 'textAlign',
         'direction', 'wordSpacing', 'fontSizeAdjust',
         'wordWrap', 'word-break',
+        'paddingLeft', 'paddingRight',
+        'paddingTop','paddingBottom',
+        'marginLeft', 'marginRight',
+        'marginTop','marginBottom',
         'borderLeftWidth', 'borderRightWidth',
         'borderTopWidth','borderBottomWidth',
         'boxSizing', 'webkitBoxSizing', 'mozBoxSizing', 'msBoxSizing'
@@ -167,8 +171,12 @@
                 'height'    : '100%',
                 'color'     : ( settings.debug ) ? '#f00' : 'transparent',
                 'background': ( settings.debug ) ? '#fee' : style.background,
-                'position'  : 'absolute',
-                'margin'    : 0
+                'position'  : 'absolute'
+                // 'margin'    : 0,
+                // 'padding-top'   : style.paddingTop,
+                // 'padding-right' : style.paddingRight,
+                // 'padding-bottom': style.paddingBottom,
+                // 'padding-left'  : style.paddingLeft
             });
             _this.cloneCSSToTarget( _this.$backgroundDiv );
 
@@ -177,6 +185,10 @@
                 'position': 'absolute',
                 'top'     : 0,
                 'left'    : 0
+                // 'padding-top'   : style.paddingTop,
+                // 'padding-right' : style.paddingRight,
+                // 'padding-bottom': style.paddingBottom,
+                // 'padding-left'  : style.paddingLeft
             });
             _this.cloneCSSToTarget( _this.$autoSize );
 
