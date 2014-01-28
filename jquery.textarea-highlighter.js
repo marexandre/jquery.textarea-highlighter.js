@@ -14,8 +14,8 @@
         'fontWeight', 'textTransform', 'textAlign',
         'direction', 'wordSpacing', 'fontSizeAdjust',
         'wordWrap', 'word-break',
-        'paddingLeft', 'paddingRight',
-        'paddingTop','paddingBottom',
+        // 'paddingLeft', 'paddingRight',
+        // 'paddingTop','paddingBottom',
         'marginLeft', 'marginRight',
         'marginTop','marginBottom',
         'borderLeftWidth', 'borderRightWidth',
@@ -171,12 +171,12 @@
                 'height'    : '100%',
                 'color'     : ( settings.debug ) ? '#f00' : 'transparent',
                 'background': ( settings.debug ) ? '#fee' : style.background,
-                'position'  : 'absolute'
+                'position'  : 'absolute',
                 // 'margin'    : 0,
-                // 'padding-top'   : style.paddingTop,
-                // 'padding-right' : style.paddingRight,
-                // 'padding-bottom': style.paddingBottom,
-                // 'padding-left'  : style.paddingLeft
+                'padding-top'   : style.paddingTop,
+                'padding-right' : style.paddingRight,
+                'padding-bottom': style.paddingBottom,
+                'padding-left'  : style.paddingLeft
             });
             _this.cloneCSSToTarget( _this.$backgroundDiv );
 
@@ -184,11 +184,11 @@
             _this.$autoSize.addClass( $this.attr('class') ).css({
                 'position': 'absolute',
                 'top'     : 0,
-                'left'    : 0
-                // 'padding-top'   : style.paddingTop,
-                // 'padding-right' : style.paddingRight,
-                // 'padding-bottom': style.paddingBottom,
-                // 'padding-left'  : style.paddingLeft
+                'left'    : 0,
+                'padding-top'   : style.paddingTop,
+                'padding-right' : style.paddingRight,
+                'padding-bottom': style.paddingBottom,
+                'padding-left'  : style.paddingLeft
             });
             _this.cloneCSSToTarget( _this.$autoSize );
 
