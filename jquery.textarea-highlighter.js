@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.3.6
+ * jquery.textareaHighlighter.js 0.3.7
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
@@ -79,6 +79,7 @@
                 })
                 .on('textarea.highlighter.updateStyle', function(){
                     _this.updateStyle();
+                    _this.updateHeight();
                 })
                 .on('textarea.highlighter.change', function(){
                     _this.change({});
@@ -201,7 +202,9 @@
             // if arrow keys, don't do anything
             if (/(37|38|39|40)/.test(e.keyCode)) { return true; }
 
-            _this.updateHeight();
+            if (_this.isInited) {
+                _this.updateHeight();
+            }
 
             // check for last update, this is for performace
             if (_this.$element.data('highlighterTimerId') !== -1) {
@@ -223,6 +226,7 @@
                 if (!_this.isInited) {
                     _this.isInited = true;
                     _this.$element.trigger('textarea.highlighter.init.complete');
+                    _this.updateHeight();
                 }
             }, settings.typingDelay);
             // set setTimeout id
@@ -339,12 +343,8 @@
             var _this = this;
 
             if (_this.settings.isAutoExpand) {
-
                 _this.$autoSize.find('.autosize').html( _this.$element.val().replace(/\r\n/g, "\n") + ' ' );
-
-                var h = _this.$autoSize.height();
-                _this.$element.height( h );
-                _this.$backgroundDiv.height( h );
+                _this.$element.height( _this.$autoSize.height() );
             }
         },
 
