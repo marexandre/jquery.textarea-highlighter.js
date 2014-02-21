@@ -1,6 +1,6 @@
 {
   "name": "jQuery plugin for highlighting text in textarea",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "main": "jquery.textarea-highlighter.js",
   "ignore": [
     "**/.*",
