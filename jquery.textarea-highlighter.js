@@ -82,6 +82,8 @@
                     _this.updateHeight();
                 })
                 .on('textarea.highlighter.change', function(){
+                    _this.updateStyle();
+                    _this.updateHeight();
                     _this.change({});
                 })
                 // debug mode toggle
@@ -253,7 +255,9 @@
                 if ( settings.maxlength < textareaText.length) {
                     // get text that was over max length
                     overMaxText = textareaText.slice( settings.maxlength, settings.maxlength + textareaText.length - 1 );
+                    // escape HTML
                     overMaxText = helper.escapeHTML( overMaxText );
+                    // wrap matched text with <span> tags
                     overMaxText = _this.getTextInSpan(settings.maxlengthWarning, overMaxText);
                 }
                 // update text max length
