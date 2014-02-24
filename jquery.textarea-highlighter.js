@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.3.8
+ * jquery.textareaHighlighter.js 0.3.9
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
@@ -368,17 +368,23 @@
         destroy: function(){
             $.data( this.element, "plugin_" + pluginName, false );
             this.$backgroundDiv.remove();
+            this.$autoSize.remove();
             this.$element
+                .data('highlighterTimerId', -1)
+                // unbind all events
                 .off('scroll.textarea.highlighter')
-                .off('input.textarea.highlighter keyup.textarea.highlighter')
+                .off('input.textarea.highlighter')
+                .off('keyup.textarea.highlighter')
+                .off('propertychange.textarea.highlighter')
+                .off('textarea.highlighter.init.complete')
                 .off('textarea.highlighter.destroy')
                 .off('textarea.highlighter.update')
+                .off('textarea.highlighter.updateStyle')
                 .off('textarea.highlighter.change')
-                .css({
-                    'color'     : '',
-                    'position'  : '',
-                    'background': ''
-                })
+                .off('textarea.highlighter.debug.on')
+                .off('textarea.highlighter.debug.off')
+                // reset all styles
+                .attr('style', '')
                 .unwrap();
         },
         // Turn on debug mode
