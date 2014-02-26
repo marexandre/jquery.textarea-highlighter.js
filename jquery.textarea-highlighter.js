@@ -347,7 +347,7 @@
             var _this = this;
 
             if (_this.settings.isAutoExpand) {
-                _this.$autoSize.find('.autosize').html( _this.$element.val().replace(/\r\n/g, "\n") + ' ' );
+                _this.$autoSize.find('.autosize').html( helper.escapeHTML(_this.$element.val().replace(/\r\n/g, "\n")) + ' ' );
                 _this.$element.height( _this.$autoSize.height() );
             }
         },
