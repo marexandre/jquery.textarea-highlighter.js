@@ -1,5 +1,5 @@
 /**
- * jquery.textareaHighlighter.js 0.3.7
+ * jquery.textareaHighlighter.js 0.4.0
  * jQuery plugin for highlighting text in textarea.
  *
  * alexandre.kirillov@gmail.com
@@ -82,6 +82,8 @@
           _this.updateHeight();
         })
         .on('textarea.highlighter.change', function(){
+          _this.updateStyle();
+          _this.updateHeight();
           _this.change({});
         })
         // debug mode toggle
@@ -253,7 +255,9 @@
         if ( settings.maxlength < textareaText.length) {
           // get text that was over max length
           overMaxText = textareaText.slice( settings.maxlength, settings.maxlength + textareaText.length - 1 );
+          // escape HTML
           overMaxText = helper.escapeHTML( overMaxText );
+          // wrap matched text with <span> tags
           overMaxText = _this.getTextInSpan(settings.maxlengthWarning, overMaxText);
         }
         // update text max length
@@ -343,7 +347,7 @@
       var _this = this;
 
       if (_this.settings.isAutoExpand) {
-        _this.$autoSize.find('.autosize').html( _this.$element.val().replace(/\r\n/g, "\n") + ' ' );
+        _this.$autoSize.find('.autosize').html( helper.escapeHTML(_this.$element.val().replace(/\r\n/g, "\n")) + ' ' );
         _this.$element.height( _this.$autoSize.height() );
       }
     },
@@ -364,17 +368,23 @@
     destroy: function(){
       $.data( this.element, "plugin_" + pluginName, false );
       this.$backgroundDiv.remove();
+      this.$autoSize.remove();
       this.$element
+        .data('highlighterTimerId', -1)
+        // unbind all events
         .off('scroll.textarea.highlighter')
-        .off('input.textarea.highlighter keyup.textarea.highlighter')
+        .off('input.textarea.highlighter')
+        .off('keyup.textarea.highlighter')
+        .off('propertychange.textarea.highlighter')
+        .off('textarea.highlighter.init.complete')
         .off('textarea.highlighter.destroy')
         .off('textarea.highlighter.update')
+        .off('textarea.highlighter.updateStyle')
         .off('textarea.highlighter.change')
-        .css({
-          'color'     : '',
-          'position'  : '',
-          'background': ''
-        })
+        .off('textarea.highlighter.debug.on')
+        .off('textarea.highlighter.debug.off')
+        // reset all styles
+        .attr('style', '')
         .unwrap();
     },
     // Turn on debug mode
