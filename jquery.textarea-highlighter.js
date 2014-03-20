@@ -5,8 +5,8 @@
  * alexandre.kirillov@gmail.com
  * MIT license. http://opensource.org/licenses/MIT
  */
-;(function ( $, window, document, undefined ) {
-  "use strict";
+;(function($, window, document, undefined) {
+  'use strict';
 
   var cloneCSSProperties = [
     'lineHeight', 'textDecoration', 'letterSpacing',
@@ -26,7 +26,7 @@
    * PLUGIN CORE
    *
    */
-  var pluginName = "textareaHighlighter",
+  var pluginName = 'textareaHighlighter',
     defaults = {
       matches: [
         // {'matchClass': '', 'match': []}
@@ -51,7 +51,8 @@
     this.style = {};
     this.$wrapDiv       = $(document.createElement('div')).addClass('textarea-highlighter-wrap');
     this.$backgroundDiv = $(document.createElement('div')),
-    this.$autoSize = $('<pre><div class="autosize"></div></pre>').hide();
+    this.$autoSize = $('<pre><div class="autosize"></div></pre>');
+    this.$autoSize.hide();
 
     this.init();
   }
@@ -60,7 +61,6 @@
     init: function() {
       var _this          = this,
         $this          = this.$element,
-        style          = this.style,
         settings       = this.settings,
         $wrapDiv       = this.$wrapDiv,
         $backgroundDiv = this.$backgroundDiv;
@@ -347,7 +347,7 @@
       var _this = this;
 
       if (_this.settings.isAutoExpand) {
-        _this.$autoSize.find('.autosize').html( helper.escapeHTML(_this.$element.val().replace(/\r\n/g, "\n")) + ' ' );
+        _this.$autoSize.find('.autosize').html( helper.escapeHTML(_this.$element.val().replace(/\r\n/g, '\n')) + ' ' );
         _this.$element.height( _this.$autoSize.height() );
       }
     },
@@ -366,7 +366,7 @@
 
     // Destroy plugin in settings & extra elements that were added
     destroy: function(){
-      $.data( this.element, "plugin_" + pluginName, false );
+      $.data( this.element, 'plugin_' + pluginName, false );
       this.$backgroundDiv.remove();
       this.$autoSize.remove();
       this.$element
@@ -404,9 +404,9 @@
   // A really lightweight plugin wrapper around the constructor,
   // preventing against multiple instantiations
   $.fn[ pluginName ] = function ( options ) {
-    return this.each(function(i) {
-      if ( ! $.data( this, "plugin_" + pluginName ) ) {
-        $.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
+    return this.each(function() {
+      if ( ! $.data( this, 'plugin_' + pluginName ) ) {
+        $.data( this, 'plugin_' + pluginName, new Plugin( this, options ) );
       }
     });
   };
@@ -421,7 +421,7 @@
       return $( document.createElement('div') ).text(str).html();
     },
     escapeRegExp: function(str){
-      return str.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+      return str.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
     },
     getUniqueArray: function( array ){
       return array.filter(function(elem, pos, self) {
@@ -456,4 +456,4 @@
     };
   }());
 
-})( jQuery, window, document );
+})(jQuery, window, document);
