@@ -1,4 +1,5 @@
 $(function(){
+  'use strict';
 
   var getUniqueArray = function( array ){
     return array.filter(function(elem, pos, self) {
