@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/marexandre/jquery.textarea-highlighter.js.svg)](https://travis-ci.org/marexandre/jquery.textarea-highlighter.js)
+
 jquery.textarea-highlighter.js
 ==============================
 
