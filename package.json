@@ -1,7 +1,7 @@
 {
   "name": "jquery.textarea-highlighter.js",
   "description": "jQuery plugin for highlighting text in textarea.",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "homepage": "https://github.com/marexandre/jquery.textarea-highlighter.js",
   "author": {
     "name": "alexandre.kirillov@gmail.com",

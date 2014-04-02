@@ -1,8 +1,8 @@
 /**
  * jquery.textarea-highlighter.js
  * jQuery plugin for highlighting text in textarea.
- * version: 0.4.1
- * update: 2014-03-21
+ * version: 0.4.2
+ * update: 2014-04-02
  * author: alexandre.kirillov@gmail.com
  *
  * MIT license. http://opensource.org/licenses/MIT
@@ -55,6 +55,15 @@
         // Bind events
         .on('scroll.textarea.highlighter', function() {
           $backgroundDiv.scrollTop( $this.scrollTop() );
+        })
+        .on('textarea.highlighter.highlight.text', function(e, data) {
+          $backgroundDiv.html(
+            _this.getWrapedText(
+              $backgroundDiv.html(),
+              helper.escapeHTML( data.txt ),
+              data.className
+            )
+          );
         })
         // ORIGINAL EVENTS
         .on('textarea.highlighter.destroy', function() {
