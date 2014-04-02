@@ -47,6 +47,15 @@
         .on('scroll.textarea.highlighter', function() {
           $backgroundDiv.scrollTop( $this.scrollTop() );
         })
+        .on('textarea.highlighter.highlight.text', function(e, data) {
+          $backgroundDiv.html(
+            _this.getWrapedText(
+              $backgroundDiv.html(),
+              helper.escapeHTML( data.txt ),
+              data.className
+            )
+          );
+        })
         // ORIGINAL EVENTS
         .on('textarea.highlighter.destroy', function() {
           _this.destroy();
