@@ -71,6 +71,20 @@ $('#someElement').on('textarea.highlighter.update', function(e, data){
 });
 ```
 
+### textarea.highlighter.updateStyle
+Update style added with plugin, use this when the `textarea` layout changes etc...
+
+```javascript
+$('#someElement').trigger('textarea.highlighter.updateStyle');
+```
+
+### textarea.highlighter.change
+Highlight anything that matches
+
+```javascript
+$('#someElement').trigger('textarea.highlighter.change');
+```
+
 ### textarea.highlighter.destroy
 Remove all added HTML/CSS and plugin related event bindings etc..
 
