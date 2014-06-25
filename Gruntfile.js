@@ -5,14 +5,14 @@ module.exports = function( grunt ) {
     pkg: grunt.file.readJSON('package.json'),
     opt: {
       'name': 'jquery.textarea-highlighter',
-      'banner': '/**\n'+
-                ' * <%= pkg.name %>\n'+
-                ' * <%= pkg.description %>\n'+
-                ' * version: <%= pkg.version %>\n'+
-                ' * update: <%= grunt.template.today("yyyy-mm-dd") %>\n'+
-                ' * author: <%= pkg.author.name %>\n'+
-                ' *\n'+
-                ' * MIT license. http://opensource.org/licenses/MIT\n'+
+      'banner': '/**\n' +
+                ' * <%= pkg.name %>\n' +
+                ' * <%= pkg.description %>\n' +
+                ' * version: <%= pkg.version %>\n' +
+                ' * update: <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+                ' * author: <%= pkg.author.name %>\n' +
+                ' *\n' +
+                ' * MIT license. http://opensource.org/licenses/MIT\n' +
                 ' */'
     },
     jshint: {
@@ -52,8 +52,8 @@ module.exports = function( grunt ) {
       main: {
         nonull: true,
         src: 'src/<%= opt.name %>.js',
-        dest: '<%= opt.name %>.js',
-      },
+        dest: '<%= opt.name %>.js'
+      }
     },
     usebanner: {
       main: {
