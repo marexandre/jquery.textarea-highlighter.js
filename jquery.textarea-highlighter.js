@@ -1,8 +1,8 @@
 /**
  * jquery.textarea-highlighter.js
  * jQuery plugin for highlighting text in textarea.
- * version: 0.4.2
- * update: 2014-04-02
+ * version: 0.4.3
+ * update: 2014-06-25
  * author: alexandre.kirillov@gmail.com
  *
  * MIT license. http://opensource.org/licenses/MIT
@@ -43,10 +43,10 @@
   Plugin.prototype = {
     init: function() {
       var _this          = this,
-        $this          = this.$element,
-        settings       = this.settings,
-        $wrapDiv       = this.$wrapDiv,
-        $backgroundDiv = this.$backgroundDiv;
+          $this          = this.$element,
+          settings       = this.settings,
+          $wrapDiv       = this.$wrapDiv,
+          $backgroundDiv = this.$backgroundDiv;
 
       _this.updateStyle();
 
@@ -74,8 +74,6 @@
           _this.updateHeight();
         })
         .on('textarea.highlighter.change', function() {
-          _this.updateStyle();
-          _this.updateHeight();
           _this.change({});
         })
         // debug mode toggle
@@ -138,7 +136,7 @@
         paddingTop   : parseInt( $this.css('padding-top'), 10 ),
         paddingRight : parseInt( $this.css('padding-right'), 10 ),
         paddingBottom: parseInt( $this.css('padding-bottom'), 10 ),
-        paddingLeft  : parseInt( $this.css('padding-left'), 10 ),
+        paddingLeft  : parseInt( $this.css('padding-left'), 10 )
       };
 
       // Hack for firefox, some how width needs to be 2px smallet then the textarea
@@ -230,7 +228,7 @@
       return text.replace( new RegExp( helper.escapeRegExp( matchedText ), 'g'), this.getTextInSpan( matchClass, matchedText ) );
     },
     getTextInSpan: function( className, text ) {
-      return '<span class="'+ className +'">'+ text +'</span>';
+      return '<span class="' + className + '">' + text + '</span>';
     },
 
     checkMaxLength: function() {
@@ -396,7 +394,7 @@
   // preventing against multiple instantiations
   $.fn[ pluginName ] = function( options ) {
     return this.each(function() {
-      if (!$.data( this, 'plugin_'+ pluginName )) {
+      if (!$.data( this, 'plugin_' + pluginName )) {
         $.data( this, 'plugin_' + pluginName, new Plugin( this, options ) );
       }
     });
