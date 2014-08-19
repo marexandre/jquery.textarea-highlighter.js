@@ -148,10 +148,11 @@
 
       // background div
       this.$backgroundDiv.addClass('background-div').addClass( $this.attr('class') ).css({
-        'height'    : '100%',
+        'font-family': 'inherit',
         'color'     : ( settings.debug ) ? '#f00' : 'transparent',
         'background': ( settings.debug ) ? '#fee' : style.background,
         'position'  : 'absolute',
+        'height'    : '100%',
         'padding-top'   : style.paddingTop,
         'padding-right' : style.paddingRight,
         'padding-bottom': style.paddingBottom,
@@ -161,6 +162,7 @@
 
       // auto size div
       _this.$autoSize.addClass( $this.attr('class') ).css({
+        'font-family': 'inherit',
         'position': 'absolute',
         'top'     : 0,
         'left'    : 0,
@@ -413,7 +415,7 @@
     },
     cloneCSSProperties: [
       'lineHeight', 'textDecoration', 'letterSpacing',
-      'fontSize', 'fontFamily', 'fontStyle',
+      'fontSize', 'fontStyle',
       'fontWeight', 'textTransform', 'textAlign',
       'direction', 'wordSpacing', 'fontSizeAdjust',
       'wordWrap', 'word-break',
