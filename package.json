@@ -1,7 +1,7 @@
 {
   "name": "jquery.textarea-highlighter.js",
   "description": "jQuery plugin for highlighting text in textarea.",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "homepage": "https://github.com/marexandre/jquery.textarea-highlighter.js",
   "author": {
     "name": "alexandre.kirillov@gmail.com",
@@ -23,7 +23,7 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-uglify": "~0.5.1",
     "grunt-contrib-copy": "~0.5.0",
-    "grunt-jscs-checker": "~0.6.2",
+    "grunt-jscs-checker": "~0.7.0",
     "load-grunt-tasks": "~0.6.0",
     "jshint-stylish": "~0.4.0",
     "grunt-banner": "~0.2.3"
