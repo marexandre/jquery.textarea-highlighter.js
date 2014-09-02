@@ -27,6 +27,7 @@
     this.$wrapDiv       = $(document.createElement('div')).addClass('textarea-highlighter-wrap');
     this.$backgroundDiv = $(document.createElement('div'));
     this.$autoSize      = $('<pre><div class="autosize"></div></pre>').hide();
+    this.$autoSizeElement = this.$autoSize.find('.autosize');
 
     this.init();
   }
@@ -329,8 +330,11 @@
       var _this = this;
 
       if (_this.settings.isAutoExpand) {
-        _this.$autoSize.find('.autosize').html( helper.escapeHTML(_this.$element.val().replace(/\r\n/g, '\n')) + ' ' );
-        _this.$element.height( _this.$autoSize.height() );
+        _this.$autoSizeElement.html( helper.escapeHTML(_this.$element.val().replace(/\r\n/g, '\n')) + ' ' );
+        // If the height is deferent then update the height of the textarea
+        if (_this.$element.height() !== _this.$autoSize.height()) {
+          _this.$element.height( _this.$autoSize.height() );
+        }
       }
     },
 
@@ -400,7 +404,9 @@
    */
   var helper = {
     escapeHTML: function(str) {
-      return $( document.createElement('div') ).text(str).html();
+      var elem = document.createElement('div');
+      elem.appendChild(document.createTextNode(str));
+      return elem.innerHTML;
     },
     escapeRegExp: function(str) {
       return str.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
