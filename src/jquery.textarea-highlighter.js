@@ -61,6 +61,10 @@
         .on('textarea.highlighter.destroy', function() {
           _this.destroy();
         })
+        .on('textarea.highlighter.matches', function(e, data) {
+          _this.settings.matches = data.matches;
+          _this.change({});
+        })
         .on('textarea.highlighter.updateStyle', function() {
           _this.updateStyle();
           _this.updateHeight();
