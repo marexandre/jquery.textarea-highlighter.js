@@ -223,7 +223,15 @@
     },
     // wrap matched text with an HTML element
     getWrapedText: function( text, matchedText, matchClass ) {
-      return text.replace( new RegExp( helper.escapeRegExp( matchedText ), 'g'), this.getTextInSpan( matchClass, matchedText ) );
+      var _this = this
+      var matchedText = helper.escapeRegExp( matchedText );
+      return text.replace( new RegExp( '(' + matchedText + '|<(?:(?!\\sclass="|>).)+\\sclass="*"[^>]*>|<\\/[^>]+>)', 'g'), function() {
+        if ( matchedText === arguments[0]) {
+          return _this.getTextInSpan( matchClass, matchedText );
+        } else {
+          return arguments[0];
+        }
+      } );
     },
     getTextInSpan: function( className, text ) {
       return '<span class="' + className + '">' + text + '</span>';
