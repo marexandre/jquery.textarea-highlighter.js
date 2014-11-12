@@ -2,7 +2,7 @@
  * jquery.textarea-highlighter.js
  * jQuery plugin for highlighting text in textarea.
  * version: 0.4.6
- * update: 2014-09-03
+ * update: 2014-11-12
  * author: alexandre.kirillov@gmail.com
  *
  * MIT license. http://opensource.org/licenses/MIT
@@ -232,7 +232,15 @@
     },
     // wrap matched text with an HTML element
     getWrapedText: function( text, matchedText, matchClass ) {
-      return text.replace( new RegExp( helper.escapeRegExp( matchedText ), 'g'), this.getTextInSpan( matchClass, matchedText ) );
+      var _this = this;
+      var matchTextEscape = helper.escapeRegExp( matchedText );
+      return text.replace( new RegExp( '(' + matchTextEscape + '|<(?:(?!\\sclass="|>).)+\\sclass="*"[^>]*>|<\\/[^>]+>)', 'g'), function() {
+        if ( matchedText === arguments[0] ) {
+          return _this.getTextInSpan( matchClass, matchedText );
+        } else {
+          return arguments[0];
+        }
+      } );
     },
     getTextInSpan: function( className, text ) {
       return '<span class="' + className + '">' + text + '</span>';

@@ -223,10 +223,10 @@
     },
     // wrap matched text with an HTML element
     getWrapedText: function( text, matchedText, matchClass ) {
-      var _this = this
-      var matchedText = helper.escapeRegExp( matchedText );
-      return text.replace( new RegExp( '(' + matchedText + '|<(?:(?!\\sclass="|>).)+\\sclass="*"[^>]*>|<\\/[^>]+>)', 'g'), function() {
-        if ( matchedText === arguments[0]) {
+      var _this = this;
+      var matchTextEscape = helper.escapeRegExp( matchedText );
+      return text.replace( new RegExp( '(' + matchTextEscape + '|<(?:(?!\\sclass="|>).)+\\sclass="*"[^>]*>|<\\/[^>]+>)', 'g'), function() {
+        if ( matchedText === arguments[0] ) {
           return _this.getTextInSpan( matchClass, matchedText );
         } else {
           return arguments[0];
