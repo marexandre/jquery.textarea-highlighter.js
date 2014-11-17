@@ -1,8 +1,8 @@
 /**
  * jquery.textarea-highlighter.js
  * jQuery plugin for highlighting text in textarea.
- * version: 0.4.7
- * update: 2014-11-12
+ * version: 0.4.8
+ * update: 2014-11-17
  * author: alexandre.kirillov@gmail.com
  *
  * MIT license. http://opensource.org/licenses/MIT
@@ -144,12 +144,7 @@
         paddingLeft  : parseInt( $this.css('padding-left'), 10 )
       };
 
-      // Hack for firefox, some how width needs to be 2px smallet then the textarea
-      // and padding-left needs to be added 1px
-      if (browser.firefox) {
-        style.paddingRight += 1;
-        style.paddingLeft += 1;
-      }
+      // Hack for iPhone
       if (browser.iphone) {
         style.paddingRight += 3;
         style.paddingLeft += 3;

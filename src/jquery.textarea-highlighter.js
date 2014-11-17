@@ -135,12 +135,7 @@
         paddingLeft  : parseInt( $this.css('padding-left'), 10 )
       };
 
-      // Hack for firefox, some how width needs to be 2px smallet then the textarea
-      // and padding-left needs to be added 1px
-      if (browser.firefox) {
-        style.paddingRight += 1;
-        style.paddingLeft += 1;
-      }
+      // Hack for iPhone
       if (browser.iphone) {
         style.paddingRight += 3;
         style.paddingLeft += 3;
