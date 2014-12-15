@@ -56,34 +56,34 @@ var marexandre;
         $wrapDiv       = this.$wrapDiv,
         $backgroundDiv = this.$backgroundDiv;
 
-    _this.updateStyle();
-
-    // insert backgroundDiv
-    $this.wrap( $wrapDiv ).before( $backgroundDiv );
-
-    if (settings.isAutoExpand) {
-      $this.after( _this.$autoSize );
-    }
-
+    // Remove duplicates from 'match'
     for (var i = 0, imax = settings.matches.length; i < imax; i++) {
       settings.matches[i].match = helper.getUniqueArray(settings.matches[i].match);
     }
 
+    _this.updateStyle();
+
+    // insert backgroundDiv
+    $this.wrap( $wrapDiv ).before( $backgroundDiv );
+    // Insert auto resize div
+    if (settings.isAutoExpand) {
+      $this.after( _this.$autoSize );
+    }
+
+    _this.updateHeight();
     _this.bindEvents();
-    // do initial check for input
-    _this.change({});
+    _this.highlight();
   };
 
   TextareaHighlighter.prototype.bindEvents = function() {
     var _this = this;
     var $this = this.$element;
-    var $backgroundDiv = this.$backgroundDiv;
 
     $this
       .data('highlighterTimerId', -1)
       // Bind events
       .on('scroll.textarea.highlighter', function() {
-        $backgroundDiv.scrollTop( $this.scrollTop() );
+        _this.$backgroundDiv.scrollTop( $this.scrollTop() );
       })
       // ORIGINAL EVENTS
       // .on('textarea.highlighter.matches', function(e, data) {
@@ -132,7 +132,6 @@ var marexandre;
 
   TextareaHighlighter.prototype.change = function(e) {
     var _this = this;
-    var settings = _this.settings;
 
     // if arrow keys, don't do anything
     if (/(37|38|39|40)/.test(e.keyCode)) {
@@ -151,7 +150,7 @@ var marexandre;
     // id for set timeout
     var changeId = setTimeout(function() {
       _this.highlight();
-    }, settings.typingDelay);
+    }, _this.settings.typingDelay);
     // set setTimeout id
     _this.$element.data('highlighterTimerId', changeId);
   };
@@ -182,10 +181,12 @@ var marexandre;
       notOverMaxText = text.slice(0, settings.maxlength);
     }
     else {
-      notOverMaxText = helper.escapeHTML(text);
+      notOverMaxText = text;
     }
-
+    // Escape HTML content
+    notOverMaxText = helper.escapeHTML(notOverMaxText);
     notOverMaxText = self.getHighlightedContent(notOverMaxText);
+
     self.$backgroundDiv.html( notOverMaxText + overMaxText );
   };
 
@@ -198,11 +199,11 @@ var marexandre;
     for (var i = 0, imax = list.length; i < imax; i++) {
       item = list[i];
 
-      if (item.trie) {
-        trie = item.trie;
+      if (item._trie) {
+        trie = item._trie;
       } else {
         trie = new marexandre.Trie(item.match);
-        item.trie = trie;
+        item._trie = trie;
       }
 
       trieIndecies = trie.getIndecies(text);
@@ -259,18 +260,20 @@ var marexandre;
     });
     _this.cloneCSSToTarget( _this.$backgroundDiv );
 
-    // auto size div
-    _this.$autoSize.addClass( $this.attr('class') ).css({
-      'top'           : 0,
-      'left'          : 0,
-      'font-family'   : 'inherit',
-      'position'      : 'absolute',
-      'padding-top'   : style.paddingTop,
-      'padding-right' : style.paddingRight,
-      'padding-bottom': style.paddingBottom,
-      'padding-left'  : style.paddingLeft
-    });
-    _this.cloneCSSToTarget( _this.$autoSize );
+    if (settings.isAutoExpand) {
+      // auto size div
+      _this.$autoSize.addClass( $this.attr('class') ).css({
+        'top'           : 0,
+        'left'          : 0,
+        'font-family'   : 'inherit',
+        'position'      : 'absolute',
+        'padding-top'   : style.paddingTop,
+        'padding-right' : style.paddingRight,
+        'padding-bottom': style.paddingBottom,
+        'padding-left'  : style.paddingLeft
+      });
+      _this.cloneCSSToTarget( _this.$autoSize );
+    }
 
     // text area element
     $this.css({
