@@ -16,6 +16,7 @@
 //   })();
 // }
 
+var marexandre;
 (function($, window, document, undefined) {
   'use strict';
 
@@ -74,9 +75,9 @@
   };
 
   TextareaHighlighter.prototype.bindEvents = function() {
-    var _this = this,
-        $this = this.$element,
-        $backgroundDiv = this.$backgroundDiv;
+    var _this = this;
+    var $this = this.$element;
+    var $backgroundDiv = this.$backgroundDiv;
 
     $this
       .data('highlighterTimerId', -1)
@@ -156,7 +157,7 @@
   };
 
   TextareaHighlighter.prototype.highlight = function() {
-    var self = this
+    var self = this;
     var text = self.$element.val();
     var settings = self.settings;
     var overMaxText = '';
@@ -197,17 +198,17 @@
     for (var i = 0, imax = list.length; i < imax; i++) {
       item = list[i];
 
-      if (item['trie']) {
-        trie = item['trie'];
+      if (item.trie) {
+        trie = item.trie;
       } else {
         trie = new marexandre.Trie(item.match);
-        item['trie'] = trie;
+        item.trie = trie;
       }
 
       trieIndecies = trie.getIndecies(text);
       trieIndecies = helper.removeOverlapingIndecies(trieIndecies);
 
-      indeciesList.push({ 'indecies': trieIndecies, 'type': item.matchClass })
+      indeciesList.push({ 'indecies': trieIndecies, 'type': item.matchClass });
     }
 
     var flattened = helper.flattenIndeciesList(indeciesList);
@@ -220,10 +221,10 @@
   };
 
   TextareaHighlighter.prototype.updateStyle = function() {
-    var _this  = this,
-      $this    = this.$element,
-      settings = this.settings,
-      style    = this.style;
+    var _this    = this;
+    var $this    = this.$element;
+    var settings = this.settings;
+    var style    = this.style;
 
     // textarea style
     style = {
@@ -283,7 +284,7 @@
     var _this = this;
 
     if (_this.settings.isAutoExpand) {
-      _this.$autoSizeElement.html( helper.escapeHTML(_this.$element.val().replace(/\r\n/g, '\n')) + ' ' );
+      _this.$autoSizeElement.html(helper.escapeHTML(_this.$element.val().replace(/\r\n/g, '\n')) + ' ');
       // If the height of textarea changed then update it
       if (_this.$element.height() !== _this.$autoSize.height()) {
         _this.$element.height( _this.$autoSize.height() );
@@ -327,8 +328,6 @@
       .off('input.textarea.highlighter')
       .off('keyup.textarea.highlighter')
       .off('propertychange.textarea.highlighter')
-      .off('textarea.highlighter.init.complete')
-      .off('textarea.highlighter.update')
       .off('textarea.highlighter.updateStyle')
       .off('textarea.highlighter.change')
       // reset all styles

@@ -55,7 +55,7 @@ var marexandre;
     };
 
     Helper.prototype.removeOverlapingIndecies = function(list) {
-      var a = [], item, next, prev;
+      var a = [], item, prev;
 
       for (var i = 0, imax = list.length; i < imax; i++) {
         item = list[i];
@@ -139,7 +139,7 @@ var marexandre;
       return '<span class="' + className + '">' + text + '</span>';
     };
 
-    Helper.prototype.browser = function(className, text) {
+    Helper.prototype.browser = function() {
       var userAgent = navigator.userAgent,
           msie    = /(msie|trident)/i.test( userAgent ),
           chrome  = /chrome/i.test( userAgent ),
