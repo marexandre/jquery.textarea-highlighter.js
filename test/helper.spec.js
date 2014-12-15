@@ -94,4 +94,39 @@ describe('Helper', function () {
     });
   });
 
+  describe('test makeTokenized', function () {
+    it('should order Array by given key', function() {
+
+      var text = 'Hi [[[test1]]] this is a {0} test ハゲ THiss [[[{0}]]] and 日本 is some　アホ more [[[tast]]],[[[test2]]] tests. Some more [[[aaa]] and[[[tast]]][[[alex]]] aa';
+      var list = [
+        { 'class': 'brackets',       'match': ['[[[test1]]]', '[[[tast]]]', '[[[test2]]]', '[[[{0}]]]', '[[[alex]]]'] },
+        { 'class': 'brackets error', 'match': ['[[[aaa]]'] },
+        { 'class': 'tags',           'match': ['{0}'] },
+        { 'class': 'misspelling',    'match': ['THiss', 'est', 'a'] }
+      ];
+
+      var indeciesList = [];
+      for (var i = 0, imax = list.length; i < imax; i++) {
+        var item = list[i];
+        var trie = new marexandre.Trie(item.match);
+        var trieIndecies = trie.getIndecies(text);
+        console.log( trieIndecies );
+        trieIndecies = helper.removeOverlapingIndecies(trieIndecies);
+
+        indeciesList.push({ 'indecies': trieIndecies, 'type': item.class });
+      }
+
+      var flattened = helper.flattenIndeciesList(indeciesList);
+      // console.log(flattened);
+      flattened = helper.orderBy(flattened, 'start');
+      // console.log(flattened);
+      flattened = helper.removeOverlapingIndecies(flattened);
+      // console.log(flattened);
+
+      var tokenized = helper.makeTokenized(text, flattened);
+      // console.log(tokenized);
+      console.log( helper.createHTML(tokenized) );
+    });
+  });
+
 });
