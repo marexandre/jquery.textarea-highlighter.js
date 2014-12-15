@@ -64,6 +64,10 @@
       $this.after( _this.$autoSize );
     }
 
+    for (var i = 0, imax = settings.matches.length; i < imax; i++) {
+      settings.matches[i].match = helper.getUniqueArray(settings.matches[i].match);
+    }
+
     _this.bindEvents();
     // do initial check for input
     _this.change({});
@@ -80,36 +84,17 @@
       .on('scroll.textarea.highlighter', function() {
         $backgroundDiv.scrollTop( $this.scrollTop() );
       })
-      .on('textarea.highlighter.highlight.text', function(e, data) {
-        $backgroundDiv.html(
-          _this.getWrapedText(
-            $backgroundDiv.html(),
-            helper.escapeHTML( data.txt ),
-            data.className
-          )
-        );
-      })
       // ORIGINAL EVENTS
-      .on('textarea.highlighter.destroy', function() {
-        _this.destroy();
-      })
-      .on('textarea.highlighter.matches', function(e, data) {
-        _this.settings.matches = data.matches;
-        _this.change({});
-      })
+      // .on('textarea.highlighter.matches', function(e, data) {
+      //   _this.settings.matches = data.matches;
+      //   _this.highlight();
+      // })
       .on('textarea.highlighter.updateStyle', function() {
         _this.updateStyle();
         _this.updateHeight();
       })
       .on('textarea.highlighter.change', function() {
-        _this.change({});
-      })
-      // debug mode toggle
-      .on('textarea.highlighter.debug.on', function() {
-        _this.debugModeOn();
-      })
-      .on('textarea.highlighter.debug.off', function() {
-        _this.debugModeOff();
+        _this.highlight();
       });
 
     if ('onpropertychange' in _this.element) {
@@ -119,8 +104,8 @@
           _this.change(e);
         });
         // on backspace key long press
-        var lastUpdate = new Date().getTime(),
-            timeDiff = 0;
+        var lastUpdate = new Date().getTime(), timeDiff = 0;
+
         $this.on('keydown.textarea.highlighter', function(e) {
           timeDiff = Math.abs(lastUpdate - new Date().getTime());
           if (e.which === 8 && (timeDiff < 10 || 250 < timeDiff)) {
@@ -177,6 +162,11 @@
     var overMaxText = '';
     var notOverMaxText = '';
 
+    if (text.length === 0) {
+      self.$backgroundDiv.html('');
+      return;
+    }
+
     if (0 < settings.maxlength) {
       // check for max length
       if (settings.maxlength < text.length) {
@@ -202,11 +192,19 @@
     var _this = this;
     var list = _this.settings.matches;
     var indeciesList = [];
+    var item, trie, trieIndecies;
 
     for (var i = 0, imax = list.length; i < imax; i++) {
-      var item = list[i];
-      var trie = new marexandre.Trie(item.match);
-      var trieIndecies = trie.getIndecies(text);
+      item = list[i];
+
+      if (item['trie']) {
+        trie = item['trie'];
+      } else {
+        trie = new marexandre.Trie(item.match);
+        item['trie'] = trie;
+      }
+
+      trieIndecies = trie.getIndecies(text);
       trieIndecies = helper.removeOverlapingIndecies(trieIndecies);
 
       indeciesList.push({ 'indecies': trieIndecies, 'type': item.matchClass })
@@ -253,7 +251,6 @@
       'height'        : '100%',
       'font-family'   : 'inherit',
       'color'         : ( settings.debug ) ? '#f00' : 'transparent',
-      'background'    : ( settings.debug ) ? '#fee' : style.background,
       'padding-top'   : style.paddingTop,
       'padding-right' : style.paddingRight,
       'padding-bottom': style.paddingBottom,
@@ -317,6 +314,38 @@
         $t.css(p, val);
       }
     });
+  };
+
+  TextareaHighlighter.prototype.destroy = function() {
+    $.data( this.element, 'plugin_' + pluginName, false );
+    this.$backgroundDiv.remove();
+    this.$autoSize.remove();
+    this.$element
+      .data('highlighterTimerId', -1)
+      // unbind all events
+      .off('scroll.textarea.highlighter')
+      .off('input.textarea.highlighter')
+      .off('keyup.textarea.highlighter')
+      .off('propertychange.textarea.highlighter')
+      .off('textarea.highlighter.init.complete')
+      .off('textarea.highlighter.update')
+      .off('textarea.highlighter.updateStyle')
+      .off('textarea.highlighter.change')
+      // reset all styles
+      .attr('style', '')
+      .unwrap();
+  };
+
+  TextareaHighlighter.prototype.debugModeOn = function() {
+    this.settings.debug = true;
+    this.$backgroundDiv.css({ 'color': '#f00' });
+    this.$element.css({ 'color': 'rgba(0,0,0,0.5)' });
+  };
+
+  TextareaHighlighter.prototype.debugModeOff = function() {
+    this.settings.debug = false;
+    this.$backgroundDiv.css({ 'color': 'transparent' });
+    this.$element.css({ 'color': 'inherit' });
   };
 
   $.fn.textareaHighlighter = function(option) {
