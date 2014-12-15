@@ -279,7 +279,7 @@ var marexandre;
     $this.css({
       'color'     : ( settings.debug ) ? 'rgba(0,0,0,0.5)' : 'inherit',
       'position'  : 'relative',
-      'background': 'transparent'
+      'background': 'none'
     });
   };
 
