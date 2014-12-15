@@ -110,6 +110,24 @@ describe('Trie', function () {
     expect( text.slice(36, 42) ).toBe('test12');
   });
 
+  it('should return indecies from a trie and text', function() {
+    var text = '[[[test]]]{0}[[[hoge]]] a test [[[test]]]';
+    var trie = new marexandre.Trie(['[[[test]]]', '{0}', '[[[hoge]]]']);
+    var indecies = trie.getIndecies(text);
+
+    expect( indecies ).toEqual([
+      { start: 0, end: 10 },
+      { start: 10, end: 13 },
+      { start: 13, end: 23 },
+      { start: 31, end: 41 }
+    ]);
+
+    expect( text.slice(0, 10) ).toBe('[[[test]]]');
+    expect( text.slice(10, 13) ).toBe('{0}');
+    expect( text.slice(13, 23) ).toBe('[[[hoge]]]');
+    expect( text.slice(31, 41) ).toBe('[[[test]]]');
+  });
+
   it('should check if a word is in a trie', function() {
     var trie = new marexandre.Trie(['test', 'tast', 'test2', '{0}', 'test12', 'test21', 'test']);
 

@@ -37,7 +37,7 @@ var marexandre;
         var prevW = text.slice(ss - 1, ss);
         var nextW = text.slice(obj.end, obj.end + 1);
 
-        if (this.isCharacter(prevW) || this.isCharacter(nextW) ) {
+        if (this.isCharacter(w) && (this.isCharacter(prevW) || this.isCharacter(nextW)) ) {
           a.push({ 'value': w, 'type': 'text' });
         } else {
           a.push({ 'value': w, 'type': obj.type });
@@ -74,7 +74,7 @@ var marexandre;
     };
 
     Helper.prototype.isOverlap = function(x, y) {
-      return x.start <= y.end && y.start <= x.end;
+      return x.start < y.end && y.start < x.end;
     };
 
     Helper.prototype.flattenIndeciesList = function(list) {
