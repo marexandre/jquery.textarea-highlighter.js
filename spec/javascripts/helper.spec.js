@@ -123,9 +123,64 @@ describe('Helper', function() {
   });
 
   describe('test makeTokenized', function() {
+
+    function generateIndecies(text, list) {
+      var indeciesList = [];
+
+      for (var i = 0, imax = list.length; i < imax; i++) {
+        var item = list[i];
+        var trie = new marexandre.Trie(item.match);
+        var trieIndecies = trie.getIndecies(text);
+        trieIndecies = helper.removeOverlapingIndecies(trieIndecies);
+
+        indeciesList.push({ 'indecies': trieIndecies, 'type': item.class });
+      }
+
+      var flattened = helper.flattenIndeciesList(indeciesList);
+      flattened = helper.orderBy(flattened, 'start');
+      flattened = helper.removeOverlapingIndecies(flattened);
+
+      return flattened;
+    }
+
+    it('should format not word base languages', function() {
+      var text = 'ウィキペディアは誰でも{0}編集できる[[[フリー百科事典]]][[[てすと]]]です';
+      var list = [
+        { 'class': 'brackets',    'match': ['[[[フリー百科事典]]]', '[[[てすと]]]'] },
+        { 'class': 'tags',        'match': ['{0}'] },
+        { 'class': 'misspelling', 'match': ['は', '誰'] }
+      ];
+
+      var _indecies = [
+        { start: 7, end: 8, type: 'misspelling' }, // は
+        { start: 8, end: 9, type: 'misspelling' }, // 誰
+        { start: 11, end: 14,type: 'tags' },       // {0}
+        { start: 19, end: 32, type: 'brackets' },  // [[[フリー百科事典]]]
+        { start: 32, end: 41, type: 'brackets' }   // [[[てすと]]]
+      ]
+
+      var indecies = generateIndecies(text, list);
+      expect(indecies).toEqual( _indecies );
+
+      var html = '';
+      html += 'ウィキペディア';
+      html += '<span class="misspelling">は</span>';
+      html += '<span class="misspelling">誰</span>';
+      html += 'でも';
+      html += '<span class="tags">{0}</span>';
+      html += '編集できる';
+      html += '<span class="brackets">[[[フリー百科事典]]]</span>';
+      html += '<span class="brackets">[[[てすと]]]</span>';
+      html += 'です';
+
+      var tokenized = helper.makeTokenized(text, indecies, false);
+      expect( helper.createHTML(tokenized) ).toEqual( html );
+    });
+
+
     it('should create HTML from tokenized correctly', function() {
 
-      var text = 'Hi [[[test1]]] this is a {0} test ハゲ THiss [[[{0}]]] and 日本 is some　アホ more [[[tast]]],[[[test2]]] tests. Some more [[[aaa]] and[[[tast]]][[[alex]]] aa';
+      var text = 'Hi [[[test1]]] this is a {0} test ハゲ THiss [[[{0}]]] and 日本 is some　アホ more [[[tast]]],[[[test2]]] tests. Some more [[[aaa]] and[[[tast]]][[[alex]]] aa a';
       var list = [
         { 'class': 'brackets',       'match': ['[[[test1]]]', '[[[tast]]]', '[[[test2]]]', '[[[{0}]]]', '[[[alex]]]'] },
         { 'class': 'brackets error', 'match': ['[[[aaa]]'] },
@@ -133,31 +188,8 @@ describe('Helper', function() {
         { 'class': 'misspelling',    'match': ['THiss', 'est', 'a'] }
       ];
 
-      var indeciesList = [];
-      var trieList = {};
-      for (var i = 0, imax = list.length; i < imax; i++) {
-        var item = list[i];
-        var trie = new marexandre.Trie(item.match);
-        var trieIndecies = trie.getIndecies(text);
-        // console.log( trieIndecies );
-        trieIndecies = helper.removeOverlapingIndecies(trieIndecies);
-        // console.dump( trieIndecies );
-
-        indeciesList.push({ 'indecies': trieIndecies, 'type': item.class });
-
-        trieList[ item.class ] = trie;
-      }
-
-      var flattened = helper.flattenIndeciesList(indeciesList);
-      // console.dump(flattened);
-      flattened = helper.orderBy(flattened, 'start');
-      // console.dump(flattened);
-      flattened = helper.removeOverlapingIndecies(flattened);
-      // console.dump(flattened);
-
-      var tokenized = helper.makeTokenized(text, flattened);
-      // console.log(tokenized);
-      // console.log( helper.createHTML(tokenized) );
+      var indecies = generateIndecies(text, list);
+      var tokenized = helper.makeTokenized(text, indecies);
 
       var html = '';
       html += 'Hi ';
@@ -179,7 +211,8 @@ describe('Helper', function() {
       html += ' and';
       html += '<span class="brackets">[[[tast]]]</span>';
       html += '<span class="brackets">[[[alex]]]</span>';
-      html += ' aa';
+      html += ' aa ';
+      html += '<span class="misspelling">a</span>';
 
       expect( helper.createHTML(tokenized) ).toBe(html);
     });

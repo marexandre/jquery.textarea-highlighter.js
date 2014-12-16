@@ -21,39 +21,6 @@ var marexandre;
     //   return a;
     // };
 
-    Helper.prototype.makeTokenized = function(text, indecies) {
-      var a = [], s = 0, ss = 0, obj;
-
-      for (var i = 0, imax = indecies.length; i < imax; i++) {
-        obj = indecies[i];
-        ss = obj.start;
-        if (ss > s) {
-          // a.push( text.slice(s, ss) );
-          a.push({ 'value': text.slice(s, ss), 'type': 'text' });
-        }
-        // a.push( text.slice(ss, obj.end) );
-
-        var w = text.slice(ss, obj.end);
-        var prevW = text.slice(ss - 1, ss);
-        var nextW = text.slice(obj.end, obj.end + 1);
-
-        if (this.isCharacter(w) && (this.isCharacter(prevW) || this.isCharacter(nextW)) ) {
-          a.push({ 'value': w, 'type': 'text' });
-        } else {
-          a.push({ 'value': w, 'type': obj.type });
-        }
-
-        // a.push({ 'value': text.slice(ss, obj.end), 'type': obj.type });
-        s = obj.end;
-      }
-      if (s < text.length) {
-        // a.push( text.slice(s, text.length) );
-        a.push({ 'value': text.slice(s, text.length), 'type': 'text' });
-      }
-
-      return a;
-    };
-
     Helper.prototype.removeOverlapingIndecies = function(list) {
       var a = [], item, next;
 
@@ -94,6 +61,47 @@ var marexandre;
       }
 
       return a;
+    };
+
+    Helper.prototype.makeTokenized = function(text, indecies, useWordBoundary) {
+      var a = [], s = 0, ss = 0, obj, w, ww;
+      useWordBoundary = useWordBoundary || true;
+
+      for (var i = 0, imax = indecies.length; i < imax; i++) {
+        obj = indecies[i];
+        ss = obj.start;
+        if (ss > s) {
+          a.push({ 'value': text.slice(s, ss), 'type': 'text' });
+        }
+
+        w = text.slice(ss, obj.end);
+        ww = text.slice(ss - 1, obj.end + 1);
+
+        if (useWordBoundary && this.isWrappedByASCII(w) ) {
+          if (this.checkWordBoundary(w, ww)) {
+            a.push({ 'value': w, 'type': obj.type });
+          } else {
+            a.push({ 'value': w, 'type': 'text' });
+          }
+        } else {
+          a.push({ 'value': w, 'type': obj.type });
+        }
+
+        s = obj.end;
+      }
+      if (s < text.length) {
+        a.push({ 'value': text.slice(s, text.length), 'type': 'text' });
+      }
+
+      return a;
+    };
+
+    Helper.prototype.checkWordBoundary = function(w, ww) {
+      return new RegExp('\\b' + w + '\\b').test(ww);
+    };
+
+    Helper.prototype.isWrappedByASCII = function(str) {
+      return /^\w.*\w$|^\w+$/.test(str);
     };
 
     Helper.prototype.isCharacter = function(s) {
