@@ -10,7 +10,6 @@ var marexandre;
     this.element   = this.$element[0];
     this.settings  = $.extend( {}, TextareaHighlighter.DEFAULTS, this.$element.data(), options );
 
-    this.style          = {};
     this.$wrapDiv       = $(document.createElement('div')).addClass('textarea-highlighter-wrap');
     this.$backgroundDiv = $(document.createElement('div')).addClass('background-div ' + this.$element.attr('class') );
     this.$autoSize      = $('<pre><div class="autosize"></div></pre>').addClass( this.$element.attr('class') ).hide();
@@ -205,10 +204,7 @@ var marexandre;
     var _this    = this;
     var $this    = this.$element;
     var settings = this.settings;
-    var style    = this.style;
-
-    // textarea style
-    style = {
+    var style = {
       paddingTop   : parseInt( $this.css('padding-top'), 10 ),
       paddingRight : parseInt( $this.css('padding-right'), 10 ),
       paddingBottom: parseInt( $this.css('padding-bottom'), 10 ),
@@ -310,8 +306,6 @@ var marexandre;
       .off('input.textarea.highlighter')
       .off('keyup.textarea.highlighter')
       .off('propertychange.textarea.highlighter')
-      .off('textarea.highlighter.updateStyle')
-      .off('textarea.highlighter.change')
       // reset all styles
       .attr('style', '')
       .unwrap();
