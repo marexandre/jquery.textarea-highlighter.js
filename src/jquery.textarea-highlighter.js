@@ -188,8 +188,9 @@ var marexandre;
     var flattened = helper.flattenIndeciesList(indeciesList);
     flattened = helper.orderBy(flattened, 'start');
     flattened = helper.removeOverlapingIndecies(flattened);
+    flattened = helper.cleanupOnWordBoundary(text, flattened, _this.settings.word_base);
 
-    var tokenized = helper.makeTokenized(text, flattened, _this.settings.word_base);
+    var tokenized = helper.makeTokenized(text, flattened);
 
     return helper.createHTML(tokenized);
   };

@@ -53,32 +53,45 @@ var marexandre;
       return a;
     };
 
-    Helper.prototype.makeTokenized = function(text, indecies, useWordBoundary) {
-      var a = [], s = 0, ss = 0, obj, w, ww;
+    Helper.prototype.cleanupOnWordBoundary = function(text, list, useWordBoundary) {
       useWordBoundary = useWordBoundary || true;
 
+      var a = [], o, w, ww;
+
+      for (var i = 0, imax = list.length; i < imax; i++) {
+        o = list[i];
+        w = text.slice(o.start, o.end);
+        ww = text.slice(o.start - 1, o.end + 1);
+
+        if (useWordBoundary && this.isWrappedByASCII(w) && !this.checkWordBoundary(w, ww)) {
+          a.push(i);
+        }
+      }
+      // Remove overlapping items from the list
+      return list.slice(0).filter(function(elem, pos) {
+        if (a.indexOf(pos) !== -1) {
+          return false;
+        }
+        return true;
+      });
+    };
+
+    Helper.prototype.makeTokenized = function(text, indecies) {
+      var a = [], o, s = 0, ss = 0;
+
       for (var i = 0, imax = indecies.length; i < imax; i++) {
-        obj = indecies[i];
-        ss = obj.start;
+        o = indecies[i];
+        ss = o.start;
+
         if (ss > s) {
           a.push({ 'value': text.slice(s, ss), 'type': 'text' });
         }
 
-        w = text.slice(ss, obj.end);
-        ww = text.slice(ss - 1, obj.end + 1);
+        a.push({ 'value': text.slice(ss, o.end), 'type': o.type });
 
-        if (useWordBoundary && this.isWrappedByASCII(w) ) {
-          if (this.checkWordBoundary(w, ww)) {
-            a.push({ 'value': w, 'type': obj.type });
-          } else {
-            a.push({ 'value': w, 'type': 'text' });
-          }
-        } else {
-          a.push({ 'value': w, 'type': obj.type });
-        }
-
-        s = obj.end;
+        s = o.end;
       }
+
       if (s < text.length) {
         a.push({ 'value': text.slice(s, text.length), 'type': 'text' });
       }

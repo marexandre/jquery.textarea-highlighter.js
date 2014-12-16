@@ -152,6 +152,7 @@ describe('Helper', function() {
       ]
 
       var indecies = generateIndecies(text, list);
+      indecies = helper.cleanupOnWordBoundary(text, indecies, false);
       expect(indecies).toEqual( _indecies );
 
       var html = '';
@@ -165,7 +166,7 @@ describe('Helper', function() {
       html += '<span class="brackets">[[[てすと]]]</span>';
       html += 'です';
 
-      var tokenized = helper.makeTokenized(text, indecies, false);
+      var tokenized = helper.makeTokenized(text, indecies);
       expect( helper.createHTML(tokenized) ).toEqual( html );
     });
 
@@ -181,7 +182,7 @@ describe('Helper', function() {
       ];
 
       var indecies = generateIndecies(text, list);
-      var tokenized = helper.makeTokenized(text, indecies);
+      indecies = helper.cleanupOnWordBoundary(text, indecies, true);
 
       var html = '';
       html += 'Hi ';
@@ -206,6 +207,7 @@ describe('Helper', function() {
       html += ' aa ';
       html += '<span class="misspelling">a</span>';
 
+      var tokenized = helper.makeTokenized(text, indecies);
       expect( helper.createHTML(tokenized) ).toBe(html);
     });
   });
