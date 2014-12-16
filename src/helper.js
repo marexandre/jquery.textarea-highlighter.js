@@ -120,6 +120,12 @@ var marexandre;
       return str.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
     };
 
+    Helper.prototype.sanitizeBreakLines = function(str) {
+      return str
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n');
+    };
+
     Helper.prototype.getUniqueArray = function(a) {
       return a.filter(function(elem, pos, self) {
         if (elem === '') {

@@ -266,7 +266,7 @@ var marexandre;
     var _this = this;
 
     if (_this.settings.isAutoExpand) {
-      _this.$autoSizeElement.html(helper.escapeHTML(_this.$element.val().replace(/\r\n/g, '\n')) + ' ');
+      _this.$autoSizeElement.html(helper.escapeHTML( helper.sanitizeBreakLines(_this.$element.val()) ) + ' ');
       // If the height of textarea changed then update it
       if (_this.$element.height() !== _this.$autoSize.height()) {
         _this.$element.height( _this.$autoSize.height() );
