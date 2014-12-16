@@ -18,6 +18,14 @@ gulp.task('lint', function() {
     .pipe(jshint.reporter('jshint-stylish'));
 });
 
+// Generate test coverage
+gulp.task('coverage', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.coverage.conf.js',
+    singleRun: true
+  }, done);
+});
+
 // Run test once and exit
 gulp.task('test', function (done) {
   karma.start({
