@@ -42,9 +42,6 @@ var marexandre;
             is_end: j === jmax - 1 // Check if at the last letter
           };
         }
-        // else if (obj.children[c].is_end) {
-        //   obj.is_end = false;
-        // }
 
         obj = obj.children[c];
       }
@@ -98,14 +95,11 @@ var marexandre;
           var exists = tmpTrie.children.hasOwnProperty(c.toString());
 
           if (exists) {
-            // console.log( c );
             tmpTrie = tmpTrie.children[c];
             start = i;
-            var cc = copy[j + 1];
             // Check if next character exists in children, and if does dive deeper
-            if (cc) {
-              var exists2 = tmpTrie.children.hasOwnProperty(cc.toString());
-              // console.log( i, c, j, cc, tmpTrie.is_end, !exists2 );
+            if (copy[j + 1]) {
+              var exists2 = tmpTrie.children.hasOwnProperty(copy[j + 1].toString());
               if (tmpTrie.is_end && !exists2) {
                 end = start + j;
                 break;
@@ -127,6 +121,7 @@ var marexandre;
             start: start,
             end: end + 1
           });
+          i = end;
         }
         // Reset for next round
         start = -1;
