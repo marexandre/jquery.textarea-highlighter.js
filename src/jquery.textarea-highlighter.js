@@ -20,6 +20,7 @@ var marexandre;
   };
 
   TextareaHighlighter.DEFAULTS = {
+    word_base: true,
     matches: [
       // {'matchClass': '', 'match': []}
     ],
@@ -188,7 +189,7 @@ var marexandre;
     flattened = helper.orderBy(flattened, 'start');
     flattened = helper.removeOverlapingIndecies(flattened);
 
-    var tokenized = helper.makeTokenized(text, flattened);
+    var tokenized = helper.makeTokenized(text, flattened, _this.settings.word_base);
 
     return helper.createHTML(tokenized);
   };
@@ -197,7 +198,7 @@ var marexandre;
     var _this = this;
     _this.settings.matches = matches;
     _this.highlight();
-  }
+  };
 
   TextareaHighlighter.prototype.updateStyle = function() {
     var _this    = this;
