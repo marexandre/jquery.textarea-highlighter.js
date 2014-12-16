@@ -1,21 +1,3 @@
-// if (typeof Object.create != 'function') {
-//   Object.create = (function() {
-//     var Object = function() {};
-//     return function (prototype) {
-//       if (arguments.length > 1) {
-//         throw Error('Second argument not supported');
-//       }
-//       if (typeof prototype != 'object') {
-//         throw TypeError('Argument must be an object');
-//       }
-//       Object.prototype = prototype;
-//       var result = new Object();
-//       Object.prototype = null;
-//       return result;
-//     };
-//   })();
-// }
-
 var marexandre;
 (function($, window, document, undefined) {
   'use strict';
@@ -30,8 +12,8 @@ var marexandre;
 
     this.style          = {};
     this.$wrapDiv       = $(document.createElement('div')).addClass('textarea-highlighter-wrap');
-    this.$backgroundDiv = $(document.createElement('div'));
-    this.$autoSize      = $('<pre><div class="autosize"></div></pre>').hide();
+    this.$backgroundDiv = $(document.createElement('div')).addClass('background-div ' + this.$element.attr('class') );
+    this.$autoSize      = $('<pre><div class="autosize"></div></pre>').addClass( this.$element.attr('class') ).hide();
     this.$autoSizeElement = this.$autoSize.find('.autosize');
 
     this.init();
@@ -249,7 +231,7 @@ var marexandre;
     });
 
     // background div
-    this.$backgroundDiv.addClass('background-div').addClass( $this.attr('class') ).css({
+    this.$backgroundDiv.css({
       'position'      : 'absolute',
       'height'        : '100%',
       'font-family'   : 'inherit',
@@ -263,7 +245,7 @@ var marexandre;
 
     if (settings.isAutoExpand) {
       // auto size div
-      _this.$autoSize.addClass( $this.attr('class') ).css({
+      _this.$autoSize.css({
         'top'           : 0,
         'left'          : 0,
         'font-family'   : 'inherit',

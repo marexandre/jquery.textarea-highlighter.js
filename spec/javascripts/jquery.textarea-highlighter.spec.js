@@ -1,7 +1,7 @@
 describe('jquery.textarea-highlighter', function() {
   var $segment;
   beforeEach(function() {
-    $segment = setFixtures('<div class="segment"><textarea id="target-fixture"></textarea></div>')
+    $segment = setFixtures('<div class="segment"><textarea id="target-fixture" class="target"></textarea></div>')
   });
 
   it('should add divs on initialize', function() {
@@ -11,6 +11,10 @@ describe('jquery.textarea-highlighter', function() {
 
     expect( $segment.find('.background-div').length ).toBe(1);
     expect( $segment.find('.autosize').length ).toBe(1);
+
+    // Check is textarea's classes were added to the extra divs
+    expect( $segment.find('.background-div').hasClass('target') ).toBe(true);
+    expect( $segment.find('.autosize').parent().hasClass('target') ).toBe(true);
   });
 
   it('should remove extra divs on destroy', function() {
@@ -23,12 +27,11 @@ describe('jquery.textarea-highlighter', function() {
     expect( $segment.find('.autosize').length ).toBe(0);
   });
 
-  it('should load textarea fixture', function() {
+  it('should highlight content correctly', function() {
     var $target = $segment.find('#target-fixture');
 
-    $target.val('Hi [[[test1]]] this is a {0} test ハゲ THiss [[[{0}]]] and 日本 is some　アホ more [[[tast]]],[[[test2]]] tests. Some more [[[aaa]] and[[[tast]]][[[alex]]] aa');
-
     $target
+      .val('Hi [[[test1]]] this is a {0} test ハゲ THiss [[[{0}]]] and 日本 is some　アホ more [[[tast]]],[[[test2]]] tests. Some more [[[aaa]] and[[[tast]]][[[alex]]] aa')
       .textareaHighlighter({
         matches: [
           { 'matchClass': 'brackets',       'match': ['[[[test1]]]', '[[[tast]]]', '[[[test2]]]', '[[[{0}]]]', '[[[alex]]]'] },
@@ -59,6 +62,26 @@ describe('jquery.textarea-highlighter', function() {
     html += '<span class="brackets">[[[tast]]]</span>';
     html += '<span class="brackets">[[[alex]]]</span>';
     html += ' aa';
+
+    expect( $segment.find('.background-div').html() ).toBe(html);
+  });
+
+  it('should highlight over max char limit content correctly', function() {
+    var $target = $segment.find('#target-fixture');
+
+    $target
+      .val('This is a stupid test to max char limitation...')
+      .textareaHighlighter({
+        matches: [{ 'matchClass': 'test', 'match': ['test'] }],
+        maxlength        : 30,
+        maxlengthWarning : 'error',
+      });
+
+    var html = '';
+    html += 'This is a stupid ';
+    html += '<span class="test">test</span>';
+    html += ' to max c'
+    html += '<span class="error">har limitation...</span>';
 
     expect( $segment.find('.background-div').html() ).toBe(html);
   });
