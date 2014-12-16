@@ -35,6 +35,35 @@ var marexandre;
       });
     };
 
+    Helper.prototype.removeOverlapingIndeciesByPriority = function(list) {
+      list = list || [];
+      var a = [], item, next;
+
+      // Check for overlapping items
+      for (var i = 0, imax = list.length; i < imax; i++) {
+        item = list[i];
+
+        for (var j = i + 1; j < imax; j++) {
+          next = list[j];
+
+          if (this.isOverlap(item, next)) {
+            if (item.priority < next.priority) {
+              a.push(i);
+            } else {
+              a.push(j);
+            }
+          }
+        }
+      }
+      // Remove overlapping items from the list
+      return list.slice(0).filter(function(elem, pos) {
+        if (a.indexOf(pos) !== -1) {
+          return false;
+        }
+        return true;
+      });
+    };
+
     Helper.prototype.isOverlap = function(x, y) {
       return x.start < y.end && y.start < x.end;
     };

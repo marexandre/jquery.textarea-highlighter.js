@@ -41,7 +41,7 @@ describe('Helper', function() {
   });
 
   describe('test removeOverlapingIndecies', function() {
-    it('should order Array by given key', function() {
+    it('should remove overlayied indecies', function() {
       var indecies = [
         { start: 10, end: 12 },
         { start: 11, end: 12 },
@@ -77,6 +77,44 @@ describe('Helper', function() {
         { start: 20, end: 25, type: 'misspelling' }
       ]);
     });
+
+  });
+
+  describe('test removeOverlapingIndeciesByPriority', function() {
+
+    it('should order overlayed indecies based on priority', function() {
+      var indecies = [
+        { start: 10, end: 12, priority: 0 },
+        { start: 11, end: 12, priority: 1 },
+
+        { start: 12, end: 20, priority: 1 },
+        { start: 13, end: 14, priority: 2 },
+        { start: 14, end: 15, priority: 0 },
+        { start: 14, end: 16, priority: 3 },
+
+        { start: 24, end: 27, priority: 0 },
+        { start: 24, end: 26, priority: 0 },
+
+        { start: 30, end: 40, priority: 0 },
+        { start: 33, end: 38, priority: 1 }
+      ];
+
+      expect( helper.removeOverlapingIndeciesByPriority(indecies) ).toEqual([
+        { start: 11, end: 12, priority: 1 },
+        { start: 13, end: 14, priority: 2 },
+        { start: 14, end: 16, priority: 3 },
+        { start: 24, end: 27, priority: 0 },
+        { start: 33, end: 38, priority: 1 }
+      ]);
+    });
+
+    it('should be empty array when ideciues list is an epmty array', function() {
+      var indecies = [];
+      expect( helper.removeOverlapingIndeciesByPriority(indecies) ).toEqual( [] );
+      expect( helper.removeOverlapingIndeciesByPriority('') ).toEqual( [] );
+      expect( helper.removeOverlapingIndeciesByPriority() ).toEqual( [] );
+    });
+
   });
 
   describe('test flattenIndeciesList', function() {
