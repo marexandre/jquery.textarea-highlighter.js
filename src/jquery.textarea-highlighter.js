@@ -98,6 +98,8 @@ var marexandre;
         _this.highlight();
       });
 
+    // Input event's
+    // TODO: Check if we need old browser related code
     if ('onpropertychange' in _this.element) {
       if ('oninput' in _this.element) {
         // IE 9+
@@ -229,7 +231,6 @@ var marexandre;
 
     // textarea style
     style = {
-      // background   : this.$element.css('background'),
       paddingTop   : parseInt( $this.css('padding-top'), 10 ),
       paddingRight : parseInt( $this.css('padding-right'), 10 ),
       paddingBottom: parseInt( $this.css('padding-bottom'), 10 ),
@@ -368,4 +369,5 @@ var marexandre;
       }
     });
   };
+
 })(jQuery, window, document);

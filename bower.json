@@ -4,6 +4,8 @@
   "main": "jquery.textarea-highlighter.js",
   "ignore": [
     "**/.*",
+    "coverage/**",
+    "bower_components/**",
     "node_modules/**"
   ],
   "dependencies": {

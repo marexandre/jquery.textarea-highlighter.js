@@ -2,18 +2,11 @@
 module.exports = function(config) {
   config.set({
     browsers: ['PhantomJS'],
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine-jquery', 'jasmine'],
     files: [
       'bower_components/jquery/dist/jquery.min.js',
       'src/**/*.js',
-      'test/**/*.js'
-    ],
-    plugins: [
-      'karma-jasmine',
-      'karma-coverage',
-      'karma-chrome-launcher',
-      'karma-phantomjs-launcher',
-      'karma-spec-reporter'
+      'spec/**/*.js'
     ],
     reporters: ['coverage'],
     preprocessors: {
@@ -24,6 +17,14 @@ module.exports = function(config) {
         { type: 'html', dir: './coverage' },
         { type: 'text-summary' }
       ]
-    }
+    },
+    plugins: [
+      'karma-jasmine',
+      'karma-jasmine-jquery',
+      'karma-coverage',
+      'karma-chrome-launcher',
+      'karma-phantomjs-launcher',
+      'karma-spec-reporter'
+    ]
   });
 };
