@@ -39,6 +39,9 @@ var marexandre;
       list = list || [];
       var a = [], item, next;
 
+      // list = this.orderBy(list, 'priority');
+      // console.log( list );
+
       // Check for overlapping items
       for (var i = 0, imax = list.length; i < imax; i++) {
         item = list[i];
@@ -47,14 +50,18 @@ var marexandre;
           next = list[j];
 
           if (this.isOverlap(item, next)) {
+            // console.log(item.priority, next.priority);
             if (item.priority < next.priority) {
+              // console.log(item);
               a.push(i);
             } else {
+              // console.log(next);
               a.push(j);
             }
           }
         }
       }
+      // console.log(a);
       // Remove overlapping items from the list
       return list.slice(0).filter(function(elem, pos) {
         if (a.indexOf(pos) !== -1) {

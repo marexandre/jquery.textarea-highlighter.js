@@ -83,7 +83,7 @@ describe('Helper', function() {
   describe('test removeOverlapingIndeciesByPriority', function() {
 
     it('should order overlayed indecies based on priority', function() {
-      var indecies = [
+      var list = [
         { start: 10, end: 12, priority: 0 },
         { start: 11, end: 12, priority: 1 },
 
@@ -102,7 +102,7 @@ describe('Helper', function() {
         { start: 50, end: 60, priority: 4 }
       ];
 
-      expect( helper.removeOverlapingIndeciesByPriority(indecies) ).toEqual([
+      expect( helper.removeOverlapingIndeciesByPriority(list) ).toEqual([
         { start: 11, end: 12, priority: 1 },
         { start: 13, end: 14, priority: 2 },
         { start: 14, end: 16, priority: 3 },
@@ -112,7 +112,37 @@ describe('Helper', function() {
       ]);
     });
 
-    it('should be empty array when ideciues list is an epmty array', function() {
+    it('non-overlapping', function() {
+      var list = [
+        { start: 0, end: 1, priority: 0 },
+        { start: 1, end: 2, priority: 99 },
+        { start: 2, end: 4, priority: 1 },
+        { start: 8, end: 10, priority: 2 }
+      ];
+      expect( helper.removeOverlapingIndeciesByPriority(list) ).toEqual([
+        { start: 0, end: 1, priority: 0 },
+        { start: 1, end: 2, priority: 99 },
+        { start: 2, end: 4, priority: 1 },
+        { start: 8, end: 10, priority: 2 }
+      ]);
+
+    });
+    it('overlapping, higher priority token should remain', function() {
+      var list = [
+        { start: 0, end: 1, priority: 0 },
+        { start: 0, end: 1, priority: 99 },
+        { start: 1, end: 1, priority: 1 },
+        { start: 1, end: 2, priority: 2 }
+      ];
+      expect( helper.removeOverlapingIndeciesByPriority(list) ).toEqual([
+        { start: 0, end: 1, priority: 99 }
+      ]);
+    });
+
+    it('overlapping, lower index token "a" should remain (priorities are equal)', function() {});
+    it('tokens in random order should be ordered', function() {});
+    it('case with token that starts where first token ends', function() {});
+    it('case with empty tokens', function() {
       var indecies = [];
       expect( helper.removeOverlapingIndeciesByPriority(indecies) ).toEqual( [] );
       expect( helper.removeOverlapingIndeciesByPriority('') ).toEqual( [] );
