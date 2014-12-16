@@ -96,7 +96,10 @@ describe('Helper', function() {
         { start: 24, end: 26, priority: 0 },
 
         { start: 30, end: 40, priority: 0 },
-        { start: 33, end: 38, priority: 1 }
+        { start: 33, end: 38, priority: 1 },
+
+        { start: 50, end: 60, priority: 5 },
+        { start: 50, end: 60, priority: 4 }
       ];
 
       expect( helper.removeOverlapingIndeciesByPriority(indecies) ).toEqual([
@@ -104,7 +107,8 @@ describe('Helper', function() {
         { start: 13, end: 14, priority: 2 },
         { start: 14, end: 16, priority: 3 },
         { start: 24, end: 27, priority: 0 },
-        { start: 33, end: 38, priority: 1 }
+        { start: 33, end: 38, priority: 1 },
+        { start: 50, end: 60, priority: 5 }
       ]);
     });
 
