@@ -11,16 +11,6 @@ var marexandre;
       });
     };
 
-    // Helper.prototype.mergeArray = function(list) {
-    //   var a = [];
-
-    //   for (var i = 0, imax = list.length ; i < imax; i++) {
-    //     a.push.apply(a, list[i].indecies);
-    //   }
-
-    //   return a;
-    // };
-
     Helper.prototype.removeOverlapingIndecies = function(list) {
       var a = [], item, next;
 

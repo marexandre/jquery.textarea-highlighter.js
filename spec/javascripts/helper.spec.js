@@ -1,12 +1,4 @@
 describe('Helper', function() {
-
-  console.dump = function(object) {
-    if (window.JSON && window.JSON.stringify) {
-      console.log(JSON.stringify(object));
-    } else {
-      console.log(object);
-    }
-  };
   var helper = new marexandre.Helper();
 
   describe('test orderBy', function() {
