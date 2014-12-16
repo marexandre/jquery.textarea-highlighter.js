@@ -42,6 +42,10 @@ describe('Helper', function() {
       var list = [1, '2', '1', 3, 1, '4', '5', '1', '4', '2'];
       expect( helper.getUniqueArray(list) ).toEqual([ 1, '2', '1',  3, '4', '5' ]);
     });
+    it('should remove empty string and dupes from an array', function() {
+      var list = ['1', '2', '1', '3', '', '1', '4', '5', '', '1', '4', '2'];
+      expect( helper.getUniqueArray(list) ).toEqual([ '1', '2', '3', '4', '5' ]);
+    });
   });
 
   describe('test removeOverlapingIndecies', function() {
