@@ -107,14 +107,6 @@ var marexandre;
       return /^\w.*\w$|^\w+$/.test(str);
     };
 
-    Helper.prototype.isCharacter = function(s) {
-      var c = s.charCodeAt(0);
-      if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) {
-        return true;
-      }
-      return false;
-    };
-
     Helper.prototype.escapeHTML = function(str) {
       return str
         .replace(/&/g, '&amp;')
