@@ -74,16 +74,32 @@ describe('jquery.textarea-highlighter', function() {
       .textareaHighlighter({
         matches: [{ 'matchClass': 'test', 'match': ['test'] }],
         maxlength        : 30,
-        maxlengthWarning : 'error',
+        maxlengthWarning : 'error'
       });
 
     var html = '';
     html += 'This is a stupid ';
     html += '<span class="test">test</span>';
-    html += ' to max c'
+    html += ' to max c';
     html += '<span class="error">har limitation...</span>';
 
     expect( $segment.find('.background-div').html() ).toBe(html);
+  });
+
+  it('should update matches', function() {
+    var $target = $segment.find('#target-fixture');
+
+    $target
+      .val('This is a stupid test to :)')
+      .textareaHighlighter();
+
+    // There should be no highlights
+    expect( $segment.find('.background-div').html() ).toBe('This is a stupid test to :)');
+
+    // Update match list
+    $target.textareaHighlighter('updateMatches', [{ 'matchClass': 'test', 'match': ['test'] }]);
+
+    expect( $segment.find('.background-div').html() ).toBe('This is a stupid <span class="test">test</span> to :)');
   });
 
 });

@@ -205,6 +205,12 @@ var marexandre;
     return helper.createHTML(tokenized);
   };
 
+  TextareaHighlighter.prototype.updateMatches = function(matches) {
+    var _this = this;
+    _this.settings.matches = matches;
+    _this.highlight();
+  }
+
   TextareaHighlighter.prototype.updateStyle = function() {
     var _this    = this;
     var $this    = this.$element;
