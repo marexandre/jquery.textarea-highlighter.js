@@ -29,6 +29,21 @@ describe('Helper', function() {
     });
   });
 
+  describe('test getUniqueArray', function() {
+    it('should remove Int dupes from an array', function() {
+      var list = [1, 2, 1, 3, 1, 4, 5, 1, 4, 2];
+      expect( helper.getUniqueArray(list) ).toEqual([ 1, 2, 3, 4, 5 ]);
+    });
+    it('should remove String dupes from an array', function() {
+      var list = ['1', '2', '1', '3', '1', '4', '5', '1', '4', '2'];
+      expect( helper.getUniqueArray(list) ).toEqual([ '1', '2', '3', '4', '5' ]);
+    });
+    it('should remove Int + String dupes from an array', function() {
+      var list = [1, '2', '1', 3, 1, '4', '5', '1', '4', '2'];
+      expect( helper.getUniqueArray(list) ).toEqual([ 1, '2', '1',  3, '4', '5' ]);
+    });
+  });
+
   describe('test removeOverlapingIndecies', function() {
     it('should order Array by given key', function() {
       var indecies = [
