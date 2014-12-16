@@ -55,22 +55,27 @@ var marexandre;
     };
 
     Helper.prototype.removeOverlapingIndecies = function(list) {
-      var a = [], item, prev;
+      var a = [], item, next;
 
+      // Check for overlapping items
       for (var i = 0, imax = list.length; i < imax; i++) {
         item = list[i];
-        prev = list[i - 1];
 
-        if (prev) {
-          if (!this.isOverlap(item, prev)) {
-            a.push(item);
+        for (var j = i + 1; j < imax; j++) {
+          next = list[j];
+
+          if (this.isOverlap(item, next)) {
+            a.push(j);
           }
-        } else {
-          a.push(item);
         }
       }
-
-      return a;
+      // Remove overlapping items from the list
+      return list.slice(0).filter(function(elem, pos) {
+        if (a.indexOf(pos) !== -1) {
+          return false;
+        }
+        return true;
+      });
     };
 
     Helper.prototype.isOverlap = function(x, y) {
