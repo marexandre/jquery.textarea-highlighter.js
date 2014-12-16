@@ -66,18 +66,6 @@ var marexandre;
       // Bind events
       .on('scroll.textarea.highlighter', function() {
         _this.$backgroundDiv.scrollTop( $this.scrollTop() );
-      })
-      // ORIGINAL EVENTS
-      // .on('textarea.highlighter.matches', function(e, data) {
-      //   _this.settings.matches = data.matches;
-      //   _this.highlight();
-      // })
-      .on('textarea.highlighter.updateStyle', function() {
-        _this.updateStyle();
-        _this.updateHeight();
-      })
-      .on('textarea.highlighter.change', function() {
-        _this.highlight();
       });
 
     // Input event's
