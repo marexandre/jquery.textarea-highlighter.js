@@ -150,7 +150,13 @@ describe('jquery.textarea-highlighter', function() {
         expect( $maxChar.hasClass('error') ).toBe(true);
         expect( $maxChar.html() ).toBe('-17');
 
-        done();
+        $target.val('This').trigger('input');
+        setTimeout(function() {
+          expect( $maxChar.hasClass('error') ).toBe(false);
+          expect( $maxChar.html() ).toBe('26');
+
+          done();
+        }, 200);
       }, 200);
     });
   });
