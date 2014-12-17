@@ -5,6 +5,7 @@
   "ignore": [
     "screenshot.png",
     "**/.*",
+    "gulpfile.js",
     "demo/**",
     "karma.**.js*",
     "spec/**",

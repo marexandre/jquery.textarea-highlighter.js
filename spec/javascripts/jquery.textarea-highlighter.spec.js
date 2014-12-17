@@ -1,7 +1,12 @@
 describe('jquery.textarea-highlighter', function() {
   var $segment;
   beforeEach(function() {
-    $segment = setFixtures('<div class="segment"><textarea id="target-fixture" class="target"></textarea></div>')
+    $segment = setFixtures(
+      '<div class="segment">' +
+        '<textarea id="target-fixture" class="target"></textarea>' +
+        '<div class="max-char"></div>' +
+      '</div>'
+    );
   });
 
   it('should add divs on initialize', function() {
@@ -66,26 +71,6 @@ describe('jquery.textarea-highlighter', function() {
     expect( $segment.find('.background-div').html() ).toBe(html);
   });
 
-  it('should highlight over max char limit content correctly', function() {
-    var $target = $segment.find('#target-fixture');
-
-    $target
-      .val('This is a stupid test to max char limitation...')
-      .textareaHighlighter({
-        matches: [{ 'matchClass': 'test', 'match': ['test'] }],
-        maxlength        : 30,
-        maxlengthWarning : 'error'
-      });
-
-    var html = '';
-    html += 'This is a stupid ';
-    html += '<span class="test">test</span>';
-    html += ' to max c';
-    html += '<span class="error">har limitation...</span>';
-
-    expect( $segment.find('.background-div').html() ).toBe(html);
-  });
-
   it('should update matches', function() {
     var $target = $segment.find('#target-fixture');
 
@@ -100,6 +85,58 @@ describe('jquery.textarea-highlighter', function() {
     $target.textareaHighlighter('updateMatches', [{ 'matchClass': 'test', 'match': ['test'] }]);
 
     expect( $segment.find('.background-div').html() ).toBe('This is a stupid <span class="test">test</span> to :)');
+  });
+
+  describe('test max length', function() {
+    var $target;
+    var $maxChar;
+    beforeEach(function() {
+      $target = $segment.find('#target-fixture');
+      $maxChar = $segment.find('.max-char');
+
+      $target
+        .textareaHighlighter({
+          matches: [{ 'matchClass': 'test', 'match': ['test'] }],
+          maxlength        : 30,
+          maxlengthWarning : 'error',
+          maxlengthElement : $segment.find('.max-char')
+        });
+    });
+
+    it('should not highlight when not over max char limitation', function(done) {
+      $target.val('This is a stupid test to').trigger('input');
+
+      var html = '';
+      html += 'This is a stupid ';
+      html += '<span class="test">test</span>';
+      html += ' to';
+
+      setTimeout(function() {
+        expect( $segment.find('.background-div').html() ).toBe(html);
+        expect( $maxChar.hasClass('error') ).toBe(false);
+        expect( $maxChar.html() ).toBe('6');
+
+        done();
+      }, 200);
+    });
+
+    it('should highlight when over max char limitation', function(done) {
+      $target.val('This is a stupid test to max char limitation...').trigger('input');
+
+      var html = '';
+      html += 'This is a stupid ';
+      html += '<span class="test">test</span>';
+      html += ' to max c';
+      html += '<span class="error">har limitation...</span>';
+
+      setTimeout(function() {
+        expect( $segment.find('.background-div').html() ).toBe(html);
+        expect( $maxChar.hasClass('error') ).toBe(true);
+        expect( $maxChar.html() ).toBe('-17');
+
+        done();
+      }, 200);
+    });
   });
 
 });
