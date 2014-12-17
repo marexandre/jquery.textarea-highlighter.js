@@ -1,7 +1,6 @@
 // Karma configuration
 module.exports = function(config) {
   config.set({
-    captureTimeout: 600 * 1000,
     browsers: ['PhantomJS', 'Chrome', 'Firefox'],
     frameworks: ['benchmark'],
     files: [

@@ -39,7 +39,7 @@ var shuffle = function(array) {
 var generateRandomFromListText = function(b) {
   var a = [];
   for (var i = 0, imax = b.length; i < imax; i++) {
-    a.push(randomText( Math.random() * 20) + ' ' + b[i] + ' ' + randomText( Math.random() * 20));
+    a.push(randomText(10) + ' ' + b[i] + ' ' + randomText(10));
   }
   return a.join(' ');
 }
