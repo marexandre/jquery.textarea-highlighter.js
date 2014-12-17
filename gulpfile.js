@@ -19,6 +19,14 @@ gulp.task('lint', function() {
 });
 
 // Generate test coverage
+gulp.task('benchmark', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.benchmark.conf.js',
+    singleRun: true
+  }, done);
+});
+
+// Generate test coverage
 gulp.task('coverage', function (done) {
   karma.start({
     configFile: __dirname + '/karma.coverage.conf.js',
