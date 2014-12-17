@@ -5,5 +5,5 @@ install:
   - npm install --global gulp
   - npm install
   - bower install
-scripts:
+script:
   - gulp build
