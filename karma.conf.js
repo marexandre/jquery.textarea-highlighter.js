@@ -1,7 +1,7 @@
 // Karma configuration
 module.exports = function(config) {
   config.set({
-    browserNoActivityTimeout: 30 * 1000,
+    browserNoActivityTimeout: 50 * 1000,
     browsers: ['PhantomJS'],
     frameworks: ['jasmine'],
     files: [

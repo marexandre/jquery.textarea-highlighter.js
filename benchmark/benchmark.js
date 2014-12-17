@@ -93,29 +93,29 @@ suite('Test with 50 matches', function() {
   });
 });
 
-// suite('Test with 75 matches', function() {
-//   var b = brackets.slice(0, 25);
-//   var t = tags.slice(0, 25);
-//   var m = misspelling.slice(0.1, 25);
-//   var r = [].concat.apply([], [b, t, m]);
-//   r = shuffle(r);
-//   var text = generateRandomFromListText(r);
-//   var matches = [
-//     { 'matchClass': 'brackets', 'match': b },
-//     { 'matchClass': 'tags', 'match': t },
-//     { 'matchClass': 'misspelling', 'match': m }
-//   ];
+suite('Test with 75 matches', function() {
+  var b = brackets.slice(0, 25);
+  var t = tags.slice(0, 25);
+  var m = misspelling.slice(0.1, 25);
+  var r = [].concat.apply([], [b, t, m]);
+  r = shuffle(r);
+  var text = generateRandomFromListText(r);
+  var matches = [
+    { 'matchClass': 'brackets', 'match': b },
+    { 'matchClass': 'tags', 'match': t },
+    { 'matchClass': 'misspelling', 'match': m }
+  ];
 
-//   console.log('matches: ' + r.length + ', text length: ' + text.length);
+  console.log('matches: ' + r.length + ', text length: ' + text.length);
 
-//   benchmark('v0_6_0', function() {
-//     v0_6_0(text, matches);
-//   });
+  benchmark('v0_6_0', function() {
+    v0_6_0(text, matches);
+  });
 
-//   benchmark('v0_4_8', function() {
-//     v0_4_8(text, matches).txt;
-//   });
-// });
+  benchmark('v0_4_8', function() {
+    v0_4_8(text, matches).txt;
+  });
+});
 
 // suite('Test with 100 matches', function() {
 //   var b = brackets.slice(0, 50);
