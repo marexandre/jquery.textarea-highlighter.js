@@ -103,11 +103,11 @@ describe('Helper', function() {
       ];
 
       expect( helper.removeOverlapingIndeciesByPriority(list) ).toEqual([
+        { start: 24, end: 27, priority: 0 },
         { start: 11, end: 12, priority: 1 },
+        { start: 33, end: 38, priority: 1 },
         { start: 13, end: 14, priority: 2 },
         { start: 14, end: 16, priority: 3 },
-        { start: 24, end: 27, priority: 0 },
-        { start: 33, end: 38, priority: 1 },
         { start: 50, end: 60, priority: 5 }
       ]);
     });
@@ -121,27 +121,55 @@ describe('Helper', function() {
       ];
       expect( helper.removeOverlapingIndeciesByPriority(list) ).toEqual([
         { start: 0, end: 1, priority: 0 },
-        { start: 1, end: 2, priority: 99 },
         { start: 2, end: 4, priority: 1 },
-        { start: 8, end: 10, priority: 2 }
+        { start: 8, end: 10, priority: 2 },
+        { start: 1, end: 2, priority: 99 }
       ]);
-
     });
+
     it('overlapping, higher priority token should remain', function() {
       var list = [
         { start: 0, end: 1, priority: 0 },
         { start: 0, end: 1, priority: 99 },
-        { start: 1, end: 1, priority: 1 },
-        { start: 1, end: 2, priority: 2 }
+        { start: 0, end: 1, priority: 1 },
+        { start: 0, end: 2, priority: 2 }
       ];
       expect( helper.removeOverlapingIndeciesByPriority(list) ).toEqual([
         { start: 0, end: 1, priority: 99 }
       ]);
     });
 
-    it('overlapping, lower index token "a" should remain (priorities are equal)', function() {});
-    it('tokens in random order should be ordered', function() {});
+    it('overlapping, longest indecies should remain (priorities are equal)', function() {
+      var list = [
+        { start: 0, end: 4, priority: 2 },
+        { start: 0, end: 5, priority: 2 },
+        { start: 1, end: 5, priority: 2 },
+        { start: 0, end: 3, priority: 1 },
+        { start: 0, end: 2, priority: 0 },
+        { start: 0, end: 1, priority: 0 }
+      ];
+      expect( helper.removeOverlapingIndeciesByPriority(list) ).toEqual([
+        { start: 0, end: 5, priority: 2 }
+      ]);
+    });
+
+    it('tokens in random order should be ordered by ', function() {
+      var list = [
+        { start: 0, end: 1, priority: 0 },
+        { start: 1, end: 2, priority: 99 },
+        { start: 2, end: 4, priority: 1 },
+        { start: 8, end: 10, priority: 2 }
+      ];
+      expect( helper.removeOverlapingIndeciesByPriority(list) ).toEqual([
+        { start: 0, end: 1, priority: 0 },
+        { start: 2, end: 4, priority: 1 },
+        { start: 8, end: 10, priority: 2 },
+        { start: 1, end: 2, priority: 99 }
+      ]);
+    });
+
     it('case with token that starts where first token ends', function() {});
+
     it('case with empty tokens', function() {
       var indecies = [];
       expect( helper.removeOverlapingIndeciesByPriority(indecies) ).toEqual( [] );

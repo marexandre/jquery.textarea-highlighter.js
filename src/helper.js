@@ -37,31 +37,32 @@ var marexandre;
 
     Helper.prototype.removeOverlapingIndeciesByPriority = function(list) {
       list = list || [];
+      list = this.orderBy(list, 'priority');
+
       var a = [], item, next;
-
-      // list = this.orderBy(list, 'priority');
-      // console.log( list );
-
-      // Check for overlapping items
+      // Remove overlap based on priority
       for (var i = 0, imax = list.length; i < imax; i++) {
         item = list[i];
 
         for (var j = i + 1; j < imax; j++) {
           next = list[j];
-
           if (this.isOverlap(item, next)) {
-            // console.log(item.priority, next.priority);
             if (item.priority < next.priority) {
-              // console.log(item);
               a.push(i);
+              break;
+            } else if (item.priority === next.priority) {
+              if (item.end > next.end || item.start < next.start) {
+                a.push(j);
+              } else {
+                a.push(i);
+                break;
+              }
             } else {
-              // console.log(next);
               a.push(j);
             }
           }
         }
       }
-      // console.log(a);
       // Remove overlapping items from the list
       return list.slice(0).filter(function(elem, pos) {
         if (a.indexOf(pos) !== -1) {
