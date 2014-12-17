@@ -60,46 +60,30 @@ var marexandre;
   TextareaHighlighter.prototype.bindEvents = function() {
     var _this = this;
     var $this = this.$element;
+    // For backspace long press
+    var lastUpdate = new Date().getTime();
+    var timeDiff = 0;
+    var abs = Math.abs;
 
     $this
       .data('highlighterTimerId', -1)
-      // Bind events
+      // Watch on scroll event
       .on('scroll.textarea.highlighter', function() {
         _this.$backgroundDiv.scrollTop( $this.scrollTop() );
-      });
-
-    // Input event's
-    // TODO: Check if we need old browser related code
-    if ('onpropertychange' in _this.element) {
-      if ('oninput' in _this.element) {
-        // IE 9+
-        $this.on('input.textarea.highlighter keyup.textarea.highlighter', function(e) {
-          _this.change(e);
-        });
-        // on backspace key long press
-        var lastUpdate = new Date().getTime(), timeDiff = 0;
-
-        $this.on('keydown.textarea.highlighter', function(e) {
-          timeDiff = Math.abs(lastUpdate - new Date().getTime());
-          if (e.which === 8 && (timeDiff < 10 || 250 < timeDiff)) {
-            _this.change(e);
-            lastUpdate = new Date().getTime();
-          }
-        });
-      }
-      else {
-        // IE 7/8
-        $this.on('propertychange.textarea.highlighter', function(e) {
-          _this.change(e);
-        });
-      }
-    }
-    else {
-      // Modern browsers
-      $this.on('input.textarea.highlighter', function(e) {
+      })
+      // Watch value change in the textarea
+      .on('input.textarea.highlighter keyup.textarea.highlighter', function(e) {
         _this.change(e);
+      })
+      // Watch backspace key long press
+      .on('keydown.textarea.highlighter', function(e) {
+        timeDiff = abs(lastUpdate - new Date().getTime());
+
+        if (e.which === 8 && (timeDiff < 10 || 250 < timeDiff)) {
+          _this.change(e);
+          lastUpdate = new Date().getTime();
+        }
       });
-    }
   };
 
   TextareaHighlighter.prototype.change = function(e) {
