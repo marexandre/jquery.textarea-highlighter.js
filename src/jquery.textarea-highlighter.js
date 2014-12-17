@@ -152,19 +152,20 @@ var marexandre;
     var _this = this;
     var list = _this.settings.matches;
     var indeciesList = [];
-    var item, trie, trieIndecies;
+    var item, trieIndecies;
 
     for (var i = 0, imax = list.length; i < imax; i++) {
       item = list[i];
 
-      if (item._trie) {
-        trie = item._trie;
-      } else {
-        trie = new marexandre.Trie(item.match);
-        item._trie = trie;
+      if (!item._trie) {
+        item._trie = new marexandre.Trie();
+        // HTML escape matching words
+        for (var j = 0, jmax = item.match.length; j < jmax; j++) {
+          item._trie.add( helper.escapeHTML(item.match[j]) );
+        }
       }
 
-      trieIndecies = trie.getIndecies(text);
+      trieIndecies = item._trie.getIndecies(text);
       trieIndecies = helper.removeOverlapingIndecies(trieIndecies);
 
       indeciesList.push({ 'indecies': trieIndecies, 'type': item.matchClass });
@@ -175,9 +176,7 @@ var marexandre;
     flattened = helper.removeOverlapingIndecies(flattened);
     flattened = helper.cleanupOnWordBoundary(text, flattened, _this.settings.word_base);
 
-    var tokenized = helper.makeTokenized(text, flattened);
-
-    return helper.createHTML(tokenized);
+    return helper.createHTML( helper.makeTokenized(text, flattened) );
   };
 
   TextareaHighlighter.prototype.updateCharLimitElement = function(text) {

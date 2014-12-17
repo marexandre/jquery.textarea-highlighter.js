@@ -32,45 +32,6 @@ describe('jquery.textarea-highlighter', function() {
     expect( $segment.find('.autosize').length ).toBe(0);
   });
 
-  it('should highlight content correctly', function() {
-    var $target = $segment.find('#target-fixture');
-
-    $target
-      .val('Hi [[[test1]]] this is a {0} test ハゲ THiss [[[{0}]]] and 日本 is some　アホ more [[[tast]]],[[[test2]]] tests. Some more [[[aaa]] and[[[tast]]][[[alex]]] aa')
-      .textareaHighlighter({
-        matches: [
-          { 'matchClass': 'brackets',       'match': ['[[[test1]]]', '[[[tast]]]', '[[[test2]]]', '[[[{0}]]]', '[[[alex]]]'] },
-          { 'matchClass': 'brackets error', 'match': ['[[[aaa]]'] },
-          { 'matchClass': 'tags',           'match': ['{0}'] },
-          { 'matchClass': 'misspelling',    'match': ['THiss', 'est', 'a'] }
-        ]
-      });
-
-    var html = '';
-    html += 'Hi ';
-    html += '<span class="brackets">[[[test1]]]</span>';
-    html += ' this is ';
-    html += '<span class="misspelling">a</span>';
-    html += ' ';
-    html += '<span class="tags">{0}</span>';
-    html += ' test ハゲ ';
-    html += '<span class="misspelling">THiss</span>';
-    html += ' ';
-    html += '<span class="brackets">[[[{0}]]]</span>';
-    html += ' and 日本 is some　アホ more ';
-    html += '<span class="brackets">[[[tast]]]</span>';
-    html += ',';
-    html += '<span class="brackets">[[[test2]]]</span>';
-    html += ' tests. Some more ';
-    html += '<span class="brackets error">[[[aaa]]</span>';
-    html += ' and';
-    html += '<span class="brackets">[[[tast]]]</span>';
-    html += '<span class="brackets">[[[alex]]]</span>';
-    html += ' aa';
-
-    expect( $segment.find('.background-div').html() ).toBe(html);
-  });
-
   it('should update matches', function() {
     var $target = $segment.find('#target-fixture');
 
@@ -85,6 +46,61 @@ describe('jquery.textarea-highlighter', function() {
     $target.textareaHighlighter('updateMatches', [{ 'matchClass': 'test', 'match': ['test'] }]);
 
     expect( $segment.find('.background-div').html() ).toBe('This is a stupid <span class="test">test</span> to :)');
+  });
+
+  describe('test highlighting', function() {
+
+    it('should highlight content correctly', function() {
+      var $target = $segment.find('#target-fixture');
+
+      $target
+        .val('Hi [[[test1]]] this is a {0} test ハゲ THiss [[[{0}]]] and 日本 is some　アホ more [[[tast]]],[[[test2]]] tests. Some more [[[aaa]] and[[[tast]]][[[alex]]] aa')
+        .textareaHighlighter({
+          matches: [
+            { 'matchClass': 'brackets',       'match': ['[[[test1]]]', '[[[tast]]]', '[[[test2]]]', '[[[{0}]]]', '[[[alex]]]'] },
+            { 'matchClass': 'brackets error', 'match': ['[[[aaa]]'] },
+            { 'matchClass': 'tags',           'match': ['{0}'] },
+            { 'matchClass': 'misspelling',    'match': ['THiss', 'est', 'a'] }
+          ]
+        });
+
+      var html = '';
+      html += 'Hi ';
+      html += '<span class="brackets">[[[test1]]]</span>';
+      html += ' this is ';
+      html += '<span class="misspelling">a</span>';
+      html += ' ';
+      html += '<span class="tags">{0}</span>';
+      html += ' test ハゲ ';
+      html += '<span class="misspelling">THiss</span>';
+      html += ' ';
+      html += '<span class="brackets">[[[{0}]]]</span>';
+      html += ' and 日本 is some　アホ more ';
+      html += '<span class="brackets">[[[tast]]]</span>';
+      html += ',';
+      html += '<span class="brackets">[[[test2]]]</span>';
+      html += ' tests. Some more ';
+      html += '<span class="brackets error">[[[aaa]]</span>';
+      html += ' and';
+      html += '<span class="brackets">[[[tast]]]</span>';
+      html += '<span class="brackets">[[[alex]]]</span>';
+      html += ' aa';
+
+      expect( $segment.find('.background-div').html() ).toBe(html);
+    });
+
+    it('should escape & highlight HTML content in bacground-div', function() {
+      var $target = $segment.find('#target-fixture');
+      var text = 'This is a <a href="#">stupid</a> test to <br/> :)';
+
+      $target
+        .val(text)
+        .textareaHighlighter({
+          matches: [{ 'matchClass': 'test', 'match': ['test', '<br/>'] }]
+        });
+
+      expect( $segment.find('.background-div').html() ).toBe( 'This is a &lt;a href="#"&gt;stupid&lt;/a&gt; <span class="test">test</span> to <span class="test">&lt;br/&gt;</span> :)' );
+    });
   });
 
   describe('test max length', function() {
