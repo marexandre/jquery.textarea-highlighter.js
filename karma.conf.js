@@ -12,7 +12,11 @@ module.exports = function(config) {
     reporters: ['spec'],
     plugins: [
       'karma-jasmine',
+      'karma-coverage',
+      'karma-benchmark',
+      'karma-benchmark-reporter',
       'karma-chrome-launcher',
+      'karma-firefox-launcher',
       'karma-phantomjs-launcher',
       'karma-spec-reporter'
     ]

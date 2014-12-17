@@ -58,19 +58,39 @@ gulp.task('tdd', function (done) {
   }, done);
 });
 
-// Generate test coverage
+// Run benchmark on the code
 gulp.task('benchmark', function (done) {
   karma.start({
-    configFile: __dirname + '/karma.benchmark.conf.js',
-    singleRun: true
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true,
+    browsers: ['PhantomJS', 'Chrome', 'Firefox'],
+    frameworks: ['benchmark'],
+    reporters: ['benchmark'],
+    files: [
+      'src/helper.js',
+      'src/trie.js',
+      'benchmark/helper.js',
+      'benchmark/**/*.js',
+      'benchmark/benchmark.js'
+    ]
   }, done);
 });
 
 // Generate test coverage
 gulp.task('coverage', function (done) {
   karma.start({
-    configFile: __dirname + '/karma.coverage.conf.js',
-    singleRun: true
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true,
+    reporters: ['coverage'],
+    preprocessors: {
+      'src/**/*.js': 'coverage'
+    },
+    coverageReporter: {
+      reporters:[
+        { type: 'html', dir: './coverage' },
+        { type: 'text-summary' }
+      ]
+    }
   }, done);
 });
 
