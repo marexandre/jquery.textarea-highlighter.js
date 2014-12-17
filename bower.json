@@ -3,8 +3,13 @@
   "version": "0.4.8",
   "main": "jquery.textarea-highlighter.js",
   "ignore": [
+    "screenshot.png",
     "**/.*",
+    "demo/**",
+    "karma.**.js*",
+    "spec/**",
     "coverage/**",
+    "benchmark/**",
     "bower_components/**",
     "node_modules/**"
   ],
