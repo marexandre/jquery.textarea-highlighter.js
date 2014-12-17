@@ -2,9 +2,10 @@
 module.exports = function(config) {
   config.set({
     browsers: ['PhantomJS'],
-    frameworks: ['jasmine-jquery', 'jasmine'],
+    frameworks: ['jasmine'],
     files: [
       'bower_components/jquery/dist/jquery.min.js',
+      'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
       'src/**/*.js',
       'spec/**/*.js'
     ],
@@ -20,7 +21,6 @@ module.exports = function(config) {
     },
     plugins: [
       'karma-jasmine',
-      'karma-jasmine-jquery',
       'karma-coverage',
       'karma-chrome-launcher',
       'karma-phantomjs-launcher',

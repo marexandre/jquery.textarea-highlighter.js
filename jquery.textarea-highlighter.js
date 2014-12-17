@@ -496,19 +496,19 @@ var marexandre;
   };
 
   TextareaHighlighter.prototype.highlight = function() {
-    var self = this;
-    var text = self.$element.val();
-    var settings = self.settings;
+    var _this = this;
+    var text = _this.$element.val();
+    var settings = _this.settings;
     var overMaxText = '';
     var notOverMaxText = '';
 
     if (text.length === 0) {
-      self.$backgroundDiv.html('');
+      _this.$backgroundDiv.html('');
       return;
     }
 
+    // check for max length
     if (0 < settings.maxlength) {
-      // check for max length
       if (settings.maxlength < text.length) {
         // get text that was over max length
         overMaxText = text.slice(settings.maxlength, settings.maxlength + text.length - 1);
@@ -517,6 +517,8 @@ var marexandre;
         // wrap matched text with <span> tags
         overMaxText = helper.getTextInSpan(settings.maxlengthWarning, overMaxText);
       }
+
+      _this.updateCharLimitElement(text);
       // set text that wasn't over max length
       notOverMaxText = text.slice(0, settings.maxlength);
     }
@@ -525,9 +527,9 @@ var marexandre;
     }
     // Escape HTML content
     notOverMaxText = helper.escapeHTML(notOverMaxText);
-    notOverMaxText = self.getHighlightedContent(notOverMaxText);
+    notOverMaxText = _this.getHighlightedContent(notOverMaxText);
 
-    self.$backgroundDiv.html( notOverMaxText + overMaxText );
+    _this.$backgroundDiv.html( notOverMaxText + overMaxText );
   };
 
   TextareaHighlighter.prototype.getHighlightedContent = function(text) {
@@ -561,6 +563,31 @@ var marexandre;
 
     return helper.createHTML(tokenized);
   };
+
+  TextareaHighlighter.prototype.updateCharLimitElement = function(text) {
+    var _this = this;
+    var settings = _this.settings;
+    // update text max length
+    if (settings.maxlengthElement !== null) {
+      var maxSize = settings.maxlength - text.length;
+
+      if (maxSize < 0) {
+        // add max length warning class
+        if (!settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+          settings.maxlengthElement.addClass( settings.maxlengthWarning );
+        }
+      }
+      else {
+        // remove max length warning class
+        if (settings.maxlengthElement.hasClass( settings.maxlengthWarning )) {
+          settings.maxlengthElement.removeClass( settings.maxlengthWarning );
+        }
+      }
+      // update max length
+      settings.maxlengthElement.text(maxSize);
+    }
+  };
+
 
   TextareaHighlighter.prototype.updateMatches = function(matches) {
     var _this = this;
@@ -631,9 +658,11 @@ var marexandre;
 
     if (_this.settings.isAutoExpand) {
       _this.$autoSizeElement.html(helper.escapeHTML( helper.sanitizeBreakLines(_this.$element.val()) ) + ' ');
+      var h = _this.$autoSize.height();
       // If the height of textarea changed then update it
-      if (_this.$element.height() !== _this.$autoSize.height()) {
-        _this.$element.height( _this.$autoSize.height() );
+      if (_this.$element.height() !== h) {
+        _this.$element.height(h);
+        _this.$backgroundDiv.height(h);
       }
     }
   };
