@@ -263,9 +263,11 @@ var marexandre;
 
     if (_this.settings.isAutoExpand) {
       _this.$autoSizeElement.html(helper.escapeHTML( helper.sanitizeBreakLines(_this.$element.val()) ) + ' ');
+      var h = _this.$autoSize.height();
       // If the height of textarea changed then update it
-      if (_this.$element.height() !== _this.$autoSize.height()) {
-        _this.$element.height( _this.$autoSize.height() );
+      if (_this.$element.height() !== h) {
+        _this.$element.height(h);
+        _this.$backgroundDiv.height(h);
       }
     }
   };
