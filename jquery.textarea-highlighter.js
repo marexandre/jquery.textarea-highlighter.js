@@ -514,6 +514,7 @@ var marexandre;
     notOverMaxText = _this.getHighlightedContent(notOverMaxText);
 
     _this.$backgroundDiv.html( notOverMaxText + overMaxText );
+    _this.$element.trigger('textarea.highlighter.highlight');
   };
 
   TextareaHighlighter.prototype.getHighlightedContent = function(text) {
