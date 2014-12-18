@@ -60,23 +60,29 @@ var marexandre;
   TextareaHighlighter.prototype.bindEvents = function() {
     var _this = this;
     var $this = this.$element;
-    // For backspace long press
-    var lastUpdate = new Date().getTime();
-    var timeDiff = 0;
-    var abs = Math.abs;
 
     $this
       .data('highlighterTimerId', -1)
       // Watch on scroll event
       .on('scroll.textarea.highlighter', function() {
         _this.$backgroundDiv.scrollTop( $this.scrollTop() );
-      })
-      // Watch value change in the textarea
-      .on('input.textarea.highlighter keyup.textarea.highlighter', function(e) {
-        _this.change(e);
-      })
-      // Watch backspace key long press
-      .on('keydown.textarea.highlighter', function(e) {
+      });
+
+    if ('onpropertychange' in _this.element) {
+      var lastUpdate = new Date().getTime();
+      var timeDiff = 0;
+      var abs = Math.abs;
+      // IE 9+
+      $this.on('input.textarea.highlighter keyup.textarea.highlighter', function(e) {
+        timeDiff = abs(lastUpdate - new Date().getTime());
+
+        if (timeDiff > 10) {
+          _this.change(e);
+          lastUpdate = new Date().getTime();
+        }
+      });
+      // For backspace long press
+      $this.on('keydown.textarea.highlighter', function(e) {
         timeDiff = abs(lastUpdate - new Date().getTime());
 
         if (e.which === 8 && (timeDiff < 10 || 250 < timeDiff)) {
@@ -84,6 +90,12 @@ var marexandre;
           lastUpdate = new Date().getTime();
         }
       });
+    } else {
+      // Modern browsers
+      $this.on('input.textarea.highlighter', function(e) {
+        _this.change(e);
+      });
+    }
   };
 
   TextareaHighlighter.prototype.change = function(e) {
