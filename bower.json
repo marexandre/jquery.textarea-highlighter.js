@@ -4,15 +4,16 @@
   "main": "jquery.textarea-highlighter.js",
   "ignore": [
     "screenshot.png",
-    "**/.*",
     "gulpfile.js",
+    "package.json",
+    "karma.conf.js",
+    "**/.*",
     "demo/**",
-    "karma.**.js*",
     "spec/**",
     "coverage/**",
     "benchmark/**",
-    "bower_components/**",
-    "node_modules/**"
+    "node_modules/**",
+    "bower_components/**"
   ],
   "devDependencies": {
     "jasmine-jquery": "2.0.5"
