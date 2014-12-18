@@ -428,46 +428,30 @@ var marexandre;
   TextareaHighlighter.prototype.bindEvents = function() {
     var _this = this;
     var $this = this.$element;
+    // For backspace long press
+    var lastUpdate = new Date().getTime();
+    var timeDiff = 0;
+    var abs = Math.abs;
 
     $this
       .data('highlighterTimerId', -1)
-      // Bind events
+      // Watch on scroll event
       .on('scroll.textarea.highlighter', function() {
         _this.$backgroundDiv.scrollTop( $this.scrollTop() );
-      });
-
-    // Input event's
-    // TODO: Check if we need old browser related code
-    if ('onpropertychange' in _this.element) {
-      if ('oninput' in _this.element) {
-        // IE 9+
-        $this.on('input.textarea.highlighter keyup.textarea.highlighter', function(e) {
-          _this.change(e);
-        });
-        // on backspace key long press
-        var lastUpdate = new Date().getTime(), timeDiff = 0;
-
-        $this.on('keydown.textarea.highlighter', function(e) {
-          timeDiff = Math.abs(lastUpdate - new Date().getTime());
-          if (e.which === 8 && (timeDiff < 10 || 250 < timeDiff)) {
-            _this.change(e);
-            lastUpdate = new Date().getTime();
-          }
-        });
-      }
-      else {
-        // IE 7/8
-        $this.on('propertychange.textarea.highlighter', function(e) {
-          _this.change(e);
-        });
-      }
-    }
-    else {
-      // Modern browsers
-      $this.on('input.textarea.highlighter', function(e) {
+      })
+      // Watch value change in the textarea
+      .on('input.textarea.highlighter keyup.textarea.highlighter', function(e) {
         _this.change(e);
+      })
+      // Watch backspace key long press
+      .on('keydown.textarea.highlighter', function(e) {
+        timeDiff = abs(lastUpdate - new Date().getTime());
+
+        if (e.which === 8 && (timeDiff < 10 || 250 < timeDiff)) {
+          _this.change(e);
+          lastUpdate = new Date().getTime();
+        }
       });
-    }
   };
 
   TextareaHighlighter.prototype.change = function(e) {
@@ -536,19 +520,20 @@ var marexandre;
     var _this = this;
     var list = _this.settings.matches;
     var indeciesList = [];
-    var item, trie, trieIndecies;
+    var item, trieIndecies;
 
     for (var i = 0, imax = list.length; i < imax; i++) {
       item = list[i];
 
-      if (item._trie) {
-        trie = item._trie;
-      } else {
-        trie = new marexandre.Trie(item.match);
-        item._trie = trie;
+      if (!item._trie) {
+        item._trie = new marexandre.Trie();
+        // HTML escape matching words
+        for (var j = 0, jmax = item.match.length; j < jmax; j++) {
+          item._trie.add( helper.escapeHTML(item.match[j]) );
+        }
       }
 
-      trieIndecies = trie.getIndecies(text);
+      trieIndecies = item._trie.getIndecies(text);
       trieIndecies = helper.removeOverlapingIndecies(trieIndecies);
 
       indeciesList.push({ 'indecies': trieIndecies, 'type': item.matchClass });
@@ -559,9 +544,7 @@ var marexandre;
     flattened = helper.removeOverlapingIndecies(flattened);
     flattened = helper.cleanupOnWordBoundary(text, flattened, _this.settings.word_base);
 
-    var tokenized = helper.makeTokenized(text, flattened);
-
-    return helper.createHTML(tokenized);
+    return helper.createHTML( helper.makeTokenized(text, flattened) );
   };
 
   TextareaHighlighter.prototype.updateCharLimitElement = function(text) {
