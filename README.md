@@ -24,8 +24,7 @@ $('#someElement').textareaHighlighter({
             'priority': 1,                                // if there is overlap with other matches it will highlight a match that has a higher priority
             'match': ['this is a test', 'text to match'], // will check for this matches
             'matchClass': 'match'                         // this class will be added to the matching string
-        },
-        {
+        }, {
             'priority': 0,
             'match': ['some', 'more', 'here'],
             'matchClass': 'someClass'
@@ -106,11 +105,11 @@ These are the supported options and their default values:
 ```javascript
 $.textareaHighlighter.defaults = {
     matches: [               // Array of matches with matchClass & word array
-    //    {
-    //        'priority': 1,                                // if there is overlap with other matches it will highlight a match that has a higher priority
-    //        'match': ['this is a test', 'text to match'], // will highlight text in this array
-    //        'matchClass': 'match'                         // this class will be added to the matching string
-    //    }
+        {
+            'priority': 1,                                // if there is overlap with other matches it will highlight a match that has a higher priority
+            'match': ['this is a test', 'text to match'], // will highlight text in this array
+            'matchClass': 'match'                         // this class will be added to the matching string
+        }
     ],
     word_base: true,         // Word base language is English, German etc. Set to false when it's Japanese, Chinese etc.
     isAutoExpand: true,      // Set to 'false' if you don't want to expand textarea on input
