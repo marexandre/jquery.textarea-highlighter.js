@@ -40,11 +40,10 @@ $('#someElement').textareaHighlighter({
     maxlength: 150,
     maxlengthWarning: 'warning',
     maxlengthElement: $('#someElement').find('.maxlength')
-
 });
 ```
 
-This is the basic using with data- in HTML:
+You also can add setting with data- attribute in HTML:
 
 ```html
 <textarea data-maxlength="150" data-debug="true"></textarea>
@@ -52,78 +51,79 @@ This is the basic using with data- in HTML:
 
 ## Events
 
-### textarea.highlighter.init.complete
-This is triggered when plugin's initialization is complete.
+### textarea.highlighter.highlight
+This event is triggered when all the highlighting is complete.
 
 ```javascript
-$('#someElement').on('textarea.highlighter.init.complete', function(){
+$('#someElement').on('textarea.highlighter.highlight', function() {
     // do some cool stuff :)
 });
 ```
 
-### textarea.highlighter.update
-Event triggered when a matching text is found
+## Methods
+
+### updateMatches
+Update matches that needed to be highlighted
 
 ```javascript
-$('#someElement').on('textarea.highlighter.update', function(e, data){
-    // data -> {'textList': []}
-    // textList is an arry with matched text
-});
+var matches = [ 'matchClass': 'match', 'match': ['a','b'] ];
+$('#someElement').textareaHighlighter('updateMatches', matches);
 ```
 
-### textarea.highlighter.updateStyle
-Update style added with plugin, use this when the `textarea` layout changes etc...
+### updateStyle
+Update style added by plugin, use this when the `textarea` layout changes etc...
 
 ```javascript
-$('#someElement').trigger('textarea.highlighter.updateStyle');
+$('#someElement').textareaHighlighter('updateStyle');
 ```
 
-### textarea.highlighter.change
-Highlight anything that matches
+### updateHeight
+Update textarea & plugins extra div's height
 
 ```javascript
-$('#someElement').trigger('textarea.highlighter.change');
+$('#someElement').textareaHighlighter('updateHeight');
 ```
 
-### textarea.highlighter.destroy
+### destroy
 Remove all added HTML/CSS and plugin related event bindings etc..
 
 ```javascript
-$('#someElement').trigger('textarea.highlighter.destroy');
+$('#someElement').textareaHighlighter('destroy');
 ```
 
-### textarea.highlighter.debug.on
+### debugModeOn
 Turn debug mode on
 
 ```javascript
-$('#someElement').trigger('textarea.highlighter.debug.on');
+$('#someElement').textareaHighlighter('debugModeOn');
 ```
 
-### textarea.highlighter.debug.off
+### debugModeOff
 Turn debug mode off
 
 ```javascript
-$('#someElement').trigger('textarea.highlighter.debug.off');
+$('#someElement').textareaHighlighter('debugModeOff');
 ```
 
-## Options
+## All options
 
 These are the supported options and their default values:
 
 ```javascript
 $.textareaHighlighter.defaults = {
-    isAutoExpand: true,     // Set to 'false' if you don't want to expand textarea on input
     matches: [               // Array of matches with matchClass & word array
     //    {
     //        'matchClass': 'match',
     //        'match': ['a','b'] or RegExp
     //    }
     ],
+    word_base: true,         // Word base language is English, German etc. Set to false when it's Japanese, Chinese etc.
+    isAutoExpand: true,      // Set to 'false' if you don't want to expand textarea on input
+    typingDelay: 30          // Typing delay in milliseconds
     maxlength: -1,           // -1: disable, some int number over 0
     maxlengthWarning: '',    // Class name to add to text when it's over max length
     maxlengthElement: null,  // jQuery element to update letter count in the view
     debug: false,            // Flag to show debug mode
-    typingDelay: 30          // Typing delay in milliseconds
 };
 ```
 
