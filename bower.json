@@ -19,10 +19,10 @@
     "jasmine-jquery": "2.0.5"
   },
   "dependencies": {
-    "jquery": "^1.11.1",
+    "jquery": "^1.11.2",
     "normalize-css": "~3.0.2"
   },
   "resolutions": {
-    "jquery": ">= 1.11.1"
+    "jquery": ">= 1.11.2"
   }
 }
