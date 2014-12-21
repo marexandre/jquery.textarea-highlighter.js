@@ -62,7 +62,7 @@ $('#someElement').on('textarea.highlighter.highlight', function() {
 Update matches that needed to be highlighted
 
 ```javascript
-var matches = [ 'matchClass': 'match', 'match': ['a','b'] ];
+var matches = [{ 'matchClass': 'match', 'match': ['a','b'] }];
 $('#someElement').textareaHighlighter('updateMatches', matches);
 ```
 
