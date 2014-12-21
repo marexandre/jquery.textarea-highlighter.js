@@ -2,7 +2,8 @@ language: node_js
 node_js:
   - "0.10"
 install:
-  - npm install grunt-cli -g
+  - npm install --global gulp
   - npm install
-scripts:
-  - grunt dev
+  - bower install
+script:
+  - gulp build

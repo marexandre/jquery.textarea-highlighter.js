@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Demo - jquery.textarea-highlighter.js</title>
-  <link rel="stylesheet" href="./css/normalize.css">
+  <link rel="stylesheet" href="/bower_components/normalize-css/normalize.css">
   <link rel="stylesheet" href="./css/main.css">
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 </head>
@@ -20,14 +20,16 @@
     <h2>With max text length check</h2>
     <div class="translation-max">
       <div class="source">some cool text is <span class="hoge">here for</span> you to translate. And <span class="match">[[[text here too]]]</span> some more to translation for you. some cool text is <span class="hoge">for they</span> you to translate.<span class="match">[[[text here too]]]</span> add some more <span class="hoge">for me</span> and some more <span class="fuga">for them</span> and me</div>
-      <textarea class="target" placeholder="Type your text here" data-maxlength="150" data-debug="false" data-maxlength-warning="warning"></textarea>
+      <textarea class="target" placeholder="Type your text here" data-maxlength="150" data-debug="false" data-maxlength-warning="warning">some cool text is here for you to translate. And [[[text here too]]] some more to translation for you. some cool text is for they you to translate.[[[text here too]]] add some more for me and some more for them and me</textarea>
       <span class="maxlength"></span>
     </div>
 
   </div>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="../jquery.textarea-highlighter.js"></script>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/src/trie.js"></script>
+<script src="/src/helper.js"></script>
+<script src="/src/jquery.textarea-highlighter.js"></script>
 <script src="./js/index.js"></script>
 
 </body>

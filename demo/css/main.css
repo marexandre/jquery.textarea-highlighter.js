@@ -1,24 +1,26 @@
 /* apply a natural box layout model to all elements */
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
-      box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 html,
 body {
+  margin-bottom: 100px;
   font-size: 16px;
   color: #333;
-  margin-bottom: 100px;
 }
 h1 {
-  text-align: center;
   margin-bottom: 30px;
+  text-align: center;
 }
 textarea {
+  margin: 0;
   font-family: inherit;
   font-size: inherit;
-  margin: 0;
 }
 #container {
   width: 460px;
@@ -31,33 +33,29 @@ hr {
 }
 .translation,
 .translation-max {
-  width: 100%;
   position: relative;
-
+  width: 100%;
 }
 .source,
 .target {
   width: 100%;
   min-height: 24px;
-  line-height: 24px;
   padding: 3px 6px;
-
-  word-wrap: break-word;
+  line-height: 24px;
   word-break: break-all;
+  word-wrap: break-word;
 }
 .source {
   margin-bottom: 6px;
 }
 .target {
+  -webkit-appearance: none;
   overflow: hidden;
-
+  white-space: pre-wrap;
+  resize: none;
+  background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 3px;
-  resize: none;
-
-  white-space: pre-wrap;
-  background-color: #f9f9f9;
-  -webkit-appearance: none;
 }
 .target:focus {
   border-color: #888;
@@ -66,29 +64,46 @@ hr {
 
 .maxlength {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  margin: 1px 2px;
+  right: 2px;
+  bottom: 6px;
   padding: 2px 6px;
   font-size: 13px;
   color: #999;
 }
 
-.warning { background-color: #fdd; }
+.warning {
+  background-color: #fdd;
+}
 .warning.maxlength {
-  color: #F77;
+  color: #f77;
   background-color: inherit;
 }
 
-.match { color: #09f; }
-.hoge { color: #4c9; }
-.fuga { color: #ff9d00; }
+.match {
+  color: #09f;
+}
+.hoge {
+  color: #4c9;
+}
+.fuga {
+  color: #ff9d00;
+}
 
-.matchHighlight { background-color: #09f; opacity: 0.6; }
-.hogeHighlight { border-bottom: 2px solid #4c9; opacity: 0.6; }
-.fugaHighlight { background-color: #ff9d00; opacity: 0.6; }
+.matchHighlight {
+  background-color: #09f;
+  opacity: .6;
+}
+.hogeHighlight {
+  border-bottom: 2px solid #4c9;
+  opacity: .6;
+}
+.fugaHighlight {
+  background-color: #ff9d00;
+  opacity: .6;
+}
 
 .match.added,
 .hoge.added,
-.fuga.added { color: #999; }
-
+.fuga.added {
+  color: #999;
+}
