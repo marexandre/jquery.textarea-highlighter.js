@@ -120,3 +120,27 @@ $.textareaHighlighter.defaults = {
     debug: false,            // Flag to show debug mode
 };
 ```
+
+
+## Benchmark sample
+
+`v0_4_8` is old version and `v0_6_0` is the latest
+
+PhantomJS 1.9.8 (Mac OS X)
+  Test with 5 matches: v0_6_0 at 16158 ops/sec (1.76x faster than v0_4_8)
+  Test with 10 matches: v0_6_0 at 3391 ops/sec (1.30x faster than v0_4_8)
+  Test with 25 matches: v0_6_0 at 1312 ops/sec (3.82x faster than v0_4_8)
+  Test with 50 matches: v0_6_0 at 606 ops/sec (8.40x faster than v0_4_8)
+  Test with 75 matches: v0_6_0 at 382 ops/sec (11.49x faster than v0_4_8)
+Chrome 39.0.2171 (Mac OS X 10.10.1)
+  Test with 5 matches: v0_6_0 at 27113 ops/sec (1.12x faster than v0_4_8)
+  Test with 10 matches: v0_4_8 at 8669 ops/sec (1.28x faster than v0_6_0)
+  Test with 25 matches: v0_6_0 at 2765 ops/sec (3.01x faster than v0_4_8)
+  Test with 50 matches: v0_6_0 at 1354 ops/sec (6.24x faster than v0_4_8)
+  Test with 75 matches: v0_6_0 at 916 ops/sec (318.10x faster than v0_4_8)
+Firefox 31.0.0 (Mac OS X 10.10)
+  Test with 5 matches: v0_6_0 at 31165 ops/sec (2.32x faster than v0_4_8)
+  Test with 10 matches: v0_6_0 at 6269 ops/sec (3.09x faster than v0_4_8)
+  Test with 25 matches: v0_6_0 at 3111 ops/sec (7.49x faster than v0_4_8)
+  Test with 50 matches: v0_6_0 at 1635 ops/sec (31.98x faster than v0_4_8)
+  Test with 75 matches: v0_6_0 at 1162 ops/sec (167.81x faster than v0_4_8)
