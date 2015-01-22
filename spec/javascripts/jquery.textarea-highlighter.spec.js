@@ -9,10 +9,14 @@ describe('jquery.textarea-highlighter', function() {
     );
   });
 
+  var options = {
+    matches: [{ 'matchClass': 'test', 'match': ['test'] }]
+  };
+
   it('should add divs on initialize', function() {
     var $target = $segment.find('#target-fixture');
 
-    $target.textareaHighlighter();
+    $target.textareaHighlighter(options);
 
     expect( $segment.find('.background-div').length ).toBe(1);
     expect( $segment.find('.autosize').length ).toBe(1);
@@ -22,10 +26,19 @@ describe('jquery.textarea-highlighter', function() {
     expect( $segment.find('.autosize').parent().hasClass('target') ).toBe(true);
   });
 
+  it('should not initialize when called with only string parameter', function() {
+    var $target = $segment.find('#target-fixture');
+
+    $target.textareaHighlighter('updateHeight');
+
+    expect( $segment.find('.background-div').length ).toBe(0);
+    expect( $segment.find('.autosize').length ).toBe(0);
+  });
+
   it('should remove extra divs on destroy', function() {
     var $target = $segment.find('#target-fixture');
 
-    $target.textareaHighlighter();
+    $target.textareaHighlighter(options);
     $target.textareaHighlighter('destroy');
 
     expect( $segment.find('.background-div').length ).toBe(0);
@@ -36,16 +49,16 @@ describe('jquery.textarea-highlighter', function() {
     var $target = $segment.find('#target-fixture');
 
     $target
-      .val('This is a stupid test to :)')
-      .textareaHighlighter();
+      .val('This is a stupid hoge to :)')
+      .textareaHighlighter(options);
 
     // There should be no highlights
-    expect( $segment.find('.background-div').html() ).toBe('This is a stupid test to :)');
+    expect( $segment.find('.background-div').html() ).toBe('This is a stupid hoge to :)');
 
     // Update match list
-    $target.textareaHighlighter('updateMatches', [{ 'matchClass': 'test', 'match': ['test'] }]);
+    $target.textareaHighlighter('updateMatches', [{ 'matchClass': 'hoge', 'match': ['hoge'] }]);
 
-    expect( $segment.find('.background-div').html() ).toBe('This is a stupid <span class="test">test</span> to :)');
+    expect( $segment.find('.background-div').html() ).toBe('This is a stupid <span class="hoge">hoge</span> to :)');
   });
 
   describe('test highlighting', function() {
@@ -160,5 +173,13 @@ describe('jquery.textarea-highlighter', function() {
       }, 200);
     });
   });
+
+  it('should throw an message when calling an unknown method', function() {
+    var $target = $segment.find('#target-fixture');
+    $target.textareaHighlighter(options);
+
+    expect(function() { $target.textareaHighlighter('test'); }).toThrow('Unknown method: test');
+  });
+
 
 });

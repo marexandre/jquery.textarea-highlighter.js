@@ -1,6 +1,6 @@
 /**
  * jquery.textarea-highlighter.js - jQuery plugin for highlighting text in textarea.
- * @version v0.6.0
+ * @version v0.6.1
  * @link https://github.com/marexandre/jquery.textarea-highlighter.js
  * @author alexandre.kirillov@gmail.com
  * @license MIT license. http://opensource.org/licenses/MIT
@@ -724,12 +724,21 @@ var marexandre;
       var data = $this.data(pluginName);
       var options = typeof option === 'object' && option;
 
+      // If no options or plugin was NOT initialized yet, do NOT do anything.
+      if (!option || (!data && typeof option === 'string')) {
+        return;
+      }
+
       if (!data) {
         data = new TextareaHighlighter($this, options);
         $this.data(pluginName, data);
       }
 
       if (typeof option === 'string') {
+        if (!data[option]) {
+          throw 'Unknown method: ' + option;
+        }
+
         data[option].apply(data, Array.prototype.slice.call(args, 1));
       }
     });
