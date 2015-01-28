@@ -526,6 +526,7 @@ var marexandre;
     notOverMaxText = _this.getHighlightedContent(notOverMaxText);
 
     _this.$backgroundDiv.html( notOverMaxText + overMaxText );
+    _this.updateHeight();
     _this.$element.trigger('textarea.highlighter.highlight');
   };
 
