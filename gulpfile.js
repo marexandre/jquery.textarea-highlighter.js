@@ -16,6 +16,7 @@ var uglify = require('gulp-uglify');
 var jscs = require('gulp-jscs');
 var jshint = require('gulp-jshint');
 var karma = require('karma').server;
+var coveralls = require('gulp-coveralls');
 
 var paths = {
   src: './src/**/*.js'
@@ -88,10 +89,16 @@ gulp.task('coverage', function (done) {
     coverageReporter: {
       reporters:[
         { type: 'html', dir: './coverage' },
-        { type: 'text-summary' }
+        { type: 'text-summary' },
+        { type: 'lcov' }
       ]
     }
   }, done);
+});
+
+gulp.task('coveralls', function() {
+  gulp.src('coverage/**/lcov.info')
+    .pipe(coveralls());
 });
 
 // Watch file changes

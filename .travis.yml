@@ -7,3 +7,4 @@ install:
   - bower install
 script:
   - gulp build
+  - gulp coveralls
