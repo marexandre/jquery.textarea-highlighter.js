@@ -130,11 +130,6 @@ var marexandre;
     var overMaxText = '';
     var notOverMaxText = '';
 
-    if (text.length === 0) {
-      _this.$backgroundDiv.html('');
-      return;
-    }
-
     // check for max length
     if (0 < settings.maxlength) {
       if (settings.maxlength < text.length) {
