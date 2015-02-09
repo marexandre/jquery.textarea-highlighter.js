@@ -90,7 +90,7 @@ gulp.task('coverage', function (done) {
       reporters:[
         { type: 'html', dir: './coverage' },
         { type: 'text-summary' },
-        { type: 'lcov' }
+        { type: 'lcovonly' }
       ]
     }
   }, done);
