@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/marexandre/jquery.textarea-highlighter.js.svg)](https://travis-ci.org/marexandre/jquery.textarea-highlighter.js)
+[![Build Status](https://travis-ci.org/marexandre/jquery.textarea-highlighter.js.svg)](https://travis-ci.org/marexandre/jquery.textarea-highlighter.js) [![Coverage Status](https://coveralls.io/repos/marexandre/jquery.textarea-highlighter.js/badge.svg)](https://coveralls.io/r/marexandre/jquery.textarea-highlighter.js)
 
 jquery.textarea-highlighter.js
 ==============================
