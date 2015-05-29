@@ -310,6 +310,31 @@ describe('Helper', function() {
       var tokenized = helper.makeTokenized(text, indecies);
       expect( helper.createHTML(tokenized) ).toBe(html);
     });
+
+
+    it('should highlight first word in a text', function() {
+      var text = 'Text test to test first word highlighting';
+      var list = [
+        { 'class': 'test', 'match': ['Text'] }
+      ];
+
+      var _indecies = [
+        { start: 0, end: 4, type: 'test' }, // Text
+      ]
+
+      var indecies = generateIndecies(text, list);
+      indecies = helper.cleanupOnWordBoundary(text, indecies, false);
+      expect(indecies).toEqual( _indecies );
+
+      var html = '';
+      html += '<span class="test">Text</span>';
+      html += ' test to test first word highlighting';
+
+      var tokenized = helper.makeTokenized(text, indecies);
+      expect( helper.createHTML(tokenized) ).toEqual( html );
+    });
+
+
   });
 
 });

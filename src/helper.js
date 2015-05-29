@@ -93,12 +93,13 @@ var marexandre;
     Helper.prototype.cleanupOnWordBoundary = function(text, list, useWordBoundary) {
       useWordBoundary = useWordBoundary || true;
 
-      var a = [], o, w, ww;
+      var a = [], o, w, ww, wws;
 
       for (var i = 0, imax = list.length; i < imax; i++) {
         o = list[i];
         w = text.slice(o.start, o.end);
-        ww = text.slice(o.start - 1, o.end + 1);
+        wws = o.start - 1 < 0 ? 0 : o.start - 1;
+        ww = text.slice(wws, o.end + 1);
 
         if (useWordBoundary && this.isWrappedByASCII(w) && !this.checkWordBoundary(w, ww)) {
           a.push(i);
