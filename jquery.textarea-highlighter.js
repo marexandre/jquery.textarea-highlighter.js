@@ -1,6 +1,6 @@
 /**
  * jquery.textarea-highlighter.js - jQuery plugin for highlighting text in textarea.
- * @version v0.6.4
+ * @version v0.6.5
  * @link https://github.com/marexandre/jquery.textarea-highlighter.js
  * @author alexandre.kirillov@gmail.com
  * @license MIT license. http://opensource.org/licenses/MIT
@@ -652,6 +652,11 @@ var marexandre;
     if (_this.settings.isAutoExpand) {
       _this.$autoSizeElement.html(helper.escapeHTML( helper.sanitizeBreakLines(_this.$element.val()) ) + ' ');
       var h = _this.$autoSize.height();
+
+      if (helper.browser().firefox) {
+        h += 1;
+      }
+
       // If the height of textarea changed then update it
       if (_this.$element.height() !== h) {
         _this.$element.height(h);

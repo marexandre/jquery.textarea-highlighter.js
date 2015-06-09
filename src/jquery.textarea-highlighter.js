@@ -283,6 +283,11 @@ var marexandre;
     if (_this.settings.isAutoExpand) {
       _this.$autoSizeElement.html(helper.escapeHTML( helper.sanitizeBreakLines(_this.$element.val()) ) + ' ');
       var h = _this.$autoSize.height();
+
+      if (helper.browser().firefox) {
+        h += 1;
+      }
+
       // If the height of textarea changed then update it
       if (_this.$element.height() !== h) {
         _this.$element.height(h);
