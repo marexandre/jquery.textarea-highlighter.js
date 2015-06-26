@@ -114,6 +114,33 @@ describe('jquery.textarea-highlighter', function() {
 
       expect( $segment.find('.background-div').html() ).toBe( 'This is a &lt;a href="#"&gt;stupid&lt;/a&gt; <span class="test">test</span> to <span class="test">&lt;br/&gt;</span> :)' );
     });
+
+    it('should highlight content usingRegEx ', function() {
+      var $target = $segment.find('#target-fixture');
+
+      $target
+        .val('This is a {1}test{/1} to test {2} some {3}RegEx{/3} content')
+        .textareaHighlighter({
+          matches: [
+            { 'matchClass': 'tags', 'match': /\{\/?\d+\}/g }
+          ]
+        });
+
+      var html = '';
+      html += 'This is a ';
+      html += '<span class="tags">{1}</span>';
+      html += 'test';
+      html += '<span class="tags">{/1}</span>';
+      html += ' to test ';
+      html += '<span class="tags">{2}</span>';
+      html += ' some ';
+      html += '<span class="tags">{3}</span>';
+      html += 'RegEx';
+      html += '<span class="tags">{/3}</span>';
+      html += ' content';
+
+      expect( $segment.find('.background-div').html() ).toBe(html);
+    });
   });
 
   describe('test max length', function() {
