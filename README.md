@@ -21,9 +21,13 @@ This is the basic usage in javascript:
 $('#someElement').textareaHighlighter({
     matches: [
         {
-            'priority': 1,                                // if there is overlap with other matches it will highlight a match that has a higher priority
+            'priority': 2,                                // if there is overlap with other matches it will highlight a match that has a higher priority
             'match': ['this is a test', 'text to match'], // will check for this matches
             'matchClass': 'match'                         // this class will be added to the matching string
+        }, {
+            'priority': 1,
+            'match': /\{\/?\d+\}/g,
+            'matchClass': 'tags'
         }, {
             'priority': 0,
             'match': ['some', 'more', 'here'],

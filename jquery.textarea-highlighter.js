@@ -1,6 +1,6 @@
 /**
  * jquery.textarea-highlighter.js - jQuery plugin for highlighting text in textarea.
- * @version v0.6.5
+ * @version v0.6.6
  * @link https://github.com/marexandre/jquery.textarea-highlighter.js
  * @author alexandre.kirillov@gmail.com
  * @license MIT license. http://opensource.org/licenses/MIT
@@ -409,6 +409,9 @@ var marexandre;
 
     // Remove duplicates from 'match'
     for (var i = 0, imax = settings.matches.length; i < imax; i++) {
+      if (settings.matches[i].match instanceof RegExp) {
+        continue;
+      }
       settings.matches[i].match = helper.getUniqueArray(settings.matches[i].match);
     }
 
@@ -531,15 +534,22 @@ var marexandre;
     var list = _this.settings.matches;
     var indeciesList = [];
     var item, trieIndecies;
+    var matches;
 
     for (var i = 0, imax = list.length; i < imax; i++) {
       item = list[i];
 
       if (!item._trie) {
         item._trie = new marexandre.Trie();
+        if (item.match instanceof RegExp) {
+          matches = helper.getUniqueArray(text.match(item.match));
+        } else {
+          matches = item.match;
+        }
+
         // HTML escape matching words
-        for (var j = 0, jmax = item.match.length; j < jmax; j++) {
-          item._trie.add( helper.escapeHTML(item.match[j]) );
+        for (var j = 0, jmax = matches.length; j < jmax; j++) {
+          item._trie.add( helper.escapeHTML(matches[j]) );
         }
       }
 
