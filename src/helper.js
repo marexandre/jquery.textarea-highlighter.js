@@ -5,12 +5,24 @@ var marexandre;
   var Helper = (function() {
     function Helper() {}
 
+    /**
+     * orderBy sorts an array by a given object key
+     * @param  {Array} list  Array containing objects
+     * @param  {String} type Object key
+     * @return {Array}
+     */
     Helper.prototype.orderBy = function(list, type) {
       return list.sort(function(a, b) {
         return parseInt(a[type], 10) - parseInt(b[type], 10);
       });
     };
 
+    /**
+     * removeOverlapingIndecies removes duplicate indecies from an trie indecies array
+     * trie indecies array looks somehting like this: [{start: 1, end: 3}, ...]
+     * @param  {Array} list Array of trie indecies
+     * @return {Array}      Array with out overlaping trie indecies
+     */
     Helper.prototype.removeOverlapingIndecies = function(list) {
       var a = [], item, next;
 
@@ -35,6 +47,12 @@ var marexandre;
       });
     };
 
+    /**
+     * removeOverlapingIndeciesByPriority removes duplicate indecies from an trie indecies array by priority
+     * trie indecies array looks somehting like this: [{start: 1, end: 3}, ...]
+     * @param  {Array} list Array of trie indecies
+     * @return {Array}      Array with out overlaping trie indecies
+     */
     Helper.prototype.removeOverlapingIndeciesByPriority = function(list) {
       list = list || [];
       list = this.orderBy(list, 'priority');
@@ -72,10 +90,21 @@ var marexandre;
       });
     };
 
+    /**
+     * isOverlap checks if two trie indecies objects overlap
+     * @param  {Object} x Trie indecies object A
+     * @param  {Object} y Trie indecies object B
+     * @return {boolean}   If overlapping or not
+     */
     Helper.prototype.isOverlap = function(x, y) {
       return x.start < y.end && y.start < x.end;
     };
 
+    /**
+     * flattenIndeciesList
+     * @param  {Array} list [description]
+     * @return {Array}      [description]
+     */
     Helper.prototype.flattenIndeciesList = function(list) {
       var a = [], type, obj;
 
@@ -90,6 +119,13 @@ var marexandre;
       return a;
     };
 
+    /**
+     * cleanupOnWordBoundary
+     * @param  {String} text            [description]
+     * @param  {Array} list            [description]
+     * @param  {boolean} useWordBoundary [description]
+     * @return {Array}                 [description]
+     */
     Helper.prototype.cleanupOnWordBoundary = function(text, list, useWordBoundary) {
       useWordBoundary = useWordBoundary || true;
 
@@ -114,6 +150,12 @@ var marexandre;
       });
     };
 
+    /**
+     * makeTokenized
+     * @param  {String} text     Some text string
+     * @param  {Array} indecies  Array of trie indecies
+     * @return {Array}           Array with tokenized content
+     */
     Helper.prototype.makeTokenized = function(text, indecies) {
       var a = [], o, s = 0, ss = 0;
 
@@ -173,6 +215,11 @@ var marexandre;
       });
     };
 
+    /**
+     * createHTML returns an string with HTML tags around tokenized.value content
+     * @param  {Object} tokenized Tokenized object
+     * @return {String}           [description]
+     */
     Helper.prototype.createHTML = function(tokenized) {
       var a = [];
 
@@ -187,10 +234,20 @@ var marexandre;
       return a.join('');
     };
 
+    /**
+     * getTextInSpan wraps a given text and class name with <span>'s
+     * @param  {String} className
+     * @param  {String} text
+     * @return {String}
+     */
     Helper.prototype.getTextInSpan = function(className, text) {
       return '<span class="' + className + '">' + text + '</span>';
     };
 
+    /**
+     * browser returns an Object containing browser information
+     * @return {Object}
+     */
     Helper.prototype.browser = function() {
       var userAgent = navigator.userAgent,
           msie    = /(msie|trident)/i.test( userAgent ),

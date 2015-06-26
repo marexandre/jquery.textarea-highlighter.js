@@ -77,7 +77,7 @@ var marexandre;
     /**
      * getIndecies returns an Array of indecies that matched from a give string
      * @param  {String} _text_ String from which to get indecies
-     * @type {Array}
+     * @type {Array} [{start: 1, end: 3}, ...]
      */
     Trie.prototype.getIndecies = function(_text_) {
       var self = this;
