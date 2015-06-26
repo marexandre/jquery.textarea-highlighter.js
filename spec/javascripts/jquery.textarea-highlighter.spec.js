@@ -115,19 +115,22 @@ describe('jquery.textarea-highlighter', function() {
       expect( $segment.find('.background-div').html() ).toBe( 'This is a &lt;a href="#"&gt;stupid&lt;/a&gt; <span class="test">test</span> to <span class="test">&lt;br/&gt;</span> :)' );
     });
 
-    it('should highlight content usingRegEx ', function() {
+    it('should highlight content using RegEx', function() {
       var $target = $segment.find('#target-fixture');
 
       $target
-        .val('This is a {1}test{/1} to test {2} some {3}RegEx{/3} content')
+        .val('This [[[a {1} test1]]] is a {1}test{/1} to test {2} some {3}RegEx{/3} content')
         .textareaHighlighter({
           matches: [
-            { 'matchClass': 'tags', 'match': /\{\/?\d+\}/g }
+            { 'matchClass': 'brackets', 'match': ['[[[a {1} test1]]]'], 'priority': 1 },
+            { 'matchClass': 'tags',     'match': /\{\/?\d+\}/g, 'priority': 0 }
           ]
         });
 
       var html = '';
-      html += 'This is a ';
+      html += 'This ';
+      html += '<span class="brackets">[[[a {1} test1]]]</span>';
+      html += ' is a ';
       html += '<span class="tags">{1}</span>';
       html += 'test';
       html += '<span class="tags">{/1}</span>';
