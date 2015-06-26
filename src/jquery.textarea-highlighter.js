@@ -60,6 +60,9 @@ var marexandre;
     _this.highlight();
   };
 
+  /**
+   * bindEvents binds all events related to the plugin
+   */
   TextareaHighlighter.prototype.bindEvents = function() {
     var _this = this;
     var $this = this.$element;
@@ -101,6 +104,10 @@ var marexandre;
     }
   };
 
+  /**
+   * change is triggered every time the use changes the text in the textarea
+   * @param  {Object} e jQuery event
+   */
   TextareaHighlighter.prototype.change = function(e) {
     var _this = this;
 
@@ -126,6 +133,9 @@ var marexandre;
     _this.$element.data('highlighterTimerId', changeId);
   };
 
+  /**
+   * highlight actually highlights the content
+   */
   TextareaHighlighter.prototype.highlight = function() {
     var _this = this;
     var text = _this.$element.val();
@@ -160,6 +170,11 @@ var marexandre;
     _this.$element.trigger('textarea.highlighter.highlight');
   };
 
+  /**
+   * getHighlightedContent return a string with HTML tags wrapping the words that need to be highlighted
+   * @param  {Atring} text
+   * @return {String}
+   */
   TextareaHighlighter.prototype.getHighlightedContent = function(text) {
     var _this = this;
     var list = _this.settings.matches;
@@ -198,6 +213,10 @@ var marexandre;
     return helper.createHTML( helper.makeTokenized(text, flattened) );
   };
 
+  /**
+   * updateCharLimitElement updates the max chars element with the latest data
+   * @param  {String} text
+   */
   TextareaHighlighter.prototype.updateCharLimitElement = function(text) {
     var _this = this;
     var settings = _this.settings;
@@ -222,13 +241,20 @@ var marexandre;
     }
   };
 
-
+  /**
+   * updateMatches will replace the matches object
+   * @param  {Object} matches
+   */
   TextareaHighlighter.prototype.updateMatches = function(matches) {
     var _this = this;
     _this.settings.matches = matches;
     _this.highlight();
   };
 
+  /**
+   * updateStyle will update CSS styling related to the plugin
+   * @return {[type]} [description]
+   */
   TextareaHighlighter.prototype.updateStyle = function() {
     var _this    = this;
     var $this    = this.$element;
@@ -287,6 +313,9 @@ var marexandre;
     });
   };
 
+  /**
+   * updateHeight will update textareas height depending on the text amount in the textarea
+   */
   TextareaHighlighter.prototype.updateHeight = function() {
     var _this = this;
 
@@ -306,6 +335,10 @@ var marexandre;
     }
   };
 
+  /**
+   * cloneCSSToTarget will clone CSS properties from the textarea to a given jQuery item
+   * @param  {jQuery} $t
+   */
   TextareaHighlighter.prototype.cloneCSSToTarget = function($t) {
     var $element = this.$element;
     var cloneCSSProperties = [
@@ -331,6 +364,9 @@ var marexandre;
     });
   };
 
+  /**
+   * destroy removes all the content that was added by the plugin
+   */
   TextareaHighlighter.prototype.destroy = function() {
     $.data( this.element, 'plugin_' + pluginName, false );
     this.$backgroundDiv.remove();
@@ -347,12 +383,18 @@ var marexandre;
       .unwrap();
   };
 
+  /**
+   * debugModeOn terns the debug mode on
+   */
   TextareaHighlighter.prototype.debugModeOn = function() {
     this.settings.debug = true;
     this.$backgroundDiv.css({ 'color': '#f00' });
     this.$element.css({ 'color': 'rgba(0,0,0,0.5)' });
   };
 
+  /**
+   * debugModeOn terns the debug mode off
+   */
   TextareaHighlighter.prototype.debugModeOff = function() {
     this.settings.debug = false;
     this.$backgroundDiv.css({ 'color': 'transparent' });
