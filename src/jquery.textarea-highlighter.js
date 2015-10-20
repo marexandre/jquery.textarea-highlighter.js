@@ -19,7 +19,8 @@ var marexandre;
   };
 
   TextareaHighlighter.DEFAULTS = {
-    word_base: true,
+    wordBase: true,
+    caseSensitive: true,
     matches: [
       // {'matchClass': '', 'match': []}
     ],
@@ -195,11 +196,13 @@ var marexandre;
 
         // HTML escape matching words
         for (var j = 0, jmax = matches.length; j < jmax; j++) {
-          item._trie.add( helper.escapeHTML(matches[j]) );
+          var m = _this.settings.caseSensitive ? matches[j] : matches[j].toLowerCase();
+          item._trie.add(helper.escapeHTML(m));
         }
       }
 
-      trieIndecies = item._trie.getIndecies(text);
+      var t = _this.settings.caseSensitive ? text : text.toLowerCase();
+      trieIndecies = item._trie.getIndecies(t);
       trieIndecies = helper.removeOverlapingIndecies(trieIndecies);
 
       indeciesList.push({ 'indecies': trieIndecies, 'type': item.matchClass });
@@ -208,7 +211,7 @@ var marexandre;
     var flattened = helper.flattenIndeciesList(indeciesList);
     flattened = helper.orderBy(flattened, 'start');
     flattened = helper.removeOverlapingIndecies(flattened);
-    flattened = helper.cleanupOnWordBoundary(text, flattened, _this.settings.word_base);
+    flattened = helper.cleanupOnWordBoundary(text, flattened, _this.settings.wordBase);
 
     return helper.createHTML( helper.makeTokenized(text, flattened) );
   };

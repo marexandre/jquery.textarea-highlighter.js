@@ -33,7 +33,7 @@ $('#someElement').textareaHighlighter({
             'match': ['some', 'more', 'here'],
             'matchClass': 'someClass'
         }
-    ]
+    ],
     maxlength: 150,
     maxlengthWarning: 'warning',
     maxlengthElement: $('#someElement').find('.maxlength')
@@ -108,6 +108,8 @@ These are the supported options and their default values:
 
 ```javascript
 $.textareaHighlighter.defaults = {
+    wordBase: true,          // Word base language is English, German etc. Set to false when it's Japanese, Chinese etc.
+    caseSensitive: true,     // If matches should be case sensitive or not.
     matches: [               // Array of matches with matchClass & word array
         {
             'priority': 1,                                // if there is overlap with other matches it will highlight a match that has a higher priority
@@ -115,7 +117,6 @@ $.textareaHighlighter.defaults = {
             'matchClass': 'match'                         // this class will be added to the matching string
         }
     ],
-    word_base: true,         // Word base language is English, German etc. Set to false when it's Japanese, Chinese etc.
     isAutoExpand: true,      // Set to 'false' if you don't want to expand textarea on input
     typingDelay: 30          // Typing delay in milliseconds
     maxlength: -1,           // -1: disable, some int number over 0

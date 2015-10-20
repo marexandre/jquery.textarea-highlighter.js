@@ -102,6 +102,28 @@ describe('jquery.textarea-highlighter', function() {
       expect( $segment.find('.background-div').html() ).toBe(html);
     });
 
+    it('should highlight case sensitive content correctly', function() {
+      var $target = $segment.find('#target-fixture');
+
+      $target
+        .val('Hi there and hi there and Hi There')
+        .textareaHighlighter({
+          caseSensitive: false,
+          matches: [
+            { 'matchClass': 'test', 'match': ['Hi there'] }
+          ]
+        });
+
+      var html = '';
+      html += '<span class="test">Hi there</span>';
+      html += ' and ';
+      html += '<span class="test">hi there</span>';
+      html += ' and ';
+      html += '<span class="test">Hi There</span>';
+
+      expect( $segment.find('.background-div').html() ).toBe(html);
+    });
+
     it('should escape & highlight HTML content in bacground-div', function() {
       var $target = $segment.find('#target-fixture');
       var text = 'This is a <a href="#">stupid</a> test to <br/> :)';

@@ -1,6 +1,6 @@
 /**
  * jquery.textarea-highlighter.js - jQuery plugin for highlighting text in textarea.
- * @version v0.6.6
+ * @version v0.6.7
  * @link https://github.com/marexandre/jquery.textarea-highlighter.js
  * @author alexandre.kirillov@gmail.com
  * @license MIT license. http://opensource.org/licenses/MIT
@@ -12,12 +12,24 @@ var marexandre;
   var Helper = (function() {
     function Helper() {}
 
+    /**
+     * orderBy sorts an array by a given object key
+     * @param  {Array} list  Array containing objects
+     * @param  {String} type Object key
+     * @return {Array}
+     */
     Helper.prototype.orderBy = function(list, type) {
       return list.sort(function(a, b) {
         return parseInt(a[type], 10) - parseInt(b[type], 10);
       });
     };
 
+    /**
+     * removeOverlapingIndecies removes duplicate indecies from an trie indecies array
+     * trie indecies array looks somehting like this: [{start: 1, end: 3}, ...]
+     * @param  {Array} list Array of trie indecies
+     * @return {Array}      Array with out overlaping trie indecies
+     */
     Helper.prototype.removeOverlapingIndecies = function(list) {
       var a = [], item, next;
 
@@ -42,6 +54,12 @@ var marexandre;
       });
     };
 
+    /**
+     * removeOverlapingIndeciesByPriority removes duplicate indecies from an trie indecies array by priority
+     * trie indecies array looks somehting like this: [{start: 1, end: 3}, ...]
+     * @param  {Array} list Array of trie indecies
+     * @return {Array}      Array with out overlaping trie indecies
+     */
     Helper.prototype.removeOverlapingIndeciesByPriority = function(list) {
       list = list || [];
       list = this.orderBy(list, 'priority');
@@ -79,10 +97,21 @@ var marexandre;
       });
     };
 
+    /**
+     * isOverlap checks if two trie indecies objects overlap
+     * @param  {Object} x Trie indecies object A
+     * @param  {Object} y Trie indecies object B
+     * @return {boolean}   If overlapping or not
+     */
     Helper.prototype.isOverlap = function(x, y) {
       return x.start < y.end && y.start < x.end;
     };
 
+    /**
+     * flattenIndeciesList
+     * @param  {Array} list [description]
+     * @return {Array}      [description]
+     */
     Helper.prototype.flattenIndeciesList = function(list) {
       var a = [], type, obj;
 
@@ -97,6 +126,13 @@ var marexandre;
       return a;
     };
 
+    /**
+     * cleanupOnWordBoundary
+     * @param  {String} text            [description]
+     * @param  {Array} list            [description]
+     * @param  {boolean} useWordBoundary [description]
+     * @return {Array}                 [description]
+     */
     Helper.prototype.cleanupOnWordBoundary = function(text, list, useWordBoundary) {
       useWordBoundary = useWordBoundary || true;
 
@@ -121,6 +157,12 @@ var marexandre;
       });
     };
 
+    /**
+     * makeTokenized
+     * @param  {String} text     Some text string
+     * @param  {Array} indecies  Array of trie indecies
+     * @return {Array}           Array with tokenized content
+     */
     Helper.prototype.makeTokenized = function(text, indecies) {
       var a = [], o, s = 0, ss = 0;
 
@@ -180,6 +222,11 @@ var marexandre;
       });
     };
 
+    /**
+     * createHTML returns an string with HTML tags around tokenized.value content
+     * @param  {Object} tokenized Tokenized object
+     * @return {String}           [description]
+     */
     Helper.prototype.createHTML = function(tokenized) {
       var a = [];
 
@@ -194,10 +241,20 @@ var marexandre;
       return a.join('');
     };
 
+    /**
+     * getTextInSpan wraps a given text and class name with <span>'s
+     * @param  {String} className
+     * @param  {String} text
+     * @return {String}
+     */
     Helper.prototype.getTextInSpan = function(className, text) {
       return '<span class="' + className + '">' + text + '</span>';
     };
 
+    /**
+     * browser returns an Object containing browser information
+     * @return {Object}
+     */
     Helper.prototype.browser = function() {
       var userAgent = navigator.userAgent,
           msie    = /(msie|trident)/i.test( userAgent ),
@@ -306,7 +363,7 @@ var marexandre;
     /**
      * getIndecies returns an Array of indecies that matched from a give string
      * @param  {String} _text_ String from which to get indecies
-     * @type {Array}
+     * @type {Array} [{start: 1, end: 3}, ...]
      */
     Trie.prototype.getIndecies = function(_text_) {
       var self = this;
@@ -388,7 +445,8 @@ var marexandre;
   };
 
   TextareaHighlighter.DEFAULTS = {
-    word_base: true,
+    wordBase: true,
+    caseSensitive: true,
     matches: [
       // {'matchClass': '', 'match': []}
     ],
@@ -429,6 +487,9 @@ var marexandre;
     _this.highlight();
   };
 
+  /**
+   * bindEvents binds all events related to the plugin
+   */
   TextareaHighlighter.prototype.bindEvents = function() {
     var _this = this;
     var $this = this.$element;
@@ -470,6 +531,10 @@ var marexandre;
     }
   };
 
+  /**
+   * change is triggered every time the use changes the text in the textarea
+   * @param  {Object} e jQuery event
+   */
   TextareaHighlighter.prototype.change = function(e) {
     var _this = this;
 
@@ -495,6 +560,9 @@ var marexandre;
     _this.$element.data('highlighterTimerId', changeId);
   };
 
+  /**
+   * highlight actually highlights the content
+   */
   TextareaHighlighter.prototype.highlight = function() {
     var _this = this;
     var text = _this.$element.val();
@@ -529,6 +597,11 @@ var marexandre;
     _this.$element.trigger('textarea.highlighter.highlight');
   };
 
+  /**
+   * getHighlightedContent return a string with HTML tags wrapping the words that need to be highlighted
+   * @param  {Atring} text
+   * @return {String}
+   */
   TextareaHighlighter.prototype.getHighlightedContent = function(text) {
     var _this = this;
     var list = _this.settings.matches;
@@ -549,11 +622,13 @@ var marexandre;
 
         // HTML escape matching words
         for (var j = 0, jmax = matches.length; j < jmax; j++) {
-          item._trie.add( helper.escapeHTML(matches[j]) );
+          var m = _this.settings.caseSensitive ? matches[j] : matches[j].toLowerCase();
+          item._trie.add(helper.escapeHTML(m));
         }
       }
 
-      trieIndecies = item._trie.getIndecies(text);
+      var t = _this.settings.caseSensitive ? text : text.toLowerCase();
+      trieIndecies = item._trie.getIndecies(t);
       trieIndecies = helper.removeOverlapingIndecies(trieIndecies);
 
       indeciesList.push({ 'indecies': trieIndecies, 'type': item.matchClass });
@@ -562,11 +637,15 @@ var marexandre;
     var flattened = helper.flattenIndeciesList(indeciesList);
     flattened = helper.orderBy(flattened, 'start');
     flattened = helper.removeOverlapingIndecies(flattened);
-    flattened = helper.cleanupOnWordBoundary(text, flattened, _this.settings.word_base);
+    flattened = helper.cleanupOnWordBoundary(text, flattened, _this.settings.wordBase);
 
     return helper.createHTML( helper.makeTokenized(text, flattened) );
   };
 
+  /**
+   * updateCharLimitElement updates the max chars element with the latest data
+   * @param  {String} text
+   */
   TextareaHighlighter.prototype.updateCharLimitElement = function(text) {
     var _this = this;
     var settings = _this.settings;
@@ -591,13 +670,20 @@ var marexandre;
     }
   };
 
-
+  /**
+   * updateMatches will replace the matches object
+   * @param  {Object} matches
+   */
   TextareaHighlighter.prototype.updateMatches = function(matches) {
     var _this = this;
     _this.settings.matches = matches;
     _this.highlight();
   };
 
+  /**
+   * updateStyle will update CSS styling related to the plugin
+   * @return {[type]} [description]
+   */
   TextareaHighlighter.prototype.updateStyle = function() {
     var _this    = this;
     var $this    = this.$element;
@@ -656,6 +742,9 @@ var marexandre;
     });
   };
 
+  /**
+   * updateHeight will update textareas height depending on the text amount in the textarea
+   */
   TextareaHighlighter.prototype.updateHeight = function() {
     var _this = this;
 
@@ -675,6 +764,10 @@ var marexandre;
     }
   };
 
+  /**
+   * cloneCSSToTarget will clone CSS properties from the textarea to a given jQuery item
+   * @param  {jQuery} $t
+   */
   TextareaHighlighter.prototype.cloneCSSToTarget = function($t) {
     var $element = this.$element;
     var cloneCSSProperties = [
@@ -700,6 +793,9 @@ var marexandre;
     });
   };
 
+  /**
+   * destroy removes all the content that was added by the plugin
+   */
   TextareaHighlighter.prototype.destroy = function() {
     $.data( this.element, 'plugin_' + pluginName, false );
     this.$backgroundDiv.remove();
@@ -716,12 +812,18 @@ var marexandre;
       .unwrap();
   };
 
+  /**
+   * debugModeOn terns the debug mode on
+   */
   TextareaHighlighter.prototype.debugModeOn = function() {
     this.settings.debug = true;
     this.$backgroundDiv.css({ 'color': '#f00' });
     this.$element.css({ 'color': 'rgba(0,0,0,0.5)' });
   };
 
+  /**
+   * debugModeOn terns the debug mode off
+   */
   TextareaHighlighter.prototype.debugModeOff = function() {
     this.settings.debug = false;
     this.$backgroundDiv.css({ 'color': 'transparent' });
