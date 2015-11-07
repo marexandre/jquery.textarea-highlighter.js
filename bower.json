@@ -1,6 +1,6 @@
 {
   "name": "jquery-textarea-highlighter",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "main": "jquery.textarea-highlighter.js",
   "ignore": [
     "screenshot.png",

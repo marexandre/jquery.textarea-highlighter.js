@@ -102,6 +102,11 @@ hr {
   opacity: .6;
 }
 
+.tagsHighlight {
+  background-color: #99f;
+  opacity: .6;
+}
+
 .match.added,
 .hoge.added,
 .fuga.added {

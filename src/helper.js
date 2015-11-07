@@ -244,6 +244,10 @@ var marexandre;
       return '<span class="' + className + '">' + text + '</span>';
     };
 
+    Helper.prototype.isRegExp = function(v) {
+      return v instanceof RegExp;
+    };
+
     /**
      * browser returns an Object containing browser information
      * @return {Object}

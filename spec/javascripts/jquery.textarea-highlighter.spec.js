@@ -102,6 +102,23 @@ describe('jquery.textarea-highlighter', function() {
       expect( $segment.find('.background-div').html() ).toBe(html);
     });
 
+    it('should not error with RegExp as matches, and when there is no matching text in the target', function() {
+      var $target = $segment.find('#target-fixture');
+
+      $target
+        .val('Hi ')
+        .textareaHighlighter({
+          matches: [
+            { 'matchClass': 'tags', 'match': /\{\/?\d+\}/g }
+          ]
+        });
+
+      var html = '';
+      html += 'Hi ';
+
+      expect( $segment.find('.background-div').html() ).toBe(html);
+    });
+
     it('should highlight case sensitive content correctly', function() {
       var $target = $segment.find('#target-fixture');
 

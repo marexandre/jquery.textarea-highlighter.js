@@ -1,6 +1,6 @@
 /**
  * jquery.textarea-highlighter.js - jQuery plugin for highlighting text in textarea.
- * @version v0.6.7
+ * @version v0.6.8
  * @link https://github.com/marexandre/jquery.textarea-highlighter.js
  * @author alexandre.kirillov@gmail.com
  * @license MIT license. http://opensource.org/licenses/MIT
@@ -249,6 +249,10 @@ var marexandre;
      */
     Helper.prototype.getTextInSpan = function(className, text) {
       return '<span class="' + className + '">' + text + '</span>';
+    };
+
+    Helper.prototype.isRegExp = function(v) {
+      return v instanceof RegExp;
     };
 
     /**
@@ -607,24 +611,25 @@ var marexandre;
     var list = _this.settings.matches;
     var indeciesList = [];
     var item, trieIndecies;
-    var matches;
+    var matches = [];
 
     for (var i = 0, imax = list.length; i < imax; i++) {
       item = list[i];
 
       if (!item._trie) {
         item._trie = new marexandre.Trie();
-        if (item.match instanceof RegExp) {
-          matches = helper.getUniqueArray(text.match(item.match));
-        } else {
-          matches = item.match;
-        }
 
-        // HTML escape matching words
-        for (var j = 0, jmax = matches.length; j < jmax; j++) {
-          var m = _this.settings.caseSensitive ? matches[j] : matches[j].toLowerCase();
-          item._trie.add(helper.escapeHTML(m));
+        // Add none RegExp matches once, when the trie is initialized
+        if (!helper.isRegExp(item.match)) {
+          matches = item.match;
+          _this.addMatchesToTrie(item._trie, matches);
         }
+      }
+
+      // For RegExp matches we need to add them to the trie object
+      if (helper.isRegExp(item.match)) {
+        matches = helper.getUniqueArray(text.match(item.match) || []);
+        _this.addMatchesToTrie(item._trie, matches);
       }
 
       var t = _this.settings.caseSensitive ? text : text.toLowerCase();
@@ -640,6 +645,19 @@ var marexandre;
     flattened = helper.cleanupOnWordBoundary(text, flattened, _this.settings.wordBase);
 
     return helper.createHTML( helper.makeTokenized(text, flattened) );
+  };
+
+  /**
+   * addMatchesToTrie addes given matches to a given trie
+   * @param  {Trie} trie      Trie object
+   * @param  {Array} matches  Array of string mathces
+   */
+  TextareaHighlighter.prototype.addMatchesToTrie = function(trie, matches) {
+    var _this = this;
+    for (var j = 0, jmax = matches.length; j < jmax; j++) {
+      var m = _this.settings.caseSensitive ? matches[j] : matches[j].toLowerCase();
+      trie.add(helper.escapeHTML(m));
+    }
   };
 
   /**
